@@ -99,10 +99,19 @@
     24: { text: "Merry Christmas! 🎁", image: "", link: "", video: "" }
   };
 
+  // Customizable: set how many doors can be opened (0 = use normal logic, 1-24 = open up to that day)
+  const OPEN_DAYS = 5; // e.g., set to 5 to open first 5 days, 24 to open all, 0 for normal logic
   // DEV mode: set to true to unlock all doors
-  const DEV = true; // set to true for development
+  const DEV = false; // set to true for development
   const today = new Date();
-  const currentDay = DEV ? 24 : (today.getMonth() === 11 ? today.getDate() : 0); // December only if not DEV mode
+  let currentDay;
+  if (OPEN_DAYS > 0) {
+    currentDay = OPEN_DAYS;
+  } else if (DEV) {
+    currentDay = 24;
+  } else {
+    currentDay = (today.getMonth() === 11 ? today.getDate() : 0); // December only if not DEV mode
+  }
 
   const calendar = document.getElementById("calendar");
   const contentBox = document.getElementById("content");
