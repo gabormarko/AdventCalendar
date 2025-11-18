@@ -13,6 +13,60 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
 
   <style>
+                        @keyframes scaleUp {
+                          0% { transform: scale(1); }
+                          100% { transform: scale(1.18); }
+                        }
+                        .door.scale-up {
+                          animation: scaleUp 0.18s;
+                        }
+                    @keyframes bounce {
+                      0%   { transform: scale(1); }
+                      20%  { transform: scale(1.15, 0.85); }
+                      40%  { transform: scale(0.95, 1.05); }
+                      60%  { transform: scale(1.05, 0.95); }
+                      80%  { transform: scale(0.98, 1.02); }
+                      100% { transform: scale(1); }
+                    }
+
+                    @keyframes shake {
+                      0% { transform: translate(0, 0) scale(1); }
+                      10%, 30%, 50%, 70%, 90% { transform: translate(-2px, 0) scale(1); }
+                      20%, 40%, 60%, 80% { transform: translate(2px, 0) scale(1); }
+                      100% { transform: translate(0, 0) scale(1); }
+                    }
+
+                    .door.bounce {
+                      animation: bounce 0.4s;
+                    }
+                    .door.shake {
+                      animation: shake 0.3s;
+                    }
+                    @keyframes pulse {
+                      0% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7); }
+                      70% { box-shadow: 0 0 0 12px rgba(255, 215, 0, 0); }
+                      100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); }
+                    }
+                    .door.pulse {
+                      animation: pulse 1.2s infinite;
+                    }
+                #loading-overlay .loading-message {
+                  font-family: 'Comic Sans MS', Arial, sans-serif;
+                  font-size: 1em;
+                  margin-bottom: 0.5em;
+                }
+            #loading-powered {
+              position: absolute;
+              bottom: 18px;
+              left: 0;
+              width: 100vw;
+              text-align: center;
+              font-size: 0.5em;
+              color: #fff;
+              opacity: 0.7;
+              letter-spacing: 1px;
+              font-family: 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', monospace;
+            }
         #loading-overlay {
           position: fixed;
           top: 0;
@@ -35,12 +89,14 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 20px;
+      padding: 10px;
     }
 
     h1 {
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
+      font-size: 1.2em;
+      font-family: 'Comic Sans MS', Arial, sans-serif;
     }
 
     .calendar {
@@ -50,31 +106,39 @@
     }
 
     .door {
-      width: 80px;
-      height: 80px;
-      background: #b30000;
+      width: 70px;
+      height: 70px;
+      /* background: #b30000; */ /* original red background */
       border-radius: 8px;
       color: white;
+      font-family: 'Comic Sans MS', Arial, sans-serif;
       display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 24px;
+      justify-content: flex-start;
+      align-items: flex-end;
+      font-size: 22px;
       cursor: pointer;
       transition: transform 0.2s;
       user-select: none;
+      padding: 0 0 8px 10px;
+      background-image: url('red-box3.png');
+      background-size: cover;
+      background-position: center;
     }
 
     .door.locked {
-      background: #555;
+      /* background: #555; */ /* original grey background */
+      background-image: url('grey-box2.png');
+      background-size: cover;
+      background-position: center;
       cursor: not-allowed;
     }
 
     .door:hover:not(.locked) {
-      transform: scale(1.1);
+      transform: scale(1.15);
     }
 
     #content {
-      margin-top: 30px;
+      margin-top: 10px;
       padding: 20px;
       background: white;
       border-radius: 8px;
@@ -82,6 +146,12 @@
       max-width: 500px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.2);
       display: none;
+    }
+
+    #content h1 {
+      margin-top: 0.1em;
+      margin-bottom: 0.15em;
+      font-size: 1.2em;
     }
 
     #content img {
@@ -102,9 +172,10 @@
 <body>
   <div id="loading-overlay">
     <img src="app-icon-me.png" alt="Loading..." style="width:200px;height:200px;margin-bottom:20px;">
-    hihi...
+    <span class="loading-message">hihi...</span>
+    <div id="loading-powered">powered by gabo | v2025.01.02 </div>
   </div>
-  <h1>🎄 Julis Adventi Kalendáriuma 🎄</h1>
+  <h1>🎄Julis Adventi Kalendáriuma🎄</h1>
   <div class="calendar" id="calendar"></div>
   <div id="content"></div>
 
@@ -120,34 +191,32 @@
 </script>
 
 <script>
-  const contentData = {
-    1: { text: "Welcome to December! 🎅", image: "", link: "", video: "" },
-    2: { text: "Day 2 surprise!", image: "", link: "", video: "" },
-    3: { text: "Keep going!", image: "kofarago.jpg", link: "", video: "" },
-    4: { text: "Keep going!", image: "", link: "", video: "" },
-    5: { text: "Keep going!", image: "", link: "", video: "" },
-    6: { text: "Keep going!", image: "", link: "", video: "" },
-    7: { text: "Keep going!", image: "", link: "", video: "" },
-    8: { text: "Keep going!", image: "", link: "", video: "" },
-    9: { text: "Keep going!", image: "", link: "", video: "" },
-    10: { text: "Keep going!", image: "", link: "", video: "" },
-    11: { text: "Keep going!", image: "", link: "", video: "" },
-    12: { text: "Keep going!", image: "", link: "", video: "" },
-    13: { text: "Keep going!", image: "", link: "", video: "" },
-    14: { text: "Keep going!", image: "zootopia.jpg", link: "", video: "" },
-    15: { text: "Keep going!", image: "", link: "", video: "" },
-    16: { text: "Keep going!", image: "", link: "", video: "" },
-    17: { text: "Keep going!", image: "", link: "", video: "" },
-    18: { text: "Keep going!", image: "", link: "", video: "" },
-    19: { text: "Keep going!", image: "", link: "", video: "" },
-    20: { text: "Keep going!", image: "", link: "", video: "" },
-    21: { text: "Keep going!", image: "", link: "", video: "" },
-    22: { text: "Keep going!", image: "", link: "", video: "" },
-    23: { text: "Keep going!", image: "", link: "", video: "" },
-    24: { text: "Keep going!", image: "", link: "", video: "" },
-    // ... fill in days 4-24
-    24: { text: "Merry Christmas! 🎁", image: "", link: "", video: "" }
-  };
+    const contentData = {
+      1: { title: "1. Szia Julis!:)", text: "Üdv az adventi kalendáriumodban. Minden napra jut majd egy kis meglepetés, hihi.", image: "", link: "", video: "" },
+      2: { title: "2. nap", text: "Day 2 surprise!", image: "", link: "", video: "" },
+      3: { title: "3. nap", text: "Keep going!", image: "kofarago.jpg", link: "", video: "" },
+      4: { title: "4. nap", text: "Keep going!", image: "", link: "", video: "" },
+      5: { title: "5. nap", text: "Keep going!", image: "", link: "", video: "" },
+      6: { title: "6. nap", text: "Ho-ho-ho-hooo!🎅", image: "", link: "", video: "" },
+      7: { title: "7. nap", text: "Keep going!", image: "", link: "", video: "" },
+      8: { title: "8. nap", text: "Keep going!", image: "", link: "", video: "" },
+      9: { title: "9. nap", text: "Keep going!", image: "", link: "", video: "" },
+      10: { title: "10. nap", text: "Keep going!", image: "", link: "", video: "" },
+      11: { title: "11. nap", text: "Keep going!", image: "", link: "", video: "" },
+      12: { title: "12. nap", text: "Keep going!", image: "", link: "", video: "" },
+      13: { title: "13. nap", text: "Keep going!", image: "", link: "", video: "" },
+      14: { title: "14. nap", text: "Keep going!", image: "zootopia.jpg", link: "", video: "" },
+      15: { title: "15. nap", text: "Keep going!", image: "", link: "", video: "" },
+      16: { title: "16. nap", text: "Keep going!", image: "", link: "", video: "" },
+      17: { title: "17. nap", text: "Keep going!", image: "", link: "", video: "" },
+      18: { title: "18. nap", text: "Keep going!", image: "", link: "", video: "" },
+      19: { title: "19. nap", text: "Keep going!", image: "", link: "", video: "" },
+      20: { title: "20. nap", text: "Keep going!", image: "", link: "", video: "" },
+      21: { title: "21. nap", text: "Keep going!", image: "", link: "", video: "" },
+      22: { title: "22. nap", text: "Keep going!", image: "", link: "", video: "" },
+      23: { title: "23. nap", text: "Keep going!", image: "", link: "", video: "" },
+      24: { title: "24. Boldog karácsonyt!", text: "Merry Christmas! 🎁", image: "", link: "", video: "" }
+    };
 
   // Customizable: set how many doors can be opened (0 = use normal logic, 1-24 = open up to that day)
   const OPEN_DAYS = 0; // e.g., set to 5 to open first 5 days, 24 to open all, 0 for normal logic
@@ -174,15 +243,43 @@
   const calendar = document.getElementById("calendar");
   const contentBox = document.getElementById("content");
 
+  function showLockedMessage(day) {
+    alert("Hékás! Csak ne olyan hevesen! Legyen miért várni a holnapot is!;)🎁");
+  }
+
   for (let day = 1; day <= 24; day++) {
     const door = document.createElement("div");
     door.className = "door";
     door.textContent = day;
 
+    const openedKey = 'advent-opened-' + day;
+    const isOpened = localStorage.getItem(openedKey) === '1';
+
     if (day > currentDay) {
       door.classList.add("locked");
+      door.addEventListener("click", () => {
+        if (window.navigator.vibrate) window.navigator.vibrate(150);
+        door.classList.add('shake');
+        setTimeout(() => door.classList.remove('shake'), 300);
+        showLockedMessage(day);
+      });
     } else {
-      door.addEventListener("click", () => openDoor(day));
+      door.classList.add('available');
+      // Only the current day's box pulses until opened
+      if (day === currentDay && !isOpened) {
+        door.classList.add('pulse');
+      }
+      door.addEventListener("click", () => {
+        door.classList.remove('pulse');
+        door.classList.add('scale-up');
+        setTimeout(() => {
+          door.classList.remove('scale-up');
+          door.classList.add('bounce');
+          setTimeout(() => door.classList.remove('bounce'), 400);
+        }, 180);
+        openDoor(day);
+        localStorage.setItem(openedKey, '1');
+      });
     }
 
     calendar.appendChild(door);
@@ -190,7 +287,7 @@
 
   function openDoor(day) {
     const data = contentData[day];
-    let html = `<h2>Day ${day}</h2><p>${data.text}</p>`;
+      let html = `<h1>${data.title || (day + '. nap')}</h1><p>${data.text.replace(/\n/g, '<br>')}</p>`;
 
     if (data.image) html += `<img src="${data.image}">`;
     if (data.link) html += `<p><a href="${data.link}" target="_blank">Open link</a></p>`;
