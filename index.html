@@ -57,16 +57,30 @@
                   margin-bottom: 0.5em;
                 }
             #loading-powered {
-              position: static;
-              margin: 40px 0 10px 0;
-              width: 100vw;
-              text-align: center;
-              font-size: 0.8em;
-              color: #fff;
-              opacity: 0.7;
-              letter-spacing: 1px;
-              font-family: 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', monospace;
-              pointer-events: none;
+            position: static;
+            margin: 30px 0 10px 0;
+            width: 100vw;
+            text-align: center;
+            font-size: 0.8em;
+            color: #fff;
+            opacity: 0.7;
+            letter-spacing: 1px;
+            font-family: 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', monospace;
+            pointer-events: none;
+            }
+        #loading-powered-overlay {
+            position: fixed;
+            bottom: 18px;
+            left: 0;
+            width: 100vw;
+            text-align: center;
+            font-size: 0.7em;
+            color: #fff;
+            opacity: 0.7;
+            letter-spacing: 1px;
+            font-family: 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', monospace;
+            z-index: 10000;
+            pointer-events: none;
             }
         #loading-overlay {
           position: fixed;
@@ -175,8 +189,8 @@
   <div id="loading-overlay">
     <img src="app-icon-me.png" alt="Loading..." style="width:200px;height:200px;margin-bottom:20px;">
     <span class="loading-message">hihi...</span>
+    <div id="loading-powered-overlay">powered by gabo | v2025.01.02 </div>
   </div>
-  <div id="loading-powered">powered by gabo | v2025.01.02 </div>
   <h1>🎄Julis Adventi Kalendáriuma🎄</h1>
   <div class="calendar" id="calendar"></div>
   <div id="content"></div>
@@ -188,7 +202,7 @@
       const overlay = document.getElementById('loading-overlay');
       overlay.style.opacity = 0;
       // Keep #loading-powered visible during fade-out
-      const powered = document.getElementById('loading-powered');
+      const powered = document.getElementById('loading-powered-overlay');
       if (powered) powered.style.opacity = 1;
       setTimeout(() => {
         overlay.style.display = 'none';
@@ -309,5 +323,6 @@
     contentBox.style.display = "block";
   }
 </script>
+    <div id="loading-powered">powered by gabo | v2025.01.02 </div>
 </body>
 </html>
