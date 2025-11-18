@@ -110,9 +110,15 @@
   } else if (DEV) {
     currentDay = 24;
   } else {
-    // Open doors up to today's date if in the current month, else 0
-    const calendarMonth = today.getMonth(); // Use current month
-    currentDay = (today.getMonth() === calendarMonth ? today.getDate() : 0);
+    // If today is after December 24, 2025, open all doors
+    const unlockDate = new Date(2025, 11, 24, 23, 59, 59); // December is month 11
+    if (today > unlockDate) {
+      currentDay = 24;
+    } else {
+      // Open doors up to today's date if in the current month, else 0
+      const calendarMonth = today.getMonth(); // Use current month
+      currentDay = (today.getMonth() === calendarMonth ? today.getDate() : 0);
+    }
   }
 
   const calendar = document.getElementById("calendar");
