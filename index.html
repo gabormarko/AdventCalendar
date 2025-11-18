@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Advent Calendar</title>
+
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#b30000">
+
+  <!-- iOS support -->
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f3f3f3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .calendar {
+      display: grid;
+      grid-template-columns: repeat(6, 100px);
+      grid-gap: 10px;
+    }
+
+    .door {
+      width: 100px;
+      height: 100px;
+      background: #b30000;
+      border-radius: 8px;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 24px;
+      cursor: pointer;
+      transition: transform 0.2s;
+      user-select: none;
+    }
+
+    .door.locked {
+      background: #555;
+      cursor: not-allowed;
+    }
+
+    .door:hover:not(.locked) {
+      transform: scale(1.1);
+    }
+
+    #content {
+      margin-top: 30px;
+      padding: 20px;
+      background: white;
+      border-radius: 8px;
+      width: 80%;
+      max-width: 500px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      display: none;
+    }
+
+    #content img {
+      max-width: 100%;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+
+<script>
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("service-worker.js")
+      .then(() => console.log("Service worker registered"))
+      .catch(err => console.error("Service worker error:", err));
+  }
+</script>
+
+<body>
+  <h1>🎄 Advent Calendar 🎄</h1>
+  <div class="calendar" id="calendar"></div>
+
+  <div id="content"></div>
+
+<script>
+  const contentData = {
+    1: { text: "Welcome to December! 🎅", image: "", link: "", video: "" },
+    2: { text: "Day 2 surprise!", image: "", link: "", video: "" },
+    3: { text: "Keep going!", image: "", link: "", video: "" },
+    // ... fill in days 4-24
+    24: { text: "Merry Christmas! 🎁", image: "", link: "", video: "" }
+  };
+
+  const today = new Date();
+  const currentDay = today.getMonth() === 11 ? today.getDate() : 0; // December only
+
+  const calendar = document.getElementById("calendar");
+  const contentBox = document.getElementById("content");
+
+  for (let day = 1; day <= 24; day++) {
+    const door = document.createElement("div");
+    door.className = "door";
+    door.textContent = day;
+
+    if (day > currentDay) {
+      door.classList.add("locked");
+    } else {
+      door.addEventListener("click", () => openDoor(day));
+    }
+
+    calendar.appendChild(door);
+  }
+
+  function openDoor(day) {
+    const data = contentData[day];
+    let html = `<h2>Day ${day}</h2><p>${data.text}</p>`;
+
+    if (data.image) html += `<img src="${data.image}">`;
+    if (data.link) html += `<p><a href="${data.link}" target="_blank">Open link</a></p>`;
+    if (data.video) html += `<video controls src="${data.video}" style="width:100%"></video>`;
+
+    contentBox.innerHTML = html;
+    contentBox.style.display = "block";
+  }
+</script>
+</body>
+</html>
