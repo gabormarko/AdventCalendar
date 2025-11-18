@@ -12,6 +12,7 @@
   <link rel="apple-touch-icon" href="app-icon-me.png">
   <meta name="apple-mobile-web-app-capable" content="yes">
 
+  <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
   <style>
                         @keyframes scaleUp {
                           0% { transform: scale(1); }
@@ -51,7 +52,7 @@
                       animation: pulse 1.2s infinite;
                     }
                 #loading-overlay .loading-message {
-                  font-family: 'Comic Sans MS', Arial, sans-serif;
+                  font-family: 'Comic Neue', Arial, sans-serif;
                   font-size: 1em;
                   margin-bottom: 0.5em;
                 }
@@ -96,7 +97,7 @@
       text-align: center;
       margin-bottom: 10px;
       font-size: 1.2em;
-      font-family: 'Comic Sans MS', Arial, sans-serif;
+      font-family: 'Comic Neue', Arial, sans-serif;
     }
 
     .calendar {
@@ -111,7 +112,7 @@
       /* background: #b30000; */ /* original red background */
       border-radius: 8px;
       color: white;
-      font-family: 'Comic Sans MS', Arial, sans-serif;
+      font-family: 'Comic Neue', Arial, sans-serif;
       display: flex;
       justify-content: flex-start;
       align-items: flex-end;
@@ -185,8 +186,14 @@
     setTimeout(() => {
       const overlay = document.getElementById('loading-overlay');
       overlay.style.opacity = 0;
-      setTimeout(() => overlay.style.display = 'none', 500);
-    }, 1500);
+      // Keep #loading-powered visible during fade-out
+      const powered = document.getElementById('loading-powered');
+      if (powered) powered.style.opacity = 1;
+      setTimeout(() => {
+        overlay.style.display = 'none';
+        if (powered) powered.style.opacity = 0.7; // restore default after fade
+      }, 500);
+    }, 2500);
   });
 </script>
 
@@ -258,8 +265,8 @@
     if (day > currentDay) {
       door.classList.add("locked");
       door.addEventListener("click", () => {
-        if (window.navigator.vibrate) window.navigator.vibrate(150);
         door.classList.add('shake');
+        if (window.navigator.vibrate) window.navigator.vibrate(350);
         setTimeout(() => door.classList.remove('shake'), 300);
         showLockedMessage(day);
       });
@@ -270,6 +277,8 @@
         door.classList.add('pulse');
       }
       door.addEventListener("click", () => {
+        // Custom vibration pattern: triple pulse
+        if (window.navigator.vibrate) window.navigator.vibrate([80, 40, 80, 40, 80]);
         door.classList.remove('pulse');
         door.classList.add('scale-up');
         setTimeout(() => {
