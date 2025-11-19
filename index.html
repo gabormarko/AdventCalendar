@@ -489,6 +489,9 @@
             document.getElementById('xmas-overlay').style.display = 'none';
             document.getElementById('calendar').style.filter = '';
             let html = `<h1>${contentData[24].title || '24. nap'}</h1><p>${contentData[24].text.replace(/\n/g, '<br>')}</p>`;
+            if (contentData[24].image) html += `<img src="${contentData[24].image}" style="display:block;margin:10px auto;">`;
+            if (contentData[24].link) html += `<p><a href="${contentData[24].link}" target="_blank">Open link</a></p>`;
+            if (contentData[24].video) html += `<video controls src="${contentData[24].video}" style="width:100%"></video>`;
             contentBox.innerHTML = html;
             contentBox.style.display = 'block';
           };
