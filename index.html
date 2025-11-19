@@ -167,6 +167,10 @@
       display: none;
     }
 
+    #content p {
+      font-family: 'Comic Neue', Arial, sans-serif;
+    }
+
     #content h1 {
       margin-top: -8px;
       margin-bottom: -8px;
@@ -198,7 +202,7 @@
   }
   #santa-overlay-top img,
   #xmas-overlay-top img {
-    max-width: 270px;
+    max-width: 280px;
     max-height: 180px;
   }
     #santa-overlay-center img,
@@ -279,8 +283,8 @@
 <script>
     const contentData = {
       1: { title: "1. Szia Julis!:)", text: "Üdv az adventi kalendáriumodban! Minden napra jut majd egy kis meglepetés, hihi.\n Az első maga az applikáció, remélem tetszik:)\nPusziii!!!🥰", image: "", link: "", video: "" },
-      2: { title: "2. Ügyi-bügyi vagy...", text: "...hogy ma is visszatértél:)!\n Jutalmad egy kis kávépénz-támogatás (így hó vége felé közeledve, hihi), hogy nyitva tudd tartani ma a szemeidet órán. Checkold a Revolutod!", image: "", link: "", video: "" },
-      3: { title: "3. 3 hónapja...", text: "találkoztunk először kettesben!:) Durva, mennyi minden történt azóta:)\n A havi kis borítékod nem marad el, majd odaadom, ha találkozunk!:)", image: "0903.jpg", link: "", video: "" },
+      2: { title: "2. Ügyi-bügyi vagy...", text: "...hogy ma is visszatértél:)!\n Jutalmad egy kis kávépénz-támogatás (így hó vége felé közeledve), hogy nyitva tudd tartani ma a szemeidet órán. Checkold a Revolutod!", image: "", link: "", video: "" },
+      3: { title: "3. 3 hónapja...", text: "...találkoztunk először kettesben!:) Durva, mennyi minden történt azóta:)\n A havi kis borítékod nem marad el, majd odaadom, ha találkozunk!:)", image: "0903.jpg", link: "", video: "" },
       4: { title: "4. Jó reggelt!", text: "Ügyes legyél ma a susuban!:)", image: "", link: "", video: "wakey.mp4" },
       5: { title: "5. nap", text: "Keep going!", image: "", link: "https://open.spotify.com/track/2bN2Q3GbSlknHrAooe6sA7?si=7c5ca5b4e76f4d7b", video: "" },
       6: { title: "6. Ho-ho-ho-hooo!🎅", text: "Remélem jól viselkedtél az évben, kedves Julis!\n ", image: "", link: "", video: "" },
@@ -291,7 +295,7 @@
       11: { title: "11. Futááás", text: "Julisom, ma olyan résztávokat futunk, amilyet csak szeretnél;)", image: "", link: "", video: "" },
       12: { title: "12. Karácsonyi vásár", text: "Ma választhatsz bármit a karácsonyi vásárban, ami megtetszik!:)", image: "", link: "", video: "" },
       13: { title: "13. Setemény", text: "Ma vendégem vagy egy sütire. Pusszancs!", image: "", link: "", video: "" },
-      14: { title: "14. Búcsú:()", text: "Kár, hogy mész:( De hamarosan újra együtt!:)\n Búcsúzóul megiszunk ma egy forralt bort a városban:)", image: "", link: "", video: "" },
+      14: { title: "14. Búcsú:(", text: "Kár, hogy mész:( De hamarosan újra együtt!:)\n Búcsúzóul megiszunk ma egy forralt bort a városban:)", image: "", link: "", video: "" },
       15: { title: "15. Hihi!", text: "A mai meglepi egy mozijegy!\nMikor megyünk???😏", image: "zootopia.jpg", link: "", video: "" },
       16: { title: "16. Hupsz...", text: "Julisom, az élet nem mindig habostorta! Néha meg kell állni, és értékelni mindazt, ami megadatott. Nem szabad telhetetlennek lenni.", image: "", link: "", video: "" },
       17: { title: "17. nap", text: "Keep going!", image: "", link: "", video: "" },
@@ -452,7 +456,7 @@
       contentBox.style.display = 'none';
       const overlay = document.getElementById('xmas-overlay');
       overlay.style.display = 'flex';
-      document.getElementById('xmas-overlay-top').innerHTML = '<div style="display:flex;flex-direction:column;align-items:center;width:100%"><h1 style="color:#fff;text-shadow:1px 1px 4px #b30000,0 0 2px #000;font-family:\'Comic Neue\',Arial,sans-serif;font-size:2em;margin:0 0 8px 0;">Boldog karácsonyt!</h1><img src="lights.gif" alt="Christmas Lights"></div>';
+      document.getElementById('xmas-overlay-top').innerHTML = '<div style="display:flex;flex-direction:column;align-items:center;width:100%"><h1 style="color:#fff;text-shadow:1px 1px 4px #b30000,0 0 2px #000;font-family:\'Comic Neue\',Arial,sans-serif;font-size:2em;margin:0 0 8px 0;">Boldog karácsonyt!</h1><img src="lights2.gif" alt="Christmas Lights"></div>';
       document.getElementById('xmas-overlay-center').innerHTML = '<img id="xmas-img" src="xmas.png" alt="Christmas">';
       document.getElementById('xmas-overlay-bottom').innerHTML = '<button id="xmas-btn">juhuuuu!!!</button>';
       setTimeout(() => {
