@@ -817,8 +817,8 @@ window.addEventListener('DOMContentLoaded', () => {
     // Prevent multiple initializations
     if (snakeDiv.getAttribute('data-initialized')) return;
     snakeDiv.setAttribute('data-initialized', '1');
-    const snakeGridSize = 10;
-    const snakeBox = 26;
+    const snakeGridSize = 9;
+    const snakeBox = 31;
     const snakeCanvasSize = snakeGridSize * snakeBox;
     // Snake modes: head and food images
     const snakeModes = [
@@ -1492,7 +1492,7 @@ window.addEventListener('DOMContentLoaded', () => {
 <script>
     const contentData = {
       1: { title: "1. Szia Julis!:)", text: "Üdv az adventi kalendáriumodban!\nMinden napra jut majd egy kis meglepetés, hihi.\n Az első maga az applikáció, remélem tetszik:)\nPusziii!!!🥰", image: "coding.jpg", link: "", video: "" },
-      2: { title: "2. Ügyi-bügyi vagy...", text: "...hogy ma is visszatértél:)!\n Jutalmad egy kis kávépénz-támogatás (így hó vége felé közeledve), hogy nyitva tudd tartani ma a szemeidet órán. Checkold a Revolutod!", image: "coffee.png", link: "", video: "" },
+      2: { title: "2. Ügyi-bügyi vagy...", text: "...hogy ma is visszatértél:)!\n Jutalmad egy kis kávépénz-támogatás (így hó vége felé közeledve), hogy nyitva tudd tartani ma a szemeidet órán.\nCheckold a Revolutod!", image: "coffee.png", link: "", video: "" },
       3: { title: "3. 3 hónapja...", text: "...találkoztunk először kettesben!:) Durva, mennyi minden történt azóta:)\n A havi kis borítékod nem marad el, majd odaadom, ha találkozunk!:)\nUi.: Ma este egy görgőzés?😎", image: "0903.jpg", link: "", video: "" },
       4: { title: "4. Jó reggelt!", text: "Ügyes legyél ma a susuban!:)", image: "", link: "", video: "wakey.mp4" },
       5: { title: "5. Grafilogika:)", text: "Ma egy kis feladványt kapsz, remélem ki tudod színesben nyomtatni.\n Viel Spaß!:)<br><a href='https://drive.google.com/file/d/1hQnBsPC27ZBde7qkPaNAs_L4dANv0pTG/view?usp=drive_link' target='_blank'>Nyomtatás</a>", image: "nonogramm.png", link: "", video: "" },
