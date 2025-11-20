@@ -495,25 +495,62 @@ function initDrawerLogic() {
 
 // Wait for loading overlay to finish before enabling drawer
 window.addEventListener('DOMContentLoaded', () => {
+      // Early morning swim message
+      function showEarlySwimMessage() {
+        // Create overlay
+        const msgOverlay = document.createElement('div');
+        msgOverlay.style.position = 'fixed';
+        msgOverlay.style.top = '0';
+        msgOverlay.style.left = '0';
+        msgOverlay.style.width = '100vw';
+        msgOverlay.style.height = '100vh';
+        msgOverlay.style.background = 'rgba(0,0,0,0.65)';
+        msgOverlay.style.backdropFilter = 'blur(2px)';
+        msgOverlay.style.zIndex = '10020';
+        msgOverlay.style.display = 'flex';
+        msgOverlay.style.justifyContent = 'center';
+        msgOverlay.style.alignItems = 'center';
+        msgOverlay.innerHTML = `<div style="background:#fff;padding:32px 24px;border-radius:14px;box-shadow:0 2px 12px rgba(0,0,0,0.18);font-family:'Comic Neue',Arial,sans-serif;font-size:1.18em;color:#b30000;text-align:center;max-width:340px;">Uff... normális emberek ilyenkor még alszanak😴<br><br>Na sebaj, jó úszást!🏊‍♀️<br><br><button id="close-early-msg" style="margin-top:18px;padding:8px 24px;font-size:1em;background:#b30000;color:#fff;border:none;border-radius:8px;cursor:pointer;">Hihi:) De én kemény vagyok!</button></div>`;
+        document.body.appendChild(msgOverlay);
+        document.getElementById('close-early-msg').onclick = function() {
+          msgOverlay.remove();
+        };
+      }
+      function checkEarlySwim() {
+        const now = new Date();
+        const hour = now.getHours();
+        const min = now.getMinutes();
+        if ((hour === 4 && min >= 30) || (hour === 5 && min < 50) || (hour === 17 && min < 55)) {
+          return true;
+        }
+        return false;
+      }
     // For testing: set OPEN_DAYS to a number to override the current day
     const OPEN_DAYS = 0; // 0 = use real date, >0 = override day
-  const loadingOverlay = document.getElementById('loading-overlay');
-  if (!loadingOverlay) {
-    initDrawerLogic();
-    return;
-  }
-  const observer = new MutationObserver(() => {
-    if (loadingOverlay.style.display === 'none' || loadingOverlay.style.opacity === '0') {
+    const loadingOverlay = document.getElementById('loading-overlay');
+    const shouldShowSwim = checkEarlySwim();
+    function afterLoadingOverlayGone() {
       initDrawerLogic();
+      if (shouldShowSwim) {
+        setTimeout(showEarlySwimMessage, 200);
+      }
+    }
+    if (!loadingOverlay) {
+      afterLoadingOverlayGone();
+      return;
+    }
+    const observer = new MutationObserver(() => {
+      if (loadingOverlay.style.display === 'none' || loadingOverlay.style.opacity === '0') {
+        afterLoadingOverlayGone();
+        observer.disconnect();
+      }
+    });
+    observer.observe(loadingOverlay, { attributes: true, attributeFilter: ['style'] });
+    // Fallback: if overlay is already hidden
+    if (loadingOverlay.style.display === 'none' || loadingOverlay.style.opacity === '0') {
+      afterLoadingOverlayGone();
       observer.disconnect();
     }
-  });
-  observer.observe(loadingOverlay, { attributes: true, attributeFilter: ['style'] });
-  // Fallback: if overlay is already hidden
-  if (loadingOverlay.style.display === 'none' || loadingOverlay.style.opacity === '0') {
-    initDrawerLogic();
-    observer.disconnect();
-  }
 });
 
 <!-- Accordion logic moved to script below -->
