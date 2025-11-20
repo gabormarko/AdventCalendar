@@ -662,7 +662,7 @@ window.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem('g2048-highscore', highScore);
           }
           draw();
-          alert('Game Over!');
+          alert('Na jó, lehet most már inkább az órára kéne figyelni... Vagy?:D');
           restart();
         }, 100);
       }
@@ -737,9 +737,62 @@ window.addEventListener('DOMContentLoaded', () => {
     // Prevent multiple initializations
     if (snakeDiv.getAttribute('data-initialized')) return;
     snakeDiv.setAttribute('data-initialized', '1');
-    const snakeGridSize = 12;
-    const snakeBox = 23; // 14*14 = 196px, fits in 220px with margin
+    const snakeGridSize = 10;
+    const snakeBox = 26;
     const snakeCanvasSize = snakeGridSize * snakeBox;
+    // Snake modes: head and food images
+    const snakeModes = [
+      { head: 'snake1.jpg', food: 'food1.png' },
+      { head: 'snake2.jpg', food: 'food2.jpg' }
+    ];
+    let modeIdx = parseInt(localStorage.getItem('snake-mode-idx')||'0',10) % snakeModes.length;
+    let headImg, foodImg;
+    function setNextModeAndLoad(cb) {
+      modeIdx = (modeIdx + 1) % snakeModes.length;
+      localStorage.setItem('snake-mode-idx', modeIdx);
+      headImg = new window.Image();
+      foodImg = new window.Image();
+      let loaded = 0;
+      let called = false;
+      let headImgError = false, foodImgError = false;
+      function afterLoad() {
+        loaded++;
+        if (loaded >= 2 && !called && typeof cb === 'function') {
+          called = true;
+          cb();
+        }
+      }
+      headImg.onload = afterLoad;
+      foodImg.onload = afterLoad;
+      headImg.onerror = function() { headImgError = true; afterLoad(); };
+      foodImg.onerror = function() { foodImgError = true; afterLoad(); };
+      headImg.src = snakeModes[modeIdx].head;
+      foodImg.src = snakeModes[modeIdx].food;
+      if (headImg.complete) setTimeout(afterLoad, 0);
+      if (foodImg.complete) setTimeout(afterLoad, 0);
+    }
+    function loadCurrentMode(cb) {
+      headImg = new window.Image();
+      foodImg = new window.Image();
+      let loaded = 0;
+      let called = false;
+      let headImgError = false, foodImgError = false;
+      function afterLoad() {
+        loaded++;
+        if (loaded >= 2 && !called && typeof cb === 'function') {
+          called = true;
+          cb();
+        }
+      }
+      headImg.onload = afterLoad;
+      foodImg.onload = afterLoad;
+      headImg.onerror = function() { headImgError = true; afterLoad(); };
+      foodImg.onerror = function() { foodImgError = true; afterLoad(); };
+      headImg.src = snakeModes[modeIdx].head;
+      foodImg.src = snakeModes[modeIdx].food;
+      if (headImg.complete) setTimeout(afterLoad, 0);
+      if (foodImg.complete) setTimeout(afterLoad, 0);
+    }
     snakeDiv.innerHTML =
       `<div class="snake-score" style="text-align:center;font-size:1em;margin:6px 0 2px 0;color:#b30000;font-weight:bold;">Score: <span id="snake-score">0</span> | Best: <span id="snake-best">0</span></div>` +
       `<canvas id="snake-canvas" width="${snakeCanvasSize}" height="${snakeCanvasSize}" style="background:#222;border-radius:8px;display:block;margin:0 auto;"></canvas>` +
@@ -775,13 +828,24 @@ window.addEventListener('DOMContentLoaded', () => {
     }
     function draw() {
       ctx.clearRect(0,0,canvas.width,canvas.height);
-      // Draw food (flush to grid)
-      ctx.fillStyle = '#f2b179';
-      ctx.fillRect(food.x*box, food.y*box, box, box);
+      // Draw food
+      if (foodImg && foodImg.complete && foodImg.naturalWidth && foodImg.naturalHeight) {
+        ctx.drawImage(foodImg, food.x*box, food.y*box, box, box);
+      } else {
+        ctx.fillStyle = '#f2b179';
+        ctx.fillRect(food.x*box, food.y*box, box, box);
+      }
       // Draw snake
       for (let i=0;i<snake.length;i++) {
-        ctx.fillStyle = i===0 ? '#b30000' : '#fff';
-        ctx.fillRect(snake[i].x*box, snake[i].y*box, box, box);
+        if (i===0 && headImg && headImg.complete && headImg.naturalWidth && headImg.naturalHeight) {
+          ctx.drawImage(headImg, snake[i].x*box, snake[i].y*box, box, box);
+        } else if (i === 0) {
+          ctx.fillStyle = '#b30000'; // fallback head color
+          ctx.fillRect(snake[i].x*box, snake[i].y*box, box, box);
+        } else {
+          ctx.fillStyle = '#90ee90'; // light green for all body parts except head
+          ctx.fillRect(snake[i].x*box, snake[i].y*box, box, box);
+        }
       }
     }
     function move() {
@@ -800,7 +864,7 @@ window.addEventListener('DOMContentLoaded', () => {
         }
         updateScore();
         setTimeout(()=>{
-          alert('Game Over!');
+          alert('Hupsz! Tudsz te ennél jobbat is!:)');
           reset();
         },200);
         return;
@@ -876,10 +940,18 @@ window.addEventListener('DOMContentLoaded', () => {
     }
     startBtn.onclick = startGame;
     restartBtn.onclick = () => {
+      setNextModeAndLoad(() => {
+        reset();
+        draw();
+        pauseGame();
+      });
+    };
+    // On initial load, ensure images are loaded before first draw
+    loadCurrentMode(() => {
       reset();
       draw();
       pauseGame();
-    };
+    });
     // On game over, show Start button again
     const oldMove = move;
     move = function() {
@@ -898,10 +970,12 @@ window.addEventListener('DOMContentLoaded', () => {
         }
         updateScore();
         setTimeout(()=>{
-          alert('Game Over!');
-          reset();
-          draw();
-          pauseGame();
+          alert('Hupsz! Tudsz te ennél jobbat is!:)');
+          setNextModeAndLoad(() => {
+            reset();
+            draw();
+            pauseGame();
+          });
         },200);
         return;
       }
