@@ -525,7 +525,7 @@ window.addEventListener('DOMContentLoaded', () => {
         const now = new Date();
         const hour = now.getHours();
         const min = now.getMinutes();
-        if ((hour === 4 && min >= 30) || (hour === 5 && min < 50) || (hour === 17 && min < 57)) {
+        if ((hour === 4 && min >= 30) || (hour === 5 && min < 50) /*|| (hour === 17 && min < 57)*/) {
           return true;
         }
         return false;
