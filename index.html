@@ -632,11 +632,7 @@ window.addEventListener('DOMContentLoaded', () => {
         addRandom();
         draw();
       }
-      // Button events
-      document.getElementById('g2048-up').onclick = () => move('up');
-      document.getElementById('g2048-down').onclick = () => move('down');
-      document.getElementById('g2048-left').onclick = () => move('left');
-      document.getElementById('g2048-right').onclick = () => move('right');
+      // Button event
       document.getElementById('g2048-restart').onclick = () => restart();
       // Keyboard events
       const gameDiv = document.getElementById('game-2048');
