@@ -14,6 +14,46 @@
 
   <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
   <style>
+
+  .title-bg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url('wood5.jpg') center center/cover no-repeat;
+    border-radius: 14px;
+    margin-top: -20px;
+    margin-bottom: 2px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.13);
+    width: calc((4 * 80px + 3 * 8px)*1.1); /* match .calendar grid width */
+    max-width: 100vw;
+    height: 120px; 
+    padding: 0;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+    .title-bg h1 {
+      margin: 0;
+      line-height: 1.1;
+      width: 100%;
+      text-align: center;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      height: 100%;
+      color: #fff;
+      font-size: 1.56em;
+      text-shadow:
+        -1.3px -1.3px 0 #2d1807,
+         1.3px -1.3px 0 #2d1807,
+        -1.3px  1.3px 0 #2d1807,
+         1.3px  1.3px 0 #2d1807,
+         0px   1.2px 0 #2d1807,
+         1.3px  0px 0 #2d1807,
+        -1.3px  0px 0 #2d1807,
+         0px  -1.3px 0 #2d1807,
+         0 0 4px #2d1807;
+      padding-bottom: 40px;
+    }
                         @keyframes scaleUp {
                           0% { transform: scale(1); }
                           100% { transform: scale(1.18); }
@@ -288,7 +328,7 @@
     <span class="loading-message" id="hihi-loading" style="font-weight:normal;"><span id="hihi-dots" style="display:inline-block;min-width:1.5em;padding-left:0;"></span></span>
     <div id="loading-powered-overlay">powered by gabo | v2025.01.02 </div>
   </div>
-  <h1>🎄Julis Adventi Kalendáriuma🎄</h1>
+  <div class="title-bg"><h1>🎄Julis Adventi Kalendáriuma🎄</h1></div>
   <div class="calendar" id="calendar"></div>
   <!-- General Content Overlay (for all days except 6 and 24) -->
   <div id="content-overlay" style="display:none;position:fixed;z-index:10001;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.65);backdrop-filter:blur(2px);justify-content:center;align-items:center;flex-direction:column;">
