@@ -402,32 +402,47 @@
         <div class="accordion-section">
           <button class="accordion-header" aria-expanded="false" style="width:100%;text-align:left;padding:14px 18px;font-family:'Comic Neue',Arial,sans-serif;font-size:1.08em;color:#b30000;background:none;border:none;outline:none;cursor:pointer;border-radius:8px;margin-top:8px;transition:background 0.2s;">🎓 Egyetemre</button>
           <div class="accordion-content" style="display:none;padding:0 0 12px 0;font-family:'Segoe UI',Arial,sans-serif;font-size:1em;color:#222;">
-            <div id="game-2048-container" style="width:100%;display:flex;justify-content:center;align-items:center;">
-              <div id="game-2048" style="margin:0 auto;padding:8px 0;width:220px;">
-                <style>
-                  .g2048-board { background:#eee;border-radius:8px;padding:8px;box-shadow:0 2px 8px rgba(0,0,0,0.08); }
-                  .g2048-row { display:flex; }
-                  .g2048-cell { width:48px;height:48px;margin:4px;background:#cdc1b4;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:1.2em;font-weight:bold;color:#776e65;transition:background 0.2s; }
-                  .g2048-cell[data-v="2"] { background:#eee4da; }
-                  .g2048-cell[data-v="4"] { background:#ede0c8; }
-                  .g2048-cell[data-v="8"] { background:#f2b179;color:#fff; }
-                  .g2048-cell[data-v="16"] { background:#f59563;color:#fff; }
-                  .g2048-cell[data-v="32"] { background:#f67c5f;color:#fff; }
-                  .g2048-cell[data-v="64"] { background:#f65e3b;color:#fff; }
-                  .g2048-cell[data-v="128"] { background:#edcf72;color:#fff; }
-                  .g2048-cell[data-v="256"] { background:#edcc61;color:#fff; }
-                  .g2048-cell[data-v="512"] { background:#edc850;color:#fff; }
-                  .g2048-cell[data-v="1024"] { background:#edc53f;color:#fff; }
-                  .g2048-cell[data-v="2048"] { background:#edc22e;color:#fff; }
-                  .g2048-score { text-align:center;font-size:1em;margin:6px 0 2px 0;color:#b30000;font-weight:bold; }
-                  .g2048-btns { display:flex;justify-content:center;gap:8px;margin:4px 0; }
-                  .g2048-btn { background:#b30000;color:#fff;border:none;border-radius:4px;padding:4px 10px;font-size:1em;cursor:pointer; }
-                </style>
-                <div class="g2048-score" id="g2048-score">Score: 0</div>
-                <div class="g2048-board" id="g2048-board"></div>
-                <div class="g2048-btns">
-                  <button class="g2048-btn" id="g2048-restart">🔄</button>
+            <div style="width:100%;display:flex;flex-direction:column;align-items:center;">
+              <div id="game-selector" style="margin-bottom:12px;display:flex;gap:8px;justify-content:center;">
+                <button class="game-select-btn" data-game="2048" style="padding:6px 16px;border-radius:6px;border:none;background:#b30000;color:#fff;font-family:'Comic Neue',Arial,sans-serif;cursor:pointer;font-size:1em;">2048</button>
+                <button class="game-select-btn" data-game="snake" style="padding:6px 16px;border-radius:6px;border:none;background:#222;color:#fff;font-family:'Comic Neue',Arial,sans-serif;cursor:pointer;font-size:1em;">Snake</button>
+                <button class="game-select-btn" data-game="sliding" style="padding:6px 16px;border-radius:6px;border:none;background:#222;color:#fff;font-family:'Comic Neue',Arial,sans-serif;cursor:pointer;font-size:1em;">Sliding Puzzle</button>
+              </div>
+              <div id="game-2048-container" style="width:100%;display:flex;justify-content:center;align-items:center;">
+                <div id="game-2048" style="margin:0 auto;padding:8px 0;width:240px;">
+                  <style>
+                    .g2048-board { background:#eee;border-radius:8px;padding:8px;box-shadow:0 2px 8px rgba(0,0,0,0.08); }
+                    .g2048-row { display:flex; }
+                    .g2048-cell { width:48px;height:48px;margin:4px;background:#cdc1b4;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:1.2em;font-weight:bold;color:#776e65;transition:background 0.2s; }
+                    .g2048-cell[data-v="2"] { background:#eee4da; }
+                    .g2048-cell[data-v="4"] { background:#ede0c8; }
+                    .g2048-cell[data-v="8"] { background:#f2b179;color:#fff; }
+                    .g2048-cell[data-v="16"] { background:#f59563;color:#fff; }
+                    .g2048-cell[data-v="32"] { background:#f67c5f;color:#fff; }
+                    .g2048-cell[data-v="64"] { background:#f65e3b;color:#fff; }
+                    .g2048-cell[data-v="128"] { background:#edcf72;color:#fff; }
+                    .g2048-cell[data-v="256"] { background:#edcc61;color:#fff; }
+                    .g2048-cell[data-v="512"] { background:#edc850;color:#fff; }
+                    .g2048-cell[data-v="1024"] { background:#edc53f;color:#fff; }
+                    .g2048-cell[data-v="2048"] { background:#edc22e;color:#fff; }
+                    .g2048-score { text-align:center;font-size:1em;margin:6px 0 2px 0;color:#b30000;font-weight:bold; }
+                    .g2048-btns { display:flex;justify-content:center;gap:8px;margin:4px 0; }
+                    .g2048-btn { background:#b30000;color:#fff;border:none;border-radius:4px;padding:4px 10px;font-size:1em;cursor:pointer; }
+                  </style>
+                  <div class="g2048-score" id="g2048-score">Score: 0</div>
+                  <div class="g2048-board" id="g2048-board"></div>
+                  <div class="g2048-btns">
+                    <button class="g2048-btn" id="g2048-restart">🔄</button>
+                  </div>
                 </div>
+              </div>
+              <div id="game-snake-container" style="width:100%;display:none;justify-content:center;align-items:center;">
+                <div id="game-snake" style="margin:0 auto;padding:8px 0;width:240px;">
+                  <!-- Snake game will be rendered here -->
+                </div>
+              </div>
+              <div id="game-sliding-container" style="width:100%;display:none;justify-content:center;align-items:center;">
+                <div id="game-sliding" style="margin:0 auto;padding:8px 0;width:220px;height:260px;background:#222;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;">[Sliding Puzzle coming soon]</div>
               </div>
             </div>
           </div>
@@ -517,174 +532,406 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // 2048 game logic (minimal, mobile-friendly)
-    function g2048Init() {
-      const size = 4;
-      let board = [];
-      let score = 0;
-      let highScore = parseInt(localStorage.getItem('g2048-highscore') || '0', 10);
-      const boardDiv = document.getElementById('g2048-board');
-      const scoreDiv = document.getElementById('g2048-score');
-      function emptyBoard() {
-        board = Array(size).fill().map(() => Array(size).fill(0));
-      }
-      function addRandom() {
-        let empties = [];
-        for (let r = 0; r < size; r++) for (let c = 0; c < size; c++) if (!board[r][c]) empties.push([r, c]);
-        if (empties.length) {
-          let [r, c] = empties[Math.floor(Math.random() * empties.length)];
-          board[r][c] = Math.random() < 0.9 ? 2 : 4;
-        }
-      }
-      function draw() {
-        boardDiv.innerHTML = '';
-        for (let r = 0; r < size; r++) {
-          let row = document.createElement('div');
-          row.className = 'g2048-row';
-          for (let c = 0; c < size; c++) {
-            let cell = document.createElement('div');
-            cell.className = 'g2048-cell';
-            if (board[r][c]) {
-              cell.textContent = board[r][c];
-              cell.setAttribute('data-v', board[r][c]);
-            }
-            row.appendChild(cell);
-          }
-          boardDiv.appendChild(row);
-        }
-        scoreDiv.textContent = 'Score: ' + score + ' | Best: ' + highScore;
-      }
-      function move(dir) {
-        let moved = false;
-        let merged = Array(size).fill().map(() => Array(size).fill(false));
-        function slide(row) {
-          let arr = row.filter(x => x);
-          for (let i = 0; i < arr.length - 1; i++) {
-            if (arr[i] && arr[i] === arr[i + 1]) {
-              arr[i] *= 2;
-              score += arr[i];
-              arr[i + 1] = 0;
-            }
-          }
-          return arr.filter(x => x).concat(Array(size - arr.filter(x => x).length).fill(0));
-        }
-        if (dir === 'left') {
-          for (let r = 0; r < size; r++) {
-            let old = board[r].slice();
-            let row = slide(board[r]);
-            if (row.join() !== old.join()) moved = true;
-            board[r] = row;
-          }
-        } else if (dir === 'right') {
-          for (let r = 0; r < size; r++) {
-            let old = board[r].slice();
-            let row = slide(board[r].slice().reverse()).reverse();
-            if (row.join() !== old.join()) moved = true;
-            board[r] = row;
-          }
-        } else if (dir === 'up') {
-          for (let c = 0; c < size; c++) {
-            let col = board.map(row => row[c]);
-            let old = col.slice();
-            let newCol = slide(col);
-            if (newCol.join() !== old.join()) moved = true;
-            for (let r = 0; r < size; r++) board[r][c] = newCol[r];
-          }
-        } else if (dir === 'down') {
-          for (let c = 0; c < size; c++) {
-            let col = board.map(row => row[c]);
-            let old = col.slice();
-            let newCol = slide(col.reverse()).reverse();
-            if (newCol.join() !== old.join()) moved = true;
-            for (let r = 0; r < size; r++) board[r][c] = newCol[r];
-          }
-        }
-        if (moved) {
-          addRandom();
-          draw();
-          if (isGameOver()) setTimeout(() => {
-            if (score > highScore) {
-              highScore = score;
-              localStorage.setItem('g2048-highscore', highScore);
-            }
-            draw();
-            alert('Game Over!');
-            restart();
-          }, 100);
-        }
-      }
-      function isGameOver() {
-        for (let r = 0; r < size; r++) for (let c = 0; c < size; c++) {
-          if (!board[r][c]) return false;
-          if (c < size - 1 && board[r][c] === board[r][c + 1]) return false;
-          if (r < size - 1 && board[r][c] === board[r + 1][c]) return false;
-        }
-        return true;
-      }
-      function restart() {
-        if (score > highScore) {
-          highScore = score;
-          localStorage.setItem('g2048-highscore', highScore);
-        }
-        score = 0;
-        emptyBoard();
-        addRandom();
-        addRandom();
-        draw();
-      }
-      // Button event
-      document.getElementById('g2048-restart').onclick = () => restart();
-      // Keyboard events
-      const gameDiv = document.getElementById('game-2048');
-      gameDiv.tabIndex = 0;
-      gameDiv.onkeydown = e => {
-        if (e.key === 'ArrowUp') move('up');
-        if (e.key === 'ArrowDown') move('down');
-        if (e.key === 'ArrowLeft') move('left');
-        if (e.key === 'ArrowRight') move('right');
-      };
-
-      // Touch swipe events for mobile
-      let touchStartX = 0, touchStartY = 0, touchEndX = 0, touchEndY = 0;
-      gameDiv.addEventListener('touchstart', function(e) {
-        if (e.touches.length === 1) {
-          touchStartX = e.touches[0].clientX;
-          touchStartY = e.touches[0].clientY;
-        }
-        // Prevent sidebar swipe-to-close
-        e.stopPropagation();
-      });
-      gameDiv.addEventListener('touchend', function(e) {
-        touchEndX = (e.changedTouches && e.changedTouches[0]) ? e.changedTouches[0].clientX : 0;
-        touchEndY = (e.changedTouches && e.changedTouches[0]) ? e.changedTouches[0].clientY : 0;
-        const dx = touchEndX - touchStartX;
-        const dy = touchEndY - touchStartY;
-        if (Math.abs(dx) > 30 || Math.abs(dy) > 30) {
-          if (Math.abs(dx) > Math.abs(dy)) {
-            if (dx > 0) move('right');
-            else move('left');
-          } else {
-            if (dy > 0) move('down');
-            else move('up');
-          }
-        }
-        // Prevent sidebar swipe-to-close
-        e.stopPropagation();
-      });
-
-      restart();
-    }
-  // Only initialize when accordion is opened
+  // Game selector logic
   const egyetemreHeader = Array.from(headers).find(h => h.textContent.includes('Egyetemre'));
   if (egyetemreHeader) {
     egyetemreHeader.addEventListener('click', function() {
       setTimeout(() => {
+        // Only initialize 2048 if not already drawn
         if (document.getElementById('g2048-board') && !document.getElementById('g2048-board').hasChildNodes()) {
           g2048Init();
         }
       }, 100);
     });
   }
+  // Game selector buttons
+  const selector = document.getElementById('game-selector');
+  if (selector) {
+    selector.addEventListener('click', function(e) {
+      if (e.target.classList.contains('game-select-btn')) {
+        const game = e.target.getAttribute('data-game');
+        document.querySelectorAll('.game-select-btn').forEach(btn => {
+          btn.style.background = (btn.getAttribute('data-game') === game) ? '#b30000' : '#222';
+        });
+        document.getElementById('game-2048-container').style.display = (game === '2048') ? 'flex' : 'none';
+        document.getElementById('game-snake-container').style.display = (game === 'snake') ? 'flex' : 'none';
+        document.getElementById('game-sliding-container').style.display = (game === 'sliding') ? 'flex' : 'none';
+        // Init games if needed
+        if (game === '2048' && document.getElementById('g2048-board') && !document.getElementById('g2048-board').hasChildNodes()) {
+          g2048Init();
+        }
+        if (game === 'snake' && typeof window.snakeInit === 'function') {
+          window.snakeInit();
+        }
+        if (game === 'sliding' && typeof window.slidingInit === 'function') {
+          window.slidingInit();
+        }
+      }
+    });
+  }
+
+  // 2048 game logic (minimal, mobile-friendly)
+  function g2048Init() {
+    const size = 4;
+    let board = [];
+    let score = 0;
+    let highScore = parseInt(localStorage.getItem('g2048-highscore') || '0', 10);
+    const boardDiv = document.getElementById('g2048-board');
+    const scoreDiv = document.getElementById('g2048-score');
+    function emptyBoard() {
+      board = Array(size).fill().map(() => Array(size).fill(0));
+    }
+    function addRandom() {
+      let empties = [];
+      for (let r = 0; r < size; r++) for (let c = 0; c < size; c++) if (!board[r][c]) empties.push([r, c]);
+      if (empties.length) {
+        let [r, c] = empties[Math.floor(Math.random() * empties.length)];
+        board[r][c] = Math.random() < 0.9 ? 2 : 4;
+      }
+    }
+    function draw() {
+      boardDiv.innerHTML = '';
+      for (let r = 0; r < size; r++) {
+        let row = document.createElement('div');
+        row.className = 'g2048-row';
+        for (let c = 0; c < size; c++) {
+          let cell = document.createElement('div');
+          cell.className = 'g2048-cell';
+          if (board[r][c]) {
+            cell.textContent = board[r][c];
+            cell.setAttribute('data-v', board[r][c]);
+          }
+          row.appendChild(cell);
+        }
+        boardDiv.appendChild(row);
+      }
+      scoreDiv.textContent = 'Score: ' + score + ' | Best: ' + highScore;
+    }
+    function move(dir) {
+      let moved = false;
+      function slide(row) {
+        let arr = row.filter(x => x);
+        for (let i = 0; i < arr.length - 1; i++) {
+          if (arr[i] && arr[i] === arr[i + 1]) {
+            arr[i] *= 2;
+            score += arr[i];
+            arr[i + 1] = 0;
+          }
+        }
+        return arr.filter(x => x).concat(Array(size - arr.filter(x => x).length).fill(0));
+      }
+      if (dir === 'left') {
+        for (let r = 0; r < size; r++) {
+          let old = board[r].slice();
+          let row = slide(board[r]);
+          if (row.join() !== old.join()) moved = true;
+          board[r] = row;
+        }
+      } else if (dir === 'right') {
+        for (let r = 0; r < size; r++) {
+          let old = board[r].slice();
+          let row = slide(board[r].slice().reverse()).reverse();
+          if (row.join() !== old.join()) moved = true;
+          board[r] = row;
+        }
+      } else if (dir === 'up') {
+        for (let c = 0; c < size; c++) {
+          let col = board.map(row => row[c]);
+          let old = col.slice();
+          let newCol = slide(col);
+          if (newCol.join() !== old.join()) moved = true;
+          for (let r = 0; r < size; r++) board[r][c] = newCol[r];
+        }
+      } else if (dir === 'down') {
+        for (let c = 0; c < size; c++) {
+          let col = board.map(row => row[c]);
+          let old = col.slice();
+          let newCol = slide(col.reverse()).reverse();
+          if (newCol.join() !== old.join()) moved = true;
+          for (let r = 0; r < size; r++) board[r][c] = newCol[r];
+        }
+      }
+      if (moved) {
+        addRandom();
+        draw();
+        if (isGameOver()) setTimeout(() => {
+          if (score > highScore) {
+            highScore = score;
+            localStorage.setItem('g2048-highscore', highScore);
+          }
+          draw();
+          alert('Game Over!');
+          restart();
+        }, 100);
+      }
+    }
+    function isGameOver() {
+      for (let r = 0; r < size; r++) for (let c = 0; c < size; c++) {
+        if (!board[r][c]) return false;
+        if (c < size - 1 && board[r][c] === board[r][c + 1]) return false;
+        if (r < size - 1 && board[r][c] === board[r + 1][c]) return false;
+      }
+      return true;
+    }
+    function restart() {
+      if (score > highScore) {
+        highScore = score;
+        localStorage.setItem('g2048-highscore', highScore);
+      }
+      score = 0;
+      emptyBoard();
+      addRandom();
+      addRandom();
+      draw();
+    }
+    // Button event
+    document.getElementById('g2048-restart').onclick = () => restart();
+    // Keyboard events
+    const gameDiv = document.getElementById('game-2048');
+    gameDiv.tabIndex = 0;
+    gameDiv.onkeydown = e => {
+      if (e.key === 'ArrowUp') move('up');
+      if (e.key === 'ArrowDown') move('down');
+      if (e.key === 'ArrowLeft') move('left');
+      if (e.key === 'ArrowRight') move('right');
+    };
+
+    // Touch swipe events for mobile
+    let touchStartX = 0, touchStartY = 0, touchEndX = 0, touchEndY = 0;
+    gameDiv.addEventListener('touchstart', function(e) {
+      if (e.touches.length === 1) {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+      }
+      // Prevent sidebar swipe-to-close
+      e.stopPropagation();
+    });
+    gameDiv.addEventListener('touchend', function(e) {
+      touchEndX = (e.changedTouches && e.changedTouches[0]) ? e.changedTouches[0].clientX : 0;
+      touchEndY = (e.changedTouches && e.changedTouches[0]) ? e.changedTouches[0].clientY : 0;
+      const dx = touchEndX - touchStartX;
+      const dy = touchEndY - touchStartY;
+      if (Math.abs(dx) > 30 || Math.abs(dy) > 30) {
+        if (Math.abs(dx) > Math.abs(dy)) {
+          if (dx > 0) move('right');
+          else move('left');
+        } else {
+          if (dy > 0) move('down');
+          else move('up');
+        }
+      }
+      // Prevent sidebar swipe-to-close
+      e.stopPropagation();
+    });
+
+    restart();
+  }
+  window.g2048Init = g2048Init;
+
+  // Snake and Sliding Puzzle stubs
+  window.snakeInit = function() {
+    const snakeDiv = document.getElementById('game-snake');
+    if (!snakeDiv) return;
+    // Prevent multiple initializations
+    if (snakeDiv.getAttribute('data-initialized')) return;
+    snakeDiv.setAttribute('data-initialized', '1');
+    const snakeGridSize = 14;
+    const snakeBox = 14; // 14*14 = 196px, fits in 220px with margin
+    const snakeCanvasSize = snakeGridSize * snakeBox;
+    snakeDiv.innerHTML =
+      `<div class="snake-score" style="text-align:center;font-size:1em;margin:6px 0 2px 0;color:#b30000;font-weight:bold;">Score: <span id="snake-score">0</span> | Best: <span id="snake-best">0</span></div>` +
+      `<canvas id="snake-canvas" width="${snakeCanvasSize}" height="${snakeCanvasSize}" style="background:#222;border-radius:8px;display:block;margin:0 auto;"></canvas>` +
+      '<div class="snake-btns" style="display:flex;justify-content:center;gap:8px;margin:8px 0 0 0;width:100%;">' +
+        '<button id="snake-start" style="background:#b30000;color:#fff;border:none;border-radius:4px;padding:4px 16px;font-size:1em;cursor:pointer;">Start</button>' +
+        '<button id="snake-restart" style="background:#b30000;color:#fff;border:none;border-radius:4px;padding:4px 10px;font-size:1em;cursor:pointer;">🔄</button>' +
+      '</div>';
+    const canvas = document.getElementById('snake-canvas');
+    const ctx = canvas.getContext('2d');
+    const box = snakeBox;
+    const gridSize = snakeGridSize;
+    let snake, dir, food, score, best, gameOver, movePending;
+    function reset() {
+      snake = [{x:4,y:7},{x:3,y:7},{x:2,y:7}];
+      dir = 'right';
+      food = spawnFood();
+      score = 0;
+      best = parseInt(localStorage.getItem('snake-best')||'0',10);
+      gameOver = false;
+      movePending = false;
+      updateScore();
+    }
+    function spawnFood() {
+      let pos;
+      do {
+        pos = {x:Math.floor(Math.random()*gridSize),y:Math.floor(Math.random()*gridSize)};
+      } while (snake.some(s=>s.x===pos.x&&s.y===pos.y));
+      return pos;
+    }
+    function updateScore() {
+      document.getElementById('snake-score').textContent = score;
+      document.getElementById('snake-best').textContent = best;
+    }
+    function draw() {
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      // Draw food (flush to grid)
+      ctx.fillStyle = '#f2b179';
+      ctx.fillRect(food.x*box, food.y*box, box, box);
+      // Draw snake
+      for (let i=0;i<snake.length;i++) {
+        ctx.fillStyle = i===0 ? '#b30000' : '#fff';
+        ctx.fillRect(snake[i].x*box, snake[i].y*box, box, box);
+      }
+    }
+    function move() {
+      if (gameOver) return;
+      let head = {...snake[0]};
+      if (dir==='left') head.x--;
+      if (dir==='right') head.x++;
+      if (dir==='up') head.y--;
+      if (dir==='down') head.y++;
+      // Wall or self collision
+      if (head.x<0||head.x>9||head.y<0||head.y>9||snake.some(s=>s.x===head.x&&s.y===head.y)) {
+        gameOver = true;
+        if (score>best) {
+          best=score;
+          localStorage.setItem('snake-best',best);
+        }
+        updateScore();
+        setTimeout(()=>{
+          alert('Game Over!');
+          reset();
+        },200);
+        return;
+      }
+      snake.unshift(head);
+      if (head.x===food.x&&head.y===food.y) {
+        score++;
+        if (score>best) {
+          best=score;
+          localStorage.setItem('snake-best',best);
+        }
+        food=spawnFood();
+        updateScore();
+      } else {
+        snake.pop();
+      }
+      draw();
+      movePending = false;
+    }
+    let interval = null;
+    let snakeSpeed = 260; // ms, slower at start
+    function setDir(newDir) {
+      if (!interval) return; // Only allow direction change if game is running
+      if (movePending) return;
+      if (newDir==='left'&&dir!=='right') dir='left';
+      if (newDir==='right'&&dir!=='left') dir='right';
+      if (newDir==='up'&&dir!=='down') dir='up';
+      if (newDir==='down'&&dir!=='up') dir='down';
+      movePending = true;
+    }
+    // Keyboard
+    snakeDiv.tabIndex=0;
+    snakeDiv.onkeydown = e => {
+      if (e.key==='ArrowLeft') setDir('left');
+      if (e.key==='ArrowRight') setDir('right');
+      if (e.key==='ArrowUp') setDir('up');
+      if (e.key==='ArrowDown') setDir('down');
+    };
+    // Touch swipe
+    let sx=0,sy=0,ex=0,ey=0;
+    canvas.addEventListener('touchstart',e=>{
+      if (e.touches.length===1) {
+        sx=e.touches[0].clientX; sy=e.touches[0].clientY;
+      }
+      e.stopPropagation();
+    });
+    canvas.addEventListener('touchend',e=>{
+      ex=(e.changedTouches&&e.changedTouches[0])?e.changedTouches[0].clientX:0;
+      ey=(e.changedTouches&&e.changedTouches[0])?e.changedTouches[0].clientY:0;
+      const dx=ex-sx, dy=ey-sy;
+      if (Math.abs(dx)>20||Math.abs(dy)>20) {
+        if (Math.abs(dx)>Math.abs(dy)) {
+          if (dx>0) setDir('right'); else setDir('left');
+        } else {
+          if (dy>0) setDir('down'); else setDir('up');
+        }
+      }
+      e.stopPropagation();
+    });
+    // Start and Restart button logic
+    const startBtn = document.getElementById('snake-start');
+    const restartBtn = document.getElementById('snake-restart');
+    function startGame() {
+      if (interval) clearInterval(interval);
+      interval = setInterval(move, snakeSpeed);
+      startBtn.style.display = 'none';
+      setTimeout(()=>{snakeDiv.focus();},200);
+    }
+    function pauseGame() {
+      if (interval) clearInterval(interval);
+      interval = null;
+      startBtn.style.display = '';
+    }
+    startBtn.onclick = startGame;
+    restartBtn.onclick = () => {
+      reset();
+      draw();
+      pauseGame();
+    };
+    // On game over, show Start button again
+    const oldMove = move;
+    move = function() {
+      if (gameOver) return;
+      let head = {...snake[0]};
+      if (dir==='left') head.x--;
+      if (dir==='right') head.x++;
+      if (dir==='up') head.y--;
+      if (dir==='down') head.y++;
+      // Wall or self collision
+      if (head.x<0||head.x>=gridSize||head.y<0||head.y>=gridSize||snake.some(s=>s.x===head.x&&s.y===head.y)) {
+        gameOver = true;
+        if (score>best) {
+          best=score;
+          localStorage.setItem('snake-best',best);
+        }
+        updateScore();
+        setTimeout(()=>{
+          alert('Game Over!');
+          reset();
+          draw();
+          pauseGame();
+        },200);
+        return;
+      }
+      snake.unshift(head);
+      if (head.x===food.x&&head.y===food.y) {
+        score++;
+        if (score>best) {
+          best=score;
+          localStorage.setItem('snake-best',best);
+        }
+        food=spawnFood();
+        updateScore();
+      } else {
+        snake.pop();
+      }
+      draw();
+      movePending = false;
+    };
+    reset();
+    draw();
+    pauseGame();
+    // Focus for keyboard
+    setTimeout(()=>{snakeDiv.focus();},200);
+  };
+  window.slidingInit = function() {
+    const slidingDiv = document.getElementById('game-sliding');
+    if (slidingDiv) slidingDiv.textContent = '[Sliding Puzzle coming soon]';
+  };
+
+  // Default: show 2048
+  const defaultBtn = document.querySelector('.game-select-btn[data-game="2048"]');
+  if (defaultBtn) defaultBtn.click();
 });
 
 // Snow toggle logic
@@ -884,7 +1131,7 @@ window.addEventListener('DOMContentLoaded', () => {
     };
 
   // Customizable: set how many doors can be opened (0 = use normal logic, 1-24 = open up to that day)
-  const OPEN_DAYS = 24; // e.g., set to 5 to open first 5 days, 24 to open all, 0 for normal logic
+  const OPEN_DAYS = 20; // e.g., set to 5 to open first 5 days, 24 to open all, 0 for normal logic
   // DEV mode: set to true to unlock all doors
   const DEV = false; // set to true for development
   const today = new Date();
@@ -910,8 +1157,15 @@ window.addEventListener('DOMContentLoaded', () => {
   const contentOverlayCenter = document.getElementById("content-overlay-center");
   const contentOverlayBottom = document.getElementById("content-overlay-bottom");
 
+  // Track locked box click counts in session
+  const lockedBoxClicks = {};
   function showLockedMessage(day) {
-    alert("Hékás! Csak ne olyan hevesen! Legyen miért várni a holnapot is!;)🎁");
+    lockedBoxClicks[day] = (lockedBoxClicks[day] || 0) + 1;
+    if (lockedBoxClicks[day] === 1) {
+      alert("Hékás! Csak ne olyan hevesen! Legyen miért várni a holnapot is!;)🎁");
+    } else {
+      alert("Csak nem bír magával...😈 a jó dolgokra néha várni kell, Julis! De megéri!:)");
+    }
   }
 
   for (let day = 1; day <= 24; day++) {
