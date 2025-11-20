@@ -53,8 +53,10 @@
                     }
                 #loading-overlay .loading-message {
                   font-family: 'Comic Neue', Arial, sans-serif;
+                  text-align: center;
                   font-size: 1em;
                   margin-bottom: 0.5em;
+                  font-weight: bold;
                 }
             #loading-powered {
             position: static;
@@ -280,9 +282,10 @@
 </script>
 
 <body>
-  <div id="loading-overlay">
+    <div id="loading-overlay">
+    <span class="loading-message" style="font-weight:bold;">Julis Adventi Kalendáriuma</span>
     <img src="app-icon-me.png" alt="Loading..." style="width:200px;height:200px;margin-bottom:20px;">
-    <span class="loading-message">hihi...</span>
+    <span class="loading-message" id="hihi-loading" style="font-weight:normal;"><span id="hihi-dots" style="display:inline-block;min-width:1.5em;padding-left:0;"></span></span>
     <div id="loading-powered-overlay">powered by gabo | v2025.01.02 </div>
   </div>
   <h1>🎄Julis Adventi Kalendáriuma🎄</h1>
@@ -308,25 +311,57 @@
   </div>
 
 <script>
-  // Hide loading overlay after 1 second
+  // Typewriter effect for 'hihi...': run two cycles
   window.addEventListener('DOMContentLoaded', () => {
-    setTimeout(() => {
-      const overlay = document.getElementById('loading-overlay');
-      overlay.style.opacity = 0;
-      // Keep #loading-powered visible during fade-out
-      const powered = document.getElementById('loading-powered-overlay');
-      if (powered) powered.style.opacity = 1;
-      setTimeout(() => {
-        overlay.style.display = 'none';
-        if (powered) powered.style.opacity = 0.7; // restore default after fade
-      }, 500);
-    }, 2500);
+    const hihiLoading = document.getElementById('hihi-loading');
+    const fullText = 'hihi...';
+    let cycle = 0;
+    function runTypewriter() {
+      let idx = 0;
+      const paddedText = ' hihi...';
+      // Use monospace font and a transparent span to reserve space
+        hihiLoading.style.fontFamily = 'Comic Neue, Consolas, Menlo, Monaco, monospace';
+        hihiLoading.style.letterSpacing = '0.04em';
+        hihiLoading.style.fontWeight = 'normal';
+        hihiLoading.style.fontSize = '1em';
+        hihiLoading.style.display = 'block';
+        hihiLoading.style.position = 'relative';
+        hihiLoading.style.textAlign = 'center';
+        hihiLoading.style.width = '8.5ch'; // width for ' hihi...'
+        hihiLoading.style.margin = '0 auto';
+        hihiLoading.innerHTML = `<span id="hihi-placeholder" style="opacity:0;font-size:0.85em;font-weight:normal;">${paddedText}</span><span id="hihi-type" style="font-weight:normal;font-size:0.85em;position:absolute;left:0;top:0;width:100%;text-align:center;"></span>`;
+        const typeSpan = document.getElementById('hihi-type');
+      let typeInterval = setInterval(() => {
+        idx++;
+        typeSpan.textContent = paddedText.slice(0, idx);
+        if (idx === paddedText.length) {
+          clearInterval(typeInterval);
+          cycle++;
+          if (cycle < 2) {
+            setTimeout(runTypewriter, 400); // short pause before next cycle
+          } else {
+            setTimeout(() => {
+              const overlay = document.getElementById('loading-overlay');
+              overlay.style.opacity = 0;
+              // Keep #loading-powered visible during fade-out
+              const powered = document.getElementById('loading-powered-overlay');
+              if (powered) powered.style.opacity = 1;
+              setTimeout(() => {
+                overlay.style.display = 'none';
+                if (powered) powered.style.opacity = 0.7; // restore default after fade
+              }, 300);
+            }, 800);
+          }
+        }
+      }, 180);
+    }
+    runTypewriter();
   });
 </script>
 
 <script>
     const contentData = {
-      1: { title: "1. Szia Julis!:)", text: "Üdv az adventi kalendáriumodban! Minden napra jut majd egy kis meglepetés, hihi.\n Az első maga az applikáció, remélem tetszik:)\nPusziii!!!🥰", image: "coding.jpg", link: "", video: "" },
+      1: { title: "1. Szia Julis!:)", text: "Üdv az adventi kalendáriumodban!\nMinden napra jut majd egy kis meglepetés, hihi.\n Az első maga az applikáció, remélem tetszik:)\nPusziii!!!🥰", image: "coding.jpg", link: "", video: "" },
       2: { title: "2. Ügyi-bügyi vagy...", text: "...hogy ma is visszatértél:)!\n Jutalmad egy kis kávépénz-támogatás (így hó vége felé közeledve), hogy nyitva tudd tartani ma a szemeidet órán. Checkold a Revolutod!", image: "coffee.png", link: "", video: "" },
       3: { title: "3. 3 hónapja...", text: "...találkoztunk először kettesben!:) Durva, mennyi minden történt azóta:)\n A havi kis borítékod nem marad el, majd odaadom, ha találkozunk!:)\nUi.: Ma este egy görgőzés?😎", image: "0903.jpg", link: "", video: "" },
       4: { title: "4. Jó reggelt!", text: "Ügyes legyél ma a susuban!:)", image: "", link: "", video: "wakey.mp4" },
