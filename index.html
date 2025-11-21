@@ -462,7 +462,7 @@
               <button id="help-reveal-btn" style="display:block;margin:-8px auto 10px auto;padding:7px 18px;font-family:'Comic Neue',Arial,sans-serif;font-size:1em;color:#fff;background:#b30000;border:none;border-radius:8px;box-shadow:0 2px 6px #0002;cursor:pointer;">Jó lett az app!😎</button>
               <div id="help-reveal" style="display:none;">
                 <div id="help-typewriter-box" style="width:250px;height:188px;border-radius:14px;margin-top:0px;margin-bottom:4px;display:flex;align-items:center;justify-content:center;margin-left:auto;margin-right:auto;object-fit:cover;box-shadow:0 2px 8px rgba(179,0,0,0.10);background:#fffbe8;color:#b30000;font-family:'Comic Neue',Arial,sans-serif;font-size:1.8em;text-align:center;transition:opacity 0.5s;"></div>
-                <img id="help-blur-img" src="media/gabo3.jpg" alt="gabo" style="width:250px;border-radius:14px;margin-top:0px;margin-bottom:4px;display:none;margin-left:auto;margin-right:auto;object-fit:cover;box-shadow:0 2px 8px rgba(179,0,0,0.10);transition:filter 0.5s;" />
+                <img id="help-blur-img" src="media/gabo3.jpg" alt="gabo" style="width:250px;border-radius:14px;margin-top:0px;margin-bottom:4px;display:none;margin-left:auto;margin-right:auto;object-fit:cover;box-shadow:0 2px 8px rgba(179,0,0,0.10);transition:filter 0.5s, box-shadow 0.5s, opacity 0.5s;opacity:0;" />
                                 <!-- The image will animate in with scaleUpBounce -->
                 <audio id="help-audio" controls style="margin-top:2px;width:100%;max-width:300px;">
                   <source src="media/outro.mp3" type="audio/mpeg"> 
@@ -486,7 +486,7 @@
                 var box = document.getElementById('help-typewriter-box');
                 var audio = document.getElementById('help-audio');
                 // Typewriter effect for 'köszi...' cycling
-                var typewriterText = 'köszi...';
+                var typewriterText = 'kösziii... :)';
                 var typewriterCharIdx = 0;
                 var typewriterTimeout = null;
                 var typewriterDelay = 120;
@@ -515,55 +515,156 @@
                   if (typewriterTimeout) clearTimeout(typewriterTimeout);
                   if (box) box.textContent = '';
                 }
+                // Epic animation for image drop
+                // CSS keyframes for epic effect
+                if (!document.getElementById('epic-drop-style')) {
+                  var style = document.createElement('style');
+                  style.id = 'epic-drop-style';
+                  style.textContent = `
+                  @keyframes epicDropFade {
+                    0% { opacity: 0; filter: blur(18px) brightness(1.7); transform: scale(0.1) rotate(-8deg); box-shadow: 0 0 0 0 #fff0; }
+                    8% { opacity: 1; filter: blur(2px) brightness(1.2); transform: scale(1.18) rotate(2deg); box-shadow: 0 0 32px 12px #fff7; }
+                    18% { filter: blur(0.5px) brightness(1.1); transform: scale(0.92) rotate(-2deg); box-shadow: 0 0 48px 18px #fff9; }
+                    30% { filter: blur(0px) brightness(1.0); transform: scale(1.15) rotate(0deg); box-shadow: 0 0 64px 24px #fff8; }
+                    45% { filter: blur(0px) brightness(1.0); transform: scale(0.98) rotate(0deg); box-shadow: 0 0 32px 8px #fff5; }
+                    60% { filter: blur(0px) brightness(1.0); transform: scale(1.05) rotate(0deg); box-shadow: 0 0 24px 4px #fff3; }
+                    80% { filter: blur(0px) brightness(1.0); transform: scale(1.01) rotate(0deg); box-shadow: 0 0 12px 2px #fff2; }
+                    100% { opacity: 1; filter: blur(0px) brightness(1.0); transform: scale(1) rotate(0deg); box-shadow: 0 0 0 0 #fff0; }
+                  }
+                @keyframes epicShake {
+                    0% { transform: translateX(0) scale(1); }
+                    10% { transform: translateX(-10px) scale(1.05); }
+                    20% { transform: translateX(8px) scale(0.98); }
+                    30% { transform: translateX(-6px) scale(1.03); }
+                    40% { transform: translateX(4px) scale(0.97); }
+                    50% { transform: translateX(-2px) scale(1.01); }
+                    60% { transform: translateX(1px) scale(1); }
+                    100% { transform: translateX(0) scale(1); }
+                  }
+                  `;
+                  document.head.appendChild(style);
+                }
+                let bounceTimeout = null;
+                function animateImageDrop() {
+                  // This function is now a no-op, logic is in updateBoxAndImg
+                }
+
+                // Main logic: always reflect audio.currentTime
+                function updateBoxAndImg(force) {
+                  if (!audio || !img || !box) return;
+                  // Track last state to ensure typewriter always restarts when switching from image to text
+                  if (typeof updateBoxAndImg.lastState === 'undefined') updateBoxAndImg.lastState = null;
+                  const t = audio.currentTime;
+                  if (t < 57.0) {
+                    // Show typewriter
+                    box.style.display = 'flex';
+                    img.style.display = 'none';
+                    // Always restart typewriter if coming from image or on force
+                    if (force || updateBoxAndImg.lastState !== 'typewriter') {
+                      startTypewriter();
+                    }
+                    // Always clear image animation state
+                    img.style.animation = 'none';
+                    img.classList.remove('epic-shake');
+                    img.style.opacity = '0';
+                    img.style.filter = 'blur(18px) brightness(1.7)';
+                    img.style.boxShadow = '0 0 0 0 #fff0';
+                    updateBoxAndImg.lastState = 'typewriter';
+                    if (bounceTimeout) clearTimeout(bounceTimeout);
+                  } else {
+                    // Show image
+                    box.style.display = 'none';
+                    img.style.display = 'block';
+                    stopTypewriter();
+                    // Animation state depends on time since 57s
+                    const since = t - 57.0;
+                    if (since < 0.05) {
+                      // Just switched: reset to initial state
+                      img.style.animation = 'none';
+                      img.classList.remove('epic-shake');
+                      img.style.opacity = '0';
+                      img.style.filter = 'blur(18px) brightness(1.7)';
+                      img.style.boxShadow = '0 0 0 0 #fff0';
+                    } else if (since < 3.0) {
+                      // Epic drop + shake (first 3s)
+                      img.style.animation = 'epicDropFade 3s cubic-bezier(.7,0,.3,1), epicShake 1.1s cubic-bezier(.36,.07,.19,.97)';
+                      img.classList.add('epic-shake');
+                      img.style.opacity = '1';
+                      img.style.filter = '';
+                      img.style.boxShadow = '';
+                      // Remove shake class after 1.1s
+                      if (bounceTimeout) clearTimeout(bounceTimeout);
+                      bounceTimeout = setTimeout(function() {
+                        img.classList.remove('epic-shake');
+                      }, 1100);
+                    } else if (since < 7.0) {
+                      // Random shakes for 4s (3-7s after drop)
+                      img.style.animation = 'none';
+                      img.classList.remove('epic-shake');
+                      img.style.opacity = '1';
+                      img.style.filter = '';
+                      img.style.boxShadow = '';
+                      // Random shake logic: shake every 1.2-3s, but only if not already shaking
+                      if (!updateBoxAndImg.randomShakeActive) {
+                        updateBoxAndImg.randomShakeActive = true;
+                        let shakeCount = 0;
+                        let maxShakes = 3 + Math.floor(Math.random()*2); // 3 or 4 shakes
+                        function randomShake() {
+                          if (audio.currentTime < 57.0 || audio.currentTime > 64.0) {
+                            updateBoxAndImg.randomShakeActive = false;
+                            img.classList.remove('epic-shake');
+                            img.style.animation = 'none';
+                            return;
+                          }
+                          if (shakeCount >= maxShakes) {
+                            updateBoxAndImg.randomShakeActive = false;
+                            return;
+                          }
+                          img.classList.add('epic-shake');
+                          img.style.animation = 'epicShake 0.3s cubic-bezier(.36,.07,.19,.97)';
+                          setTimeout(function() {
+                            img.classList.remove('epic-shake');
+                            img.style.animation = 'none';
+                            shakeCount++;
+                            if (shakeCount < maxShakes) {
+                              setTimeout(randomShake, 1200 + Math.random()*1800);
+                            } else {
+                              updateBoxAndImg.randomShakeActive = false;
+                            }
+                          }, 300);
+                        }
+                        setTimeout(randomShake, 1200 + Math.random()*1800);
+                      }
+                    } else {
+                      // After 7s, just show image, no animation
+                      img.style.animation = 'none';
+                      img.classList.remove('epic-shake');
+                      img.style.opacity = '1';
+                      img.style.filter = '';
+                      img.style.boxShadow = '';
+                      updateBoxAndImg.randomShakeActive = false;
+                    }
+                    updateBoxAndImg.lastState = 'image';
+                  }
+                }
+
                 if (btn && reveal) {
                   btn.addEventListener('click', function() {
                     reveal.style.display = 'block';
-                    if (box && img) {
-                      box.style.display = 'flex';
-                      img.style.display = 'none';
-                      startTypewriter();
-                    }
+                    updateBoxAndImg(true); // Always update on click
                   });
                 }
                 if (audio && img && box) {
-                  let bounceTimeout = null;
-                  let lastState = 'box'; // 'box' or 'img'
-                  function animateImageDrop() {
-                    img.style.animation = 'none';
-                    img.style.transform = 'scale(0.1)';
-                    // Force reflow to restart animation
-                    void img.offsetWidth;
-                    img.style.animation = 'scaleUpBounce 5s cubic-bezier(.7,0,.3,1)';
-                    // After 5s, ensure image stays at full size
-                    if (bounceTimeout) clearTimeout(bounceTimeout);
-                    bounceTimeout = setTimeout(function() {
-                      img.style.animation = 'none';
-                      img.style.transform = 'scale(1)';
-                    }, 5000);
-                  }
-                  function updateBoxAndImg() {
-                    if (audio.currentTime < 52) {
-                      if (lastState !== 'box') {
-                        box.style.display = 'flex';
-                        img.style.display = 'none';
-                        if (!typewriterTimeout) startTypewriter();
-                        lastState = 'box';
-                      }
-                    } else {
-                      if (lastState !== 'img') {
-                        box.style.display = 'none';
-                        img.style.display = 'block';
-                        animateImageDrop();
-                        stopTypewriter();
-                        lastState = 'img';
-                      }
-                    }
-                  }
-                  audio.addEventListener('timeupdate', updateBoxAndImg);
-                  audio.addEventListener('play', updateBoxAndImg);
-                  audio.addEventListener('seeked', updateBoxAndImg);
-                  audio.addEventListener('ended', function() { box.style.display = 'none'; img.style.display = 'block'; animateImageDrop(); stopTypewriter(); lastState = 'img'; });
-                  audio.addEventListener('loadedmetadata', updateBoxAndImg);
+                  audio.addEventListener('timeupdate', function() { updateBoxAndImg(false); });
+                  audio.addEventListener('play', function() { updateBoxAndImg(false); });
+                  audio.addEventListener('seeked', function() { updateBoxAndImg(false); });
+                  audio.addEventListener('loadedmetadata', function() { updateBoxAndImg(false); });
+                  audio.addEventListener('ended', function() {
+                    box.style.display = 'none';
+                    img.style.display = 'block';
+                    animateImageDrop();
+                    stopTypewriter();
+                  });
                 }
               })();
             </script>
@@ -1632,7 +1733,7 @@ window.addEventListener('DOMContentLoaded', () => {
     };
 
   // Customizable: set how many doors can be opened (0 = use normal logic, 1-24 = open up to that day)
-  const OPEN_DAYS = 0; // e.g., set to 5 to open first 5 days, 24 to open all, 0 for normal logic
+  const OPEN_DAYS = 2; // e.g., set to 5 to open first 5 days, 24 to open all, 0 for normal logic
   // DEV mode: set to true to unlock all doors
   const DEV = false; // set to true for development
   const today = new Date();
