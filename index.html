@@ -452,20 +452,52 @@
         <div class="accordion-section">
           <button class="accordion-header" aria-expanded="false" style="width:100%;text-align:left;padding:14px 18px;font-family:'Comic Neue',Arial,sans-serif;font-size:1.08em;color:#b30000;background:none;border:none;outline:none;cursor:pointer;border-radius:8px;margin-top:2px;transition:background 0.2s;">😱 Segítséééég</button>
           <div class="accordion-content" style="display:none;padding:0 10px 12px 10px;font-family:'Segoe UI',Arial,sans-serif;font-size:1em;color:#222;">
-            <p style="margin-top:6px;">Kérdés, javaslat esetén a írj bátran a gabo fejlesztőcsapatnak!<br>Állunk rendelkezésedre!😎<br><br>
-            <img src="media/gabo3.jpg" alt="gabo" style="width:250px;border-radius:14px;margin-top:-12px;margin-bottom:4px;display:block;margin-left:auto;margin-right:auto;object-fit:cover;box-shadow:0 2px 8px rgba(179,0,0,0.10);" />
-            <audio controls style="margin-top:2px;width:100%;max-width:300px;">
-              <source src="media/outro.mp3" type="audio/mpeg"> 
-            </audio> 
-              <style>
-                .accordion-content audio { height: 28px; min-height: 28px; }
-              </style>
-            <span style="font-size:1em;color:#b30000;font-family:'Comic Neue',Arial,sans-serif;font-weight:bold;">Email:</span><br>
-            <a href="mailto:gabor.marko@tum.de" style="color:#b30000;font-size:0.9em;word-break:break-all;">gabor.marko@tum.de</a>
-            <br><br>
-            <span style="display:block;text-align:center;font-size:0.73em;color:#b30000;font-family:'Comic Neue',Arial,sans-serif;opacity:0.85;margin-top:12px;">Copyright © 2025 gabo | Minden jog fenntartva.<br>(bármit is jelentsen ez)            
-            </span>
+            <p style="margin-top:6px;">Kérdés, javaslat esetén a írj bátran a gabo fejlesztőcsapatnak!<br>Állunk rendelkezésedre!😇<br><br>
+              <button id="help-reveal-btn" style="display:block;margin:-8px auto 10px auto;padding:7px 18px;font-family:'Comic Neue',Arial,sans-serif;font-size:1em;color:#fff;background:#b30000;border:none;border-radius:8px;box-shadow:0 2px 6px #0002;cursor:pointer;">Jó lett az app!😎</button>
+              <div id="help-reveal" style="display:none;">
+                <img id="help-blur-img" src="media/gabo3.jpg" alt="gabo" style="width:250px;border-radius:14px;margin-top:0px;margin-bottom:4px;display:block;margin-left:auto;margin-right:auto;object-fit:cover;box-shadow:0 2px 8px rgba(179,0,0,0.10);filter:blur(12px);transition:filter 0.5s;" />
+                <audio id="help-audio" controls style="margin-top:2px;width:100%;max-width:300px;">
+                  <source src="media/outro.mp3" type="audio/mpeg"> 
+                </audio> 
+                  <style>
+                    .accordion-content audio { height: 28px; min-height: 28px; }
+                  </style>
+              </div>
+              <span style="font-size:1em;color:#b30000;font-family:'Comic Neue',Arial,sans-serif;font-weight:bold;">Email:</span><br>
+              <a href="mailto:gabor.marko@tum.de" style="color:#b30000;font-size:0.9em;word-break:break-all;">gabor.marko@tum.de</a>
+              <br><br>
+              <span style="display:block;text-align:center;font-size:0.73em;color:#b30000;font-family:'Comic Neue',Arial,sans-serif;opacity:0.85;margin-top:12px;">Copyright © 2025 gabo | Minden jog fenntartva.<br>(bármit is jelentsen ez)            
+              </span>
             </p>
+            <script>
+              // Reveal image and audio on button click
+              (function() {
+                var btn = document.getElementById('help-reveal-btn');
+                var reveal = document.getElementById('help-reveal');
+                var img = document.getElementById('help-blur-img');
+                var audio = document.getElementById('help-audio');
+                if (btn && reveal) {
+                  btn.addEventListener('click', function() {
+                    reveal.style.display = 'block';
+                  });
+                }
+                if (audio && img) {
+                  function updateBlur() {
+                    if (audio.currentTime < 40) {
+                      img.style.filter = 'blur(12px)';
+                    } else {
+                      img.style.filter = 'none';
+                    }
+                  }
+                  audio.addEventListener('timeupdate', updateBlur);
+                  audio.addEventListener('play', updateBlur);
+                  audio.addEventListener('seeked', updateBlur);
+                  audio.addEventListener('ended', function() { img.style.filter = 'none'; });
+                  // In case user starts playing from >40s
+                  audio.addEventListener('loadedmetadata', updateBlur);
+                }
+              })();
+            </script>
           </div>
         </div>
       </div>
@@ -1510,7 +1542,7 @@ window.addEventListener('DOMContentLoaded', () => {
       4: { title: "4. Jó reggelt!", text: "Ügyes legyél ma a susuban!:)", image: "", link: "", video: "media/wakey.mp4" },
       5: { title: "5. Grafilogika:)", text: "Ma egy kis feladványt kapsz, remélem ki tudod színesben nyomtatni.\n Viel Spaß!:)<br><a href='https://drive.google.com/file/d/1hQnBsPC27ZBde7qkPaNAs_L4dANv0pTG/view?usp=drive_link' target='_blank'>Nyomtatás</a>", image: "media/nonogramm.png", link: "", video: "" },
       6: { title: "6. Ho-ho-ho-hooo!🎅", text: "Remélem jól viselkedtél az évben, kedves Julis!\nSikerült megoldani a grafilogikát?:)", image: "", link: "", video: "" },
-      7: { title: "7. Nagyon nagyon!", text: 'Bocsi, most rámjött. Legyen szép napod! Szeretlek!❤️', image: "media/collage.jpg", link: "", video: "media/elsőre.mp4" },
+      7: { title: "7. Nagyon-nagyon!", text: 'Bocsi, most rámjött. Legyen szép napod! Szeretlek!❤️', image: "media/collage.jpg", link: "", video: "media/elsőre.mp4" },
       8: { title: "8. Bolondóra!", text: "Először is hajrá ma a vizsgán!:)\n Viszont Julis, ma sem maradhat el a bolondóra! Bukfencezgess párat a lakásban:) Ha készül róla videó, szívesen veszem:)!", image: "media/bukfenc.gif", link: "", video: "" },
       9: { title: "9. Egy kis motiváció reggelre!", text: "Gyerünk Julis, ügyes leszel ma!🤘\nRopjad neki!", image: "", link: "", video: "media/fish.mp4" },
       10: { title: "10. A mai meglepetés pedig...", text: "... én leszek!:)\nNa jó, ennyire azért nem kell repdesned az örömtől.\nVégre újra találkozunk, váááááááááá!", image: "media/lederhose2.jpg", link: "", video: "" },
