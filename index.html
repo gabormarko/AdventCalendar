@@ -1038,7 +1038,7 @@ window.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem('g2048-highscore', highScore);
           }
           draw();
-          alert('Na jó, lehet most már inkább az órára kéne figyelni... Vagy?:D');
+          alert('Na jó, lehet most már inkább az órára kéne figyelni... Vagy?:D' + '\nPontszám: ' + score + (score === highScore ? '\nÚj rekord!!!' : ''));
           restart();
         }, 100);
       }
@@ -1240,8 +1240,12 @@ window.addEventListener('DOMContentLoaded', () => {
         }
         updateScore();
         setTimeout(()=>{
-          alert('Hupsz! Tudsz te ennél jobbat is!:)');
-          reset();
+          alert('Huuupsz!\nJulisom, tudom hogy szereted verni a fejed a falba, de itt nem az a cél, hanem hogy ne ütközz bele semmibe;)' + '\nPontszám: ' + score + (score === best ? '\nÚj rekord!!!' : ''));
+          setNextModeAndLoad(() => {
+            reset();
+            draw();
+            pauseGame();
+          });
         },200);
         return;
       }
@@ -1346,7 +1350,7 @@ window.addEventListener('DOMContentLoaded', () => {
         }
         updateScore();
         setTimeout(()=>{
-          alert('Hupsz! Tudsz te ennél jobbat is!:)');
+          alert('Huuupsz!\nJulisom, tudom hogy szereted verni a fejed a falba, de itt nem az a cél, hanem hogy ne ütközz bele semmibe;)' + '\nPontszám: ' + score + (score === best ? '\nÚj rekord!!!' : ''));
           setNextModeAndLoad(() => {
             reset();
             draw();
@@ -1510,13 +1514,15 @@ window.addEventListener('DOMContentLoaded', () => {
         draw();
         if (isSolved()) {
           gameOver = true;
+          let isBest = false;
           if (best === 0 || moves < best) {
             best = moves;
             localStorage.setItem('sliding-best', best);
+            isBest = true;
           }
           updateScore();
           setTimeout(()=>{
-            alert('Ügyi-bügyi!!!🥰');
+            alert('Ügyi-bügyi!!!🥰\nLépések: ' + moves + (isBest ? '\nÚj rekord!!!' : ''));
             // Next image for next game
             nextImageAndRestart();
           }, 100);
