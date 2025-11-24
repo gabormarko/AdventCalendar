@@ -491,11 +491,7 @@
                     .g2048-btns { display:flex;justify-content:center;gap:8px;margin:4px 0; }
                     .g2048-btn { background:#b30000;color:#fff;border:none;border-radius:4px;padding:4px 10px;font-size:1em;cursor:pointer; }
                   </style>
-                  <div class="g2048-score" id="g2048-score">Score: 0</div>
-                  <div class="g2048-board" id="g2048-board"></div>
-                  <div class="g2048-btns">
-                    <button class="g2048-btn" id="g2048-restart">🔄</button>
-                  </div>
+                  <!-- 2048 game will be rendered here -->
                 </div>
               </div>
             </div>
@@ -876,7 +872,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // Game selector logic
   const egyetemreHeader = Array.from(headers).find(h => h.textContent.includes('Egyetemre'));
-  if (egyetemreHeader) {
+  /*if (egyetemreHeader) {
     egyetemreHeader.addEventListener('click', function() {
       setTimeout(() => {
         // Only initialize 2048 if not already drawn
@@ -885,7 +881,7 @@ window.addEventListener('DOMContentLoaded', () => {
         }
       }, 100);
     });
-  }
+  }*/
   // Game selector buttons
   const selector = document.getElementById('game-selector');
   if (selector) {
@@ -947,14 +943,21 @@ window.addEventListener('DOMContentLoaded', () => {
       const btn = e.target.closest('.game-select-btn');
       if (!btn || btn.disabled) return;
       const game = btn.getAttribute('data-game');
+
+      // Hide all game containers first
+      document.getElementById('game-2048-container').style.display = 'none';
+      document.getElementById('game-snake-container').style.display = 'none';
+      document.getElementById('game-sliding-container').style.display = 'none';
+
+
       document.querySelectorAll('.game-select-btn').forEach(b => {
         b.style.background = (b.getAttribute('data-game') === game) ? '#b30000' : '#222';
       });
-      document.getElementById('game-2048-container').style.display = (game === '2048') ? 'flex' : 'none';
-      document.getElementById('game-snake-container').style.display = (game === 'snake') ? 'flex' : 'none';
-      document.getElementById('game-sliding-container').style.display = (game === 'sliding') ? 'flex' : 'none';
+      document.getElementById('game-2048-container').style.display = (game === '2048' && !btn.disabled) ? 'flex' : 'none';
+      document.getElementById('game-snake-container').style.display = (game === 'snake' && !btn.disabled) ? 'flex' : 'none';
+      document.getElementById('game-sliding-container').style.display = (game === 'sliding' && !btn.disabled) ? 'flex' : 'none';
       // Init games if needed
-      if (game === '2048' && document.getElementById('g2048-board') && !document.getElementById('g2048-board').hasChildNodes()) {
+      if (game === '2048' && !btn.disabled && document.getElementById('g2048-board') && !document.getElementById('g2048-board').hasChildNodes()) {
         g2048Init();
       }
       if (game === 'snake' && typeof window.snakeInit === 'function') {
@@ -1840,7 +1843,7 @@ window.addEventListener('DOMContentLoaded', () => {
     };
 
   // Customizable: set how many doors can be opened (0 = use normal logic, 1-24 = open up to that day)
-  const OPEN_DAYS = 0; // e.g., set to 5 to open first 5 days, 24 to open all, 0 for normal logic
+  const OPEN_DAYS = 14; // e.g., set to 5 to open first 5 days, 24 to open all, 0 for normal logic
   // DEV mode: set to true to unlock all doors
   const DEV = false; // set to true for development
   const today = new Date();
