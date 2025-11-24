@@ -1909,7 +1909,7 @@ window.addEventListener('DOMContentLoaded', () => {
       21: { title: "21. Halo!", text: "Remélem ma veled ébredek!:)\n Mit szólnál hozzá, ha elmennék ma egy jó helyre ebédelni?🤌", image: "media/salve.jpg", link: "", video: "" },
       22: { title: "22. Emlékeztető...", text: "...arra, hogy mennyire sziper-szuper ügyes vagy!🏆\nBüszke lehetsz magadra!:)\nÉn az vagyok rád!🥹", image: "media/ranglista.png", link: "", video: "" },
       23: { title: "23. Emlékeztető 2...", text: "...arra, hogy Nálad tényleg!\nÖlellek, puszillak, szeretlek!❤️\nKellemes ünnepeket!🎄", image: "media/julis.jpg", link: "", video: "media/nalad-tenyleg.mp4" },
-      24: { title: "24. Boldog karácsonyt!", text: "Legyen szép napod ma a családoddal, Julis!🎁\nRemélem tetszett ez a kis kalendárium.\nÉn Gábor voltam, a te kis gömböcöd, pusziii!!!🥰", image: "media/bercixmas.jpg", link: "", video: "" },
+      24: { title: "24. Boldog karácsonyt!", text: "Legyen szép napod ma a családoddal, Julis!🎁\nHamarosan találkozunk:)", image: "media/bercixmas.jpg", link: "", video: "" },
     };
 
   // Customizable: set how many doors can be opened (0 = use normal logic, 1-24 = open up to that day)
@@ -2131,6 +2131,67 @@ window.addEventListener('DOMContentLoaded', () => {
             contentOverlay.style.display = 'flex';
             document.getElementById('close-content-btn').onclick = () => {
               contentOverlay.style.display = 'none';
+              // Special overlay for day 24
+              if (day === 24) {
+                // Create overlay if not exists
+                let finalOverlay = document.getElementById('final-typewriter-overlay');
+                if (!finalOverlay) {
+                  finalOverlay = document.createElement('div');
+                  finalOverlay.id = 'final-typewriter-overlay';
+                  finalOverlay.style.cssText = `
+                    position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:10050;
+                    background:rgba(0,0,0,0.72);backdrop-filter:blur(3px);
+                    display:flex;flex-direction:column;align-items:center;justify-content:center;
+                  `;
+                  finalOverlay.innerHTML = `
+                    <div id="final-typewriter-box" style="
+                      background:#fffbe8;
+                      color:#b30000;
+                      font-family:'Comic Neue',Arial,sans-serif;
+                      font-size:1.25em;
+                      border-radius:18px;
+                      box-shadow:0 2px 16px #b3000033;
+                      padding:38px 28px 38px 28px;
+                      max-width:280px;
+                      min-width:280px;
+                      min-height:24px;
+                      text-align:left;
+                      margin-bottom:32px;
+                    "></div>
+                    <button id="final-typewriter-close" style="
+                      margin-top:18px;
+                      font-family:'Comic Neue',Arial,sans-serif;
+                      font-size:1.1em;
+                      padding:10px 28px;
+                      background:#b30000;
+                      color:#fff;
+                      border:none;
+                      border-radius:8px;
+                      box-shadow:0 2px 6px rgba(0,0,0,0.12);
+                      cursor:pointer;
+                    ">pusziii</button>
+                  `;
+                  document.body.appendChild(finalOverlay);
+                } else {
+                  finalOverlay.style.display = 'flex';
+                }
+                // Typewriter effect
+                const text = `No, hát ez lett volna az én kis adventi kalendáriumom, az én kis cukorborsó Julisomnak.\n\nRemélem tetszett, és minden nap tudtam egy kis mosolyt csalni az arcodra.\n\nÉn Gábor voltam, a te ki gömböcöd.\n\nBoldog karácsonyt!\n\nPusziii!!!🥰`;
+                const box = document.getElementById('final-typewriter-box');
+                let idx = 0;
+                box.textContent = '';
+                function typeStep() {
+                  if (idx <= text.length) {
+                    box.innerHTML = text.slice(0, idx).replace(/\n/g, '<br>');
+                    idx++;
+                    setTimeout(typeStep, 58);
+                  }
+                }
+                typeStep();
+                document.getElementById('final-typewriter-close').onclick = () => {
+                  finalOverlay.style.display = 'none';
+                };
+              }
             };
             };
         }
