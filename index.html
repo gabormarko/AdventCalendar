@@ -456,9 +456,19 @@
           <div class="accordion-content" style="display:none;padding:0 0 12px 0;font-family:'Segoe UI',Arial,sans-serif;font-size:1em;color:#222;">
             <div style="width:100%;display:flex;flex-direction:column;align-items:center;">
               <div id="game-selector" style="margin-bottom:12px;display:flex;gap:8px;justify-content:center;">
-                <button class="game-select-btn" data-game="2048" style="padding:6px 16px;border-radius:6px;border:none;background:#b30000;color:#fff;font-family:'Comic Neue',Arial,sans-serif;cursor:pointer;font-size:1em;">2048</button>
-                <button class="game-select-btn" data-game="snake" style="padding:6px 16px;border-radius:6px;border:none;background:#222;color:#fff;font-family:'Comic Neue',Arial,sans-serif;cursor:pointer;font-size:1em;">Snake</button>
+                <button class="game-select-btn" data-game="snake" style="padding:6px 16px;border-radius:6px;border:none;background:#b30000;color:#fff;font-family:'Comic Neue',Arial,sans-serif;cursor:pointer;font-size:1em;">Snake</button>
                 <button class="game-select-btn" data-game="sliding" style="padding:6px 16px;border-radius:6px;border:none;background:#222;color:#fff;font-family:'Comic Neue',Arial,sans-serif;cursor:pointer;font-size:1em;">Sliding Puzzle</button>
+                <button class="game-select-btn" data-game="2048" style="padding:6px 16px;border-radius:6px;border:none;background:#222;color:#fff;font-family:'Comic Neue',Arial,sans-serif;cursor:pointer;font-size:1em;">2048</button>
+              </div>
+              <div id="game-snake-container" style="width:100%;display:none;justify-content:center;align-items:center;">
+                <div id="game-snake" style="margin:0 auto;padding:8px 0;width:320px;">
+                  <!-- Snake game will be rendered here -->
+                </div>
+              </div>
+              <div id="game-sliding-container" style="width:100%;display:none;justify-content:center;align-items:center;">
+                <div id="game-sliding" style="margin:0 auto;padding:8px 0;width:320px;">
+                  <!-- Sliding Puzzle game will be rendered here -->
+                </div>
               </div>
               <div id="game-2048-container" style="width:100%;display:flex;justify-content:center;align-items:center;">
                 <div id="game-2048" style="margin:0 auto;padding:8px 0;width:240px;">
@@ -486,16 +496,6 @@
                   <div class="g2048-btns">
                     <button class="g2048-btn" id="g2048-restart">🔄</button>
                   </div>
-                </div>
-              </div>
-              <div id="game-snake-container" style="width:100%;display:none;justify-content:center;align-items:center;">
-                <div id="game-snake" style="margin:0 auto;padding:8px 0;width:320px;">
-                  <!-- Snake game will be rendered here -->
-                </div>
-              </div>
-              <div id="game-sliding-container" style="width:100%;display:none;justify-content:center;align-items:center;">
-                <div id="game-sliding" style="margin:0 auto;padding:8px 0;width:320px;">
-                  <!-- Sliding Puzzle game will be rendered here -->
                 </div>
               </div>
             </div>
@@ -899,13 +899,14 @@ window.addEventListener('DOMContentLoaded', () => {
     }
     const snakeBtn = selector.querySelector('.game-select-btn[data-game="snake"]');
     const puzzleBtn = selector.querySelector('.game-select-btn[data-game="sliding"]');
+    const g2048Btn = selector.querySelector('.game-select-btn[data-game="2048"]');
     if (snakeBtn) {
-      if (currentDay < 8) {
+      if (currentDay < 2) {
         snakeBtn.disabled = true;
         snakeBtn.style.background = '#888';
         snakeBtn.style.color = '#ccc';
-        snakeBtn.innerHTML = '🔒 (12.08)';
-        snakeBtn.setAttribute('title', 'Elérhető: 8. nap');
+        snakeBtn.innerHTML = '🔒 (12.02)';
+        snakeBtn.setAttribute('title', 'Elérhető: 2. nap');
       } else {
         snakeBtn.disabled = false;
         snakeBtn.innerHTML = 'Snake';
@@ -913,18 +914,35 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     }
     if (puzzleBtn) {
-      if (currentDay < 15) {
+      if (currentDay < 8) {
         puzzleBtn.disabled = true;
         puzzleBtn.style.background = '#888';
         puzzleBtn.style.color = '#ccc';
-        puzzleBtn.innerHTML = '🔒 (12.15)';
-        puzzleBtn.setAttribute('title', 'Elérhető: 15. nap');
+        puzzleBtn.innerHTML = '🔒 (12.08)';
+        puzzleBtn.setAttribute('title', 'Elérhető: 8. nap');
       } else {
         puzzleBtn.disabled = false;
         puzzleBtn.innerHTML = 'Sliding Puzzle';
         puzzleBtn.style.color = '#fff';
       }
     }
+    if (g2048Btn) {
+      if (currentDay < 15) {
+        g2048Btn.disabled = true;
+        g2048Btn.style.background = '#888';
+        g2048Btn.style.color = '#ccc';
+        g2048Btn.innerHTML = '🔒 (12.15)';
+        g2048Btn.setAttribute('title', 'Elérhető: 15. nap');
+      } else {
+        g2048Btn.disabled = false;
+        g2048Btn.innerHTML = '2048';
+        g2048Btn.style.color = '#fff';
+      }
+    }
+    // Default: show Snake
+    const defaultBtn = document.querySelector('.game-select-btn[data-game="snake"]');
+    if (defaultBtn) defaultBtn.click();
+
     selector.addEventListener('click', function(e) {
       const btn = e.target.closest('.game-select-btn');
       if (!btn || btn.disabled) return;
@@ -1038,7 +1056,7 @@ window.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem('g2048-highscore', highScore);
           }
           draw();
-          alert('Na jó, lehet most már inkább az órára kéne figyelni... Vagy?:D' + '\nPontszám: ' + score + (score === highScore ? '\nÚj rekord!!!' : ''));
+          alert('Na jó, lehet most már inkább az órára kéne figyelni... Vagy?:D' + '\nPontszám: ' + score + ((score === highScore  && score !== 0) ? '\nÚj rekord!!!' : ''));
           restart();
         }, 100);
       }
@@ -1240,7 +1258,7 @@ window.addEventListener('DOMContentLoaded', () => {
         }
         updateScore();
         setTimeout(()=>{
-          alert('Huuupsz!\nJulisom, tudom hogy szereted verni a fejed a falba, de itt nem az a cél, hanem hogy ne ütközz bele semmibe;)' + '\nPontszám: ' + score + (score === best ? '\nÚj rekord!!!' : ''));
+          alert('Huuupsz!\nJulisom, tudom hogy szereted verni a fejed a falba, de itt nem az a cél, hanem hogy ne ütközz bele semmibe;)' + '\nPontszám: ' + score + ((score === best && score !== 0) ? '\nÚj rekord!!!' : ''));
           setNextModeAndLoad(() => {
             reset();
             draw();
@@ -1326,6 +1344,8 @@ window.addEventListener('DOMContentLoaded', () => {
         pauseGame();
       });
     };
+    // Add this line to also start game on canvas click/tap:
+    canvas.addEventListener('click', startGame);
     // On initial load, ensure images are loaded before first draw
     loadCurrentMode(() => {
       reset();
@@ -1350,7 +1370,7 @@ window.addEventListener('DOMContentLoaded', () => {
         }
         updateScore();
         setTimeout(()=>{
-          alert('Huuupsz!\nJulisom, tudom hogy szereted verni a fejed a falba, de itt nem az a cél, hanem hogy ne ütközz bele semmibe;)' + '\nPontszám: ' + score + (score === best ? '\nÚj rekord!!!' : ''));
+          alert('Huuupsz!\nJulisom, tudom hogy szereted verni a fejed a falba, de itt nem az a cél, hanem hogy ne ütközz bele semmibe;)' + '\nPontszám: ' + score + ((score === best && score !== 0) ? '\nÚj rekord!!!' : ''));
           setNextModeAndLoad(() => {
             reset();
             draw();
@@ -1618,8 +1638,8 @@ window.addEventListener('DOMContentLoaded', () => {
     setTimeout(()=>{slidingDiv.focus();},200);
   };
 
-  // Default: show 2048
-  const defaultBtn = document.querySelector('.game-select-btn[data-game="2048"]');
+  // Default: show Snake
+  const defaultBtn = document.querySelector('.game-select-btn[data-game="snake"]');
   if (defaultBtn) defaultBtn.click();
 });
 
@@ -1652,7 +1672,7 @@ window.addEventListener('DOMContentLoaded', () => {
 </script>
     <canvas id="snow-canvas" style="position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:10002;"></canvas>
     <div id="loading-overlay">
-    <span class="loading-message" style="font-weight:bold;">Julis Adventi Kalendáriuma</span>
+    <span class="loading-message" style="font-weight:bold;">Julis Adventi<br>Kalendáriuma</span>
     <img src="media/app-icon-me.png" alt="Loading..." style="width:200px;height:200px;margin-bottom:20px;">
     <span class="loading-message" id="hihi-loading" style="font-weight:normal;"><span id="hihi-dots" style="display:inline-block;min-width:1.5em;padding-left:0;"></span></span>
     <div id="loading-powered-overlay">powered by gabo ©2025 | v04.07</div>
@@ -1793,14 +1813,14 @@ window.addEventListener('DOMContentLoaded', () => {
 
 <script>
     const contentData = {
-      1: { title: "1. Szia Julis!:)", text: "Üdv az adventi kalendáriumodban!\nMinden napra jut majd egy kis meglepetés, hihi.\n Az első maga az applikáció, remélem tetszik:)\nPusziii!!!🥰", image: "media/coding.jpg", link: "", video: "" },
+      1: { title: "1. Szia Julis!:)🐥", text: "Üdv az adventi kalendáriumodban!\nMinden napra jut majd egy kis meglepetés, hihi.\n Az első maga az applikáció, remélem tetszik:)\nPusziii!!!🥰", image: "media/coding.jpg", link: "", video: "" },
       2: { title: "2. Ügyi-bügyi vagy...", text: "...hogy ma is visszatértél:)!\n Jutalmad egy kis kávépénz-támogatás (így hó vége felé közeledve), hogy nyitva tudd tartani ma a szemeidet órán.\nCheckold a Revolutod!", image: "media/coffee.png", link: "", video: "" },
       3: { title: "3. 3 hónapja...", text: "...találkoztunk először kettesben!:) Durva, mennyi minden történt azóta:)\n A havi kis borítékod nem marad el, majd odaadom, ha találkozunk!:)\nUi.: Ma este egy görgőzés?😎", image: "media/0903.jpg", link: "", video: "" },
-      4: { title: "4. Jó reggelt!", text: "Ügyes legyél ma a susuban!:)", image: "", link: "", video: "media/wakey.mp4" },
-      5: { title: "5. Grafilogika:)", text: "Ma egy kis feladványt kapsz, remélem ki tudod színesben nyomtatni.\n Viel Spaß!:)<br><a href='https://drive.google.com/file/d/1hQnBsPC27ZBde7qkPaNAs_L4dANv0pTG/view?usp=drive_link' target='_blank'>Nyomtatás</a>", image: "media/nonogramm.png", link: "", video: "" },
-      6: { title: "6. Ho-ho-ho-hooo!🎅", text: "Remélem jól viselkedtél az évben, kedves Julis!\nSikerült megoldani a grafilogikát?:)", image: "", link: "", video: "" },
+      4: { title: "4. Wakey-wakey!", text: "Jó reggelt! Ügyes legyél ma a susuban!:)", image: "", link: "", video: "media/wakey.mp4" },
+      5: { title: "5. Grafilogika:)", text: "Ma egy kis feladványt kapsz, remélem ki tudod színesben nyomtatni (és színezni:D).\n Viel Spaß!:)<br><a href='https://drive.google.com/file/d/1hQnBsPC27ZBde7qkPaNAs_L4dANv0pTG/view?usp=drive_link' target='_blank'>Nyomtatás</a>", image: "media/nonogramm.png", link: "", video: "" },
+      6: { title: "6. Ho-ho-ho-hooo!🎅", text: "Remélem jól viselkedtél az évben, kedves Julis! Én úgy hallottam, nagyrészt igen...👼😈\nSikerült megoldani a grafilogikát?:)", image: "", link: "", video: "" },
       7: { title: "7. Nagyon-nagyon!", text: 'Bocsi, most rámjött. Legyen szép napod! Szeretlek!❤️', image: "media/collage.jpg", link: "", video: "media/elsőre.mp4" },
-      8: { title: "8. Bolondóra!", text: "Először is hajrá ma a vizsgán!:)\n Viszont Julis, ma sem maradhat el a bolondóra! Bukfencezgess párat a lakásban:) Ha készül róla videó, szívesen veszem:)!", image: "media/bukfenc.gif", link: "", video: "" },
+      8: { title: "8. Bolondóra!", text: "Először is hajrá ma a vizsgán!:)\n Viszont Julis, ma sem maradhat el a bolondóra! Bukfencezgess párat a lakásban:) Ha készül róla videó, szívesen veszem!:)", image: "media/bukfenc.gif", link: "", video: "" },
       9: { title: "9. Egy kis motiváció reggelre!", text: "Gyerünk Julis, ügyes leszel ma!🤘\nRopjad neki!", image: "", link: "", video: "media/fish.mp4" },
       10: { title: "10. A mai meglepetés pedig...", text: "... én leszek!:)\nNa jó, ennyire azért nem kell repdesned az örömtől.\nVégre újra találkozunk, váááááááááá!", image: "media/lederhose2.jpg", link: "", video: "" },
       11: { title: "11. Futááás", text: "Julisom, ma olyan résztávokat futunk, amilyet csak szeretnél;)", image: "media/run.jpeg", link: "", video: "" },
@@ -1810,12 +1830,12 @@ window.addEventListener('DOMContentLoaded', () => {
       15: { title: "15. Hihi!", text: "A mai meglepi egy mozijegy!\nMikor megyünk???😏", image: "media/zootopia.jpg", link: "", video: "" },
       16: { title: "16. Hupsz...", text: "Julisom, az élet nem mindig habostorta! Néha meg kell állni, és értékelni mindazt, ami megadatott. Nem szabad telhetetlennek lenni.", image: "media/hupsz.jpg", link: "", video: "" },
       17: { title: "17. Jó éjszakát!", text: 'Ma estére küldök neked egy kis szeretetcsomagot🫶<br>Szép álmokat!', image: "media/sleep.jpg", link: "", video: "media/macskák.mp4" },
-      18: { title: "18. Kitartást...", text: "...még az utolsó napokra:)\nBerci is szeretett volna üzenni a kalendáriumban neked, őt kapcsolom most:)", image: "media/berci.jpg", link: "", video: "" },
+      18: { title: "18. Kitartást...", text: "...még az utolsó napokra a susuban:)\nBerci is szeretett volna üzenni a kalendáriumban neked, őt kapcsolom most Békéscsabáról:)", image: "media/berci.jpg", link: "", video: "" },
       19: { title: "19. Titkos recept", text: "Ma a paszulyleves receptjét kapod tőlem, csak hogy ha megszorulnál esetleg, és kifogyna minden a mélyhűtőből...\n\nHozzávalók 4 személyre\n50 dkg szárazPASZULY !!! (fehér vagy tarka)\n1 fej vöröshagyma\n1 szál MUROK !!!\n1 szál petrezselyemgyökér\nkevés zellergyökér\n3-4 db babérlevél\n1 kanál ecetes tárkony\n20 dkg füstölt kolbász\n2 kanál zsír (vagy olaj)\n2 kanál liszt\n1 kk. pirospaprika\n3 dl zsíros tej\nsó, bors\nJó étvágyat!", image: "media/cook.jpg", link: "", video: "media/paszuly.mp4" },
       20: { title: "20. Meglepetés", text: "Szio! Remélem ma találkozunk, és odaadhatom a cuki meglepetésemet:)", image: "media/gift.png", link: "", video: "" },
       21: { title: "21. Haló!", text: "Remélem ma veled ébredek!:)\n Mit szólnál hozzá, ha elmennék ma egy jó helyre ebédelni?🤌", image: "media/salve.jpg", link: "", video: "" },
       22: { title: "22. Emlékeztető...", text: "...arra, hogy mennyire sziper-szuper ügyes vagy!🏆\nBüszke lehetsz magadra!:)\nÉn az vagyok rád!🥹", image: "media/ranglista.png", link: "", video: "" },
-      23: { title: "23. Emlékeztető 2...", text: "...arra, hogy nálad tényleg!\nÖlellek, puszillak, szeretlek!❤️\nKellemes ünnepeket!", image: "media/julis.jpg", link: "", video: "media/nalad-tenyleg.mp4" },
+      23: { title: "23. Emlékeztető 2...", text: "...arra, hogy nálad tényleg!\nÖlellek, puszillak, szeretlek!❤️\nKellemes ünnepeket!🎄", image: "media/julis.jpg", link: "", video: "media/nalad-tenyleg.mp4" },
       24: { title: "24. Boldog karácsonyt!", text: "Legyen szép napod ma a családoddal, Julis!🎁\nRemélem tetszett ez a kis kalendárium.\nÉn Gábor voltam, a te kis gömböcöd, pusziii!!!🥰", image: "media/bercixmas.jpg", link: "", video: "" },
     };
 
