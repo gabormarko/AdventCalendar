@@ -471,26 +471,7 @@
                 </div>
               </div>
               <div id="game-2048-container" style="width:100%;display:flex;justify-content:center;align-items:center;">
-                <div id="game-2048" style="margin:0 auto;padding:8px 0;width:240px;">
-                  <style>
-                    .g2048-board { background:#eee;border-radius:8px;padding:8px;box-shadow:0 2px 8px rgba(0,0,0,0.08); }
-                    .g2048-row { display:flex; }
-                    .g2048-cell { width:48px;height:48px;margin:4px;background:#cdc1b4;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:1.2em;font-weight:bold;color:#776e65;transition:background 0.2s; }
-                    .g2048-cell[data-v="2"] { background:#eee4da; }
-                    .g2048-cell[data-v="4"] { background:#ede0c8; }
-                    .g2048-cell[data-v="8"] { background:#f2b179;color:#fff; }
-                    .g2048-cell[data-v="16"] { background:#f59563;color:#fff; }
-                    .g2048-cell[data-v="32"] { background:#f67c5f;color:#fff; }
-                    .g2048-cell[data-v="64"] { background:#f65e3b;color:#fff; }
-                    .g2048-cell[data-v="128"] { background:#edcf72;color:#fff; }
-                    .g2048-cell[data-v="256"] { background:#edcc61;color:#fff; }
-                    .g2048-cell[data-v="512"] { background:#edc850;color:#fff; }
-                    .g2048-cell[data-v="1024"] { background:#edc53f;color:#fff; }
-                    .g2048-cell[data-v="2048"] { background:#edc22e;color:#fff; }
-                    .g2048-score { text-align:center;font-size:1em;margin:6px 0 2px 0;color:#b30000;font-weight:bold; }
-                    .g2048-btns { display:flex;justify-content:center;gap:8px;margin:4px 0; }
-                    .g2048-btn { background:#b30000;color:#fff;border:none;border-radius:4px;padding:4px 10px;font-size:1em;cursor:pointer; }
-                  </style>
+                <div id="game-2048" style="margin:0 auto;padding:8px 0;width:286px;">                  
                   <!-- 2048 game will be rendered here -->
                 </div>
               </div>
@@ -951,14 +932,17 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
       document.querySelectorAll('.game-select-btn').forEach(b => {
-        b.style.background = (b.getAttribute('data-game') === game) ? '#b30000' : '#222';
+        if (!b.disabled) {
+          b.style.background = (b.getAttribute('data-game') === game) ? '#b30000' : '#222';
+        }
       });
       document.getElementById('game-2048-container').style.display = (game === '2048' && !btn.disabled) ? 'flex' : 'none';
       document.getElementById('game-snake-container').style.display = (game === 'snake' && !btn.disabled) ? 'flex' : 'none';
       document.getElementById('game-sliding-container').style.display = (game === 'sliding' && !btn.disabled) ? 'flex' : 'none';
       // Init games if needed
-      if (game === '2048' && !btn.disabled && document.getElementById('g2048-board') && !document.getElementById('g2048-board').hasChildNodes()) {
-        g2048Init();
+      if (game === '2048' && !btn.disabled) {
+          document.getElementById('game-2048-container').style.display = 'flex';
+          g2048Init();
       }
       if (game === 'snake' && typeof window.snakeInit === 'function') {
         window.snakeInit();
@@ -970,7 +954,38 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   // 2048 game logic (minimal, mobile-friendly)
-  function g2048Init() {
+  function g2048Init() {  
+    const g2048Div = document.getElementById('game-2048');
+    if (!g2048Div) return;
+    // Prevent multiple initializations
+    if (g2048Div.getAttribute('data-initialized')) return;
+    g2048Div.setAttribute('data-initialized', '1');
+    g2048Div.innerHTML =
+      `<style>
+        .g2048-board { background:#eee;border-radius:8px;padding:8px;box-shadow:0 2px 8px rgba(0,0,0,0.08); }
+        .g2048-row { display:flex; }
+        .g2048-cell { width:60px;height:60px;margin:4px;background:#cdc1b4;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:1.2em;font-weight:bold;color:#776e65;transition:background 0.2s; }
+        .g2048-cell[data-v="2"] { background:#eee4da; }
+        .g2048-cell[data-v="4"] { background:#ede0c8; }
+        .g2048-cell[data-v="8"] { background:#f2b179;color:#fff; }
+        .g2048-cell[data-v="16"] { background:#f59563;color:#fff; }
+        .g2048-cell[data-v="32"] { background:#f67c5f;color:#fff; }
+        .g2048-cell[data-v="64"] { background:#f65e3b;color:#fff; }
+        .g2048-cell[data-v="128"] { background:#edcf72;color:#fff; }
+        .g2048-cell[data-v="256"] { background:#edcc61;color:#fff; }
+        .g2048-cell[data-v="512"] { background:#edc850;color:#fff; }
+        .g2048-cell[data-v="1024"] { background:#edc53f;color:#fff; }
+        .g2048-cell[data-v="2048"] { background:#edc22e;color:#fff; }
+        .g2048-score { text-align:center;font-size:1em;margin:6px 0 2px 0;color:#b30000;font-weight:bold; }
+        .g2048-btns { display:flex;justify-content:center;gap:8px;margin:4px 0; }
+        .g2048-btn { background:#b30000;color:#fff;border:none;border-radius:4px;padding:4px 10px;font-size:1em;cursor:pointer; }
+      </style>
+      <div class="g2048-score" id="g2048-score">Score: 0 | Best: 0</div>
+      <div id="g2048-board" class="g2048-board"></div>
+      <div class="g2048-btns">
+        <button id="g2048-restart" class="g2048-btn">🔄</button>
+      </div>`;
+
     const size = 4;
     let board = [];
     let score = 0;
@@ -1059,7 +1074,7 @@ window.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem('g2048-highscore', highScore);
           }
           draw();
-          alert('Na jó, lehet most már inkább az órára kéne figyelni... Vagy?:D' + '\nPontszám: ' + score + ((score === highScore  && score !== 0) ? '\nÚj rekord!!!' : ''));
+          alert('Na jó, lehet most már inkább az órára kéne figyelni... Vagy?:D' + '\nPontszám: ' + score + (score === highScore ? '\nÚj rekord!!!' : ''));
           restart();
         }, 100);
       }
@@ -1084,9 +1099,12 @@ window.addEventListener('DOMContentLoaded', () => {
       draw();
     }
     // Button event
-    document.getElementById('g2048-restart').onclick = () => restart();
+    document.getElementById('g2048-restart').onclick = () => {
+      g2048Div.removeAttribute('data-initialized');
+      window.g2048Init();
+    };
     // Keyboard events
-    const gameDiv = document.getElementById('game-2048');
+    const gameDiv = g2048Div;
     gameDiv.tabIndex = 0;
     gameDiv.onkeydown = e => {
       if (e.key === 'ArrowUp') move('up');
@@ -1094,7 +1112,6 @@ window.addEventListener('DOMContentLoaded', () => {
       if (e.key === 'ArrowLeft') move('left');
       if (e.key === 'ArrowRight') move('right');
     };
-
     // Touch swipe events for mobile
     let touchStartX = 0, touchStartY = 0, touchEndX = 0, touchEndY = 0;
     gameDiv.addEventListener('touchstart', function(e) {
@@ -1102,7 +1119,6 @@ window.addEventListener('DOMContentLoaded', () => {
         touchStartX = e.touches[0].clientX;
         touchStartY = e.touches[0].clientY;
       }
-      // Prevent sidebar swipe-to-close
       e.stopPropagation();
     });
     gameDiv.addEventListener('touchend', function(e) {
@@ -1119,12 +1135,11 @@ window.addEventListener('DOMContentLoaded', () => {
           else move('up');
         }
       }
-      // Prevent sidebar swipe-to-close
       e.stopPropagation();
     });
-
     restart();
-  }
+    setTimeout(()=>{gameDiv.focus();},200);
+  };
   window.g2048Init = g2048Init;
 
   // Snake and Sliding Puzzle stubs
@@ -1843,7 +1858,7 @@ window.addEventListener('DOMContentLoaded', () => {
     };
 
   // Customizable: set how many doors can be opened (0 = use normal logic, 1-24 = open up to that day)
-  const OPEN_DAYS = 14; // e.g., set to 5 to open first 5 days, 24 to open all, 0 for normal logic
+  const OPEN_DAYS = 15; // e.g., set to 5 to open first 5 days, 24 to open all, 0 for normal logic
   // DEV mode: set to true to unlock all doors
   const DEV = false; // set to true for development
   const today = new Date();
