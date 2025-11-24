@@ -508,6 +508,32 @@
                 var img = document.getElementById('help-blur-img');
                 var box = document.getElementById('help-typewriter-box');
                 var audio = document.getElementById('help-audio');
+                
+                // Hide reveal if accordion is closed
+                var accordionHeader = btn.closest('.accordion-content').previousElementSibling;
+                if (accordionHeader) {
+                  accordionHeader.addEventListener('click', function() {
+                    var expanded = this.getAttribute('aria-expanded') === 'true';
+                    if (!expanded && reveal) {
+                      // Hide reveal, stop audio, hide image and box
+                      reveal.style.display = 'none';
+                      if (audio) {
+                        audio.pause();
+                        audio.currentTime = 0;
+                      }
+                      if (img) {
+                        img.style.display = 'none';
+                        img.style.opacity = '0';
+                      }
+                      if (box) {
+                        box.style.display = 'none';
+                        box.textContent = '';
+                      }
+                    }
+                  });
+                }
+                
+                
                 // Typewriter effect for 'köszi...' cycling
                 var typewriterText = 'kösziii... :)';
                 var typewriterCharIdx = 0;
@@ -1891,7 +1917,7 @@ window.addEventListener('DOMContentLoaded', () => {
       3: { title: "3. 3 hónapja...", text: "...találkoztunk először kettesben!:) Durva, mennyi minden történt azóta:)\n A havi kis borítékod nem marad el, majd odaadom, ha találkozunk!:)💌\nUi.: Ma este egy görgőzés?😎", image: "media/0903.jpg", link: "", video: "" },
       4: { title: "4. Wakey-wakey!💤", text: "Jó reggelt! Ügyes legyél ma a susuban!:)", image: "", link: "", video: "media/wakey.mp4" },
       5: { title: "5. Grafilogika🧠", text: "Ma egy kis feladványt kapsz, remélem ki tudod színesben nyomtatni (és színezni:D).\n Viel Spaß!:)<br><a href='https://drive.google.com/file/d/1hQnBsPC27ZBde7qkPaNAs_L4dANv0pTG/view?usp=drive_link' target='_blank'>Nyomtatás</a>", image: "media/nonogramm.png", link: "", video: "" },
-      6: { title: "6. Ho-ho-ho-hooo!🎅", text: "Remélem jól viselkedtél az évben, kedves Julis! Én úgy hallottam, nagyrészt igen...😇😈\nSikerült megoldani a grafilogikát?:)", image: "", link: "", video: "" },
+      6: { title: "6. Ho-ho-ho-hooo!🎅", text: "Remélem jól viselkedtél az évben, kedves Julis!\nÉn úgy hallottam, nagyrészt igen...😇😈\nSikerült megoldani a grafilogikát?:)", image: "", link: "", video: "" },
       7: { title: "7. Nagyon-nagyon!", text: 'Bocsi, most rámjött. Legyen szép napod! Szeretlek!❤️', image: "media/collage.jpg", link: "", video: "media/elsőre.mp4" },
       8: { title: "8. Bolondóra!🤸‍♀️", text: "Először is hajrá ma a vizsgán!:)\n Viszont Julis, ma sem maradhat el a bolondóra! Bukfencezgess párat a lakásban:) Ha készül róla videó, szívesen veszem!:)", image: "media/bukfenc.gif", link: "", video: "" },
       9: { title: "9. Egy kis motiváció reggelre!", text: "Gyerünk Julis, ügyes leszel ma!🤘\nRopjad neki!💃", image: "", link: "", video: "media/fish.mp4" },
