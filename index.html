@@ -696,7 +696,7 @@
                       bounceTimeout = setTimeout(function() {
                         img.classList.remove('epic-shake');
                       }, 1100);
-                    }else if (since > 131.5 && since < 135.5) {
+                    }else if (since > 132.5 && since < 136.5) {
                       // Epic drop + flash + bounce + shake + pulse (chained)
                       img.style.animation = 'epicDropFade 2.2s cubic-bezier(.7,0,.3,1)';
                       setTimeout(function() {
@@ -1748,7 +1748,7 @@ window.addEventListener('DOMContentLoaded', () => {
     <span class="loading-message" style="font-weight:bold;">Julis Adventi<br>Kalendáriuma</span>
     <img src="media/app-icon-me.png" alt="Loading..." style="width:200px;height:200px;margin-bottom:20px;">
     <span class="loading-message" id="hihi-loading" style="font-weight:normal;"><span id="hihi-dots" style="display:inline-block;min-width:1.5em;padding-left:0;"></span></span>
-    <div id="loading-powered-overlay">powered by gabo ©2025 | v04.07</div>
+    <div id="loading-powered-overlay">powered by gabo ©2025 | v5.07</div>
   </div>
   <div class="title-bg"><h1>🎄Julis Adventi Kalendáriuma🎄</h1></div>
   <div class="calendar" id="calendar"></div>
@@ -1887,28 +1887,28 @@ window.addEventListener('DOMContentLoaded', () => {
 <script>
     const contentData = {
       1: { title: "1. Szia Julis!:)🐥", text: "Üdv az adventi kalendáriumodban!\nMinden napra jut majd egy kis meglepetés, hihi.\n Az első maga az applikáció, remélem tetszik:)\nPusziii!!!🥰", image: "media/coding.jpg", link: "", video: "" },
-      2: { title: "2. Ügyi-bügyi vagy...", text: "...hogy ma is visszatértél:)!\n Jutalmad egy kis kávépénz-támogatás (így hó vége felé közeledve), hogy nyitva tudd tartani ma a szemeidet órán.\nCheckold a Revolutod!", image: "media/coffee.png", link: "", video: "" },
-      3: { title: "3. 3 hónapja...", text: "...találkoztunk először kettesben!:) Durva, mennyi minden történt azóta:)\n A havi kis borítékod nem marad el, majd odaadom, ha találkozunk!:)\nUi.: Ma este egy görgőzés?😎", image: "media/0903.jpg", link: "", video: "" },
-      4: { title: "4. Wakey-wakey!", text: "Jó reggelt! Ügyes legyél ma a susuban!:)", image: "", link: "", video: "media/wakey.mp4" },
-      5: { title: "5. Grafilogika:)", text: "Ma egy kis feladványt kapsz, remélem ki tudod színesben nyomtatni (és színezni:D).\n Viel Spaß!:)<br><a href='https://drive.google.com/file/d/1hQnBsPC27ZBde7qkPaNAs_L4dANv0pTG/view?usp=drive_link' target='_blank'>Nyomtatás</a>", image: "media/nonogramm.png", link: "", video: "" },
-      6: { title: "6. Ho-ho-ho-hooo!🎅", text: "Remélem jól viselkedtél az évben, kedves Julis! Én úgy hallottam, nagyrészt igen...👼😈\nSikerült megoldani a grafilogikát?:)", image: "", link: "", video: "" },
+      2: { title: "2. Ügyi-bügyi vagy...", text: "...hogy ma is visszatértél:)!\n Jutalmad egy kis kávépénz-támogatás (így hó vége felé közeledve), hogy nyitva tudd tartani ma a szemeidet órán.☕\nCheckold a Revolutod!", image: "media/coffee.png", link: "", video: "" },
+      3: { title: "3. 3 hónapja...", text: "...találkoztunk először kettesben!:) Durva, mennyi minden történt azóta:)\n A havi kis borítékod nem marad el, majd odaadom, ha találkozunk!:)💌\nUi.: Ma este egy görgőzés?😎", image: "media/0903.jpg", link: "", video: "" },
+      4: { title: "4. Wakey-wakey!💤", text: "Jó reggelt! Ügyes legyél ma a susuban!:)", image: "", link: "", video: "media/wakey.mp4" },
+      5: { title: "5. Grafilogika🧠", text: "Ma egy kis feladványt kapsz, remélem ki tudod színesben nyomtatni (és színezni:D).\n Viel Spaß!:)<br><a href='https://drive.google.com/file/d/1hQnBsPC27ZBde7qkPaNAs_L4dANv0pTG/view?usp=drive_link' target='_blank'>Nyomtatás</a>", image: "media/nonogramm.png", link: "", video: "" },
+      6: { title: "6. Ho-ho-ho-hooo!🎅", text: "Remélem jól viselkedtél az évben, kedves Julis! Én úgy hallottam, nagyrészt igen...😇😈\nSikerült megoldani a grafilogikát?:)", image: "", link: "", video: "" },
       7: { title: "7. Nagyon-nagyon!", text: 'Bocsi, most rámjött. Legyen szép napod! Szeretlek!❤️', image: "media/collage.jpg", link: "", video: "media/elsőre.mp4" },
-      8: { title: "8. Bolondóra!", text: "Először is hajrá ma a vizsgán!:)\n Viszont Julis, ma sem maradhat el a bolondóra! Bukfencezgess párat a lakásban:) Ha készül róla videó, szívesen veszem!:)", image: "media/bukfenc.gif", link: "", video: "" },
+      8: { title: "8. Bolondóra!🤸‍♀️", text: "Először is hajrá ma a vizsgán!:)\n Viszont Julis, ma sem maradhat el a bolondóra! Bukfencezgess párat a lakásban:) Ha készül róla videó, szívesen veszem!:)", image: "media/bukfenc.gif", link: "", video: "" },
       9: { title: "9. Egy kis motiváció reggelre!", text: "Gyerünk Julis, ügyes leszel ma!🤘\nRopjad neki!", image: "", link: "", video: "media/fish.mp4" },
-      10: { title: "10. A mai meglepetés pedig...", text: "... én leszek!:)\nNa jó, ennyire azért nem kell repdesned az örömtől.\nVégre újra találkozunk, váááááááááá!", image: "media/lederhose2.jpg", link: "", video: "" },
-      11: { title: "11. Futááás", text: "Julisom, ma olyan résztávokat futunk, amilyet csak szeretnél;)", image: "media/run.jpeg", link: "", video: "" },
-      12: { title: "12. Karácsonyi vásár", text: "Ma választhatsz bármit a karácsonyi vásárban, ami megtetszik!:)", image: "media/christkindl.jpg", link: "", video: "" },
-      13: { title: "13. Setemény", text: "Ma vendégem vagy egy sütire. Pusszancs!", image: "media/suti.jpg", link: "", video: "" },
+      10: { title: "10. A mai meglepetés pedig...", text: "... én leszek!:)\nNa jó, ennyire azért nem kell repdesned az örömtől.\nVégre újra találkozunk, váááááááááá!🥰", image: "media/lederhose2.jpg", link: "", video: "" },
+      11: { title: "11. Futááás🏃‍♀️", text: "Julisom, ma olyan résztávokat futunk, amilyet csak szeretnél;)", image: "media/run.jpeg", link: "", video: "" },
+      12: { title: "12. Karácsonyi vásár🎄", text: "Ma választhatsz bármit a karácsonyi vásárban, ami megtetszik!:)", image: "media/christkindl.jpg", link: "", video: "" },
+      13: { title: "13. Setemény🍰", text: "Ma vendégem vagy egy sütire. Pusszancs!", image: "media/suti.jpg", link: "", video: "" },
       14: { title: "14. Búcsú:(", text: "Kár, hogy mész🥺 De hamarosan újra együtt!☺️\n Búcsúzóul megiszunk ma egy forralt bort a városban, mit szólsz?:)", image: "media/gluhwein.jpg", link: "", video: "" },
       15: { title: "15. Hihi!", text: "A mai meglepi egy mozijegy!\nMikor megyünk???😏", image: "media/zootopia.jpg", link: "", video: "" },
       16: { title: "16. Hupsz...", text: "Julisom, az élet nem mindig habostorta! Néha meg kell állni, és értékelni mindazt, ami megadatott. Nem szabad telhetetlennek lenni.", image: "media/hupsz.jpg", link: "", video: "" },
       17: { title: "17. Jó éjszakát!", text: 'Ma estére küldök neked egy kis szeretetcsomagot🫶<br>Szép álmokat!', image: "media/sleep.jpg", link: "", video: "media/macskák.mp4" },
       18: { title: "18. Kitartást...", text: "...még az utolsó napokra a susuban:)\nBerci is szeretett volna üzenni a kalendáriumban neked, őt kapcsolom most Békéscsabáról:)", image: "media/berci.jpg", link: "", video: "" },
       19: { title: "19. Titkos recept", text: "Ma a paszulyleves receptjét kapod tőlem, csak hogy ha megszorulnál esetleg, és kifogyna minden a mélyhűtőből...\n\nHozzávalók 4 személyre\n50 dkg szárazPASZULY !!! (fehér vagy tarka)\n1 fej vöröshagyma\n1 szál MUROK !!!\n1 szál petrezselyemgyökér\nkevés zellergyökér\n3-4 db babérlevél\n1 kanál ecetes tárkony\n20 dkg füstölt kolbász\n2 kanál zsír (vagy olaj)\n2 kanál liszt\n1 kk. pirospaprika\n3 dl zsíros tej\nsó, bors\nJó étvágyat!", image: "media/cook.jpg", link: "", video: "media/paszuly.mp4" },
-      20: { title: "20. Meglepetés", text: "Szio! Remélem ma találkozunk, és odaadhatom a cuki meglepetésemet:)", image: "media/gift.png", link: "", video: "" },
+      20: { title: "20. Meglepetés🎁", text: "Szio! Remélem ma találkozunk, és odaadhatom a cuki meglepetésemet:)", image: "media/gift.png", link: "", video: "" },
       21: { title: "21. Haló!", text: "Remélem ma veled ébredek!:)\n Mit szólnál hozzá, ha elmennék ma egy jó helyre ebédelni?🤌", image: "media/salve.jpg", link: "", video: "" },
       22: { title: "22. Emlékeztető...", text: "...arra, hogy mennyire sziper-szuper ügyes vagy!🏆\nBüszke lehetsz magadra!:)\nÉn az vagyok rád!🥹", image: "media/ranglista.png", link: "", video: "" },
-      23: { title: "23. Emlékeztető 2...", text: "...arra, hogy nálad tényleg!\nÖlellek, puszillak, szeretlek!❤️\nKellemes ünnepeket!🎄", image: "media/julis.jpg", link: "", video: "media/nalad-tenyleg.mp4" },
+      23: { title: "23. Emlékeztető 2...", text: "...arra, hogy Nálad tényleg!\nÖlellek, puszillak, szeretlek!❤️\nKellemes ünnepeket!🎄", image: "media/julis.jpg", link: "", video: "media/nalad-tenyleg.mp4" },
       24: { title: "24. Boldog karácsonyt!", text: "Legyen szép napod ma a családoddal, Julis!🎁\nRemélem tetszett ez a kis kalendárium.\nÉn Gábor voltam, a te kis gömböcöd, pusziii!!!🥰", image: "media/bercixmas.jpg", link: "", video: "" },
     };
 
@@ -2063,9 +2063,23 @@ window.addEventListener('DOMContentLoaded', () => {
         if (fakeBtn) {
           fakeBtn.onclick = () => {
             alert("Most miért kell mindent elrontani?:(\nNa puszi...");
-            setTimeout(() => {
+            /*WINDOW CLOSE WORKS ONLY ON ANDROID...*/
+            /*setTimeout(() => {
               window.close();
-            }, 300);
+            }, 300);*/
+            
+            setTimeout(() => {
+            // IOS: Show loading overlay
+            const overlay = document.getElementById('loading-overlay');
+            if (overlay) {
+              overlay.style.display = 'flex';
+              overlay.style.opacity = 1;
+            }
+            // Reload after a short delay
+            setTimeout(() => {
+              location.reload();
+            }, 10);
+          }, 10);
           };
         }
       }, 200);
@@ -2135,6 +2149,6 @@ window.addEventListener('DOMContentLoaded', () => {
     };
 };
 </script>
-    <div id="loading-powered" style="position:fixed;bottom:8px;left:0;width:100vw;text-align:center;font-size:0.8em;color:#fff;opacity:0.7;letter-spacing:1px;font-family:'Fira Mono','Consolas','Menlo','Monaco',monospace;pointer-events:none;z-index:100;">powered by gabo ©2025 | v04.07  </div>
+    <div id="loading-powered" style="position:fixed;bottom:8px;left:0;width:100vw;text-align:center;font-size:0.8em;color:#fff;opacity:0.7;letter-spacing:1px;font-family:'Fira Mono','Consolas','Menlo','Monaco',monospace;pointer-events:none;z-index:100;">powered by gabo ©2025 | v5.07  </div>
 </body>
 </html>
