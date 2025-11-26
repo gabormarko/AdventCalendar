@@ -1374,21 +1374,129 @@ window.addEventListener('DOMContentLoaded', () => {
       ctx.clearRect(0,0,canvas.width,canvas.height);
       // Draw food
       if (foodImg && foodImg.complete && foodImg.naturalWidth && foodImg.naturalHeight) {
+        ctx.save();
+        ctx.beginPath();
+        // Rounded square for food
+        ctx.moveTo(food.x*box + 6, food.y*box);
+        ctx.lineTo(food.x*box + box - 6, food.y*box);
+        ctx.quadraticCurveTo(food.x*box + box, food.y*box, food.x*box + box, food.y*box + 6);
+        ctx.lineTo(food.x*box + box, food.y*box + box - 6);
+        ctx.quadraticCurveTo(food.x*box + box, food.y*box + box, food.x*box + box - 6, food.y*box + box);
+        ctx.lineTo(food.x*box + 6, food.y*box + box);
+        ctx.quadraticCurveTo(food.x*box, food.y*box + box, food.x*box, food.y*box + box - 6);
+        ctx.lineTo(food.x*box, food.y*box + 6);
+        ctx.quadraticCurveTo(food.x*box, food.y*box, food.x*box + 6, food.y*box);
+        ctx.closePath();
+        ctx.clip();
         ctx.drawImage(foodImg, food.x*box, food.y*box, box, box);
+        ctx.restore();
       } else {
         ctx.fillStyle = '#f2b179';
         ctx.fillRect(food.x*box, food.y*box, box, box);
       }
       // Draw snake
       for (let i=0;i<snake.length;i++) {
-        if (i===0 && headImg && headImg.complete && headImg.naturalWidth && headImg.naturalHeight) {
-          ctx.drawImage(headImg, snake[i].x*box, snake[i].y*box, box, box);
-        } else if (i === 0) {
-          ctx.fillStyle = '#b30000'; // fallback head color
-          ctx.fillRect(snake[i].x*box, snake[i].y*box, box, box);
-        } else {
-          ctx.fillStyle = '#90ee90'; // light green for all body parts except head
-          ctx.fillRect(snake[i].x*box, snake[i].y*box, box, box);
+        const s = snake[i];
+        // Head
+        if (i === 0) {
+          if (headImg && headImg.complete && headImg.naturalWidth && headImg.naturalHeight) {
+            ctx.save();
+            ctx.beginPath();
+            // Rounded square for head
+            ctx.moveTo(s.x*box + 6, s.y*box);
+            ctx.lineTo(s.x*box + box - 6, s.y*box);
+            ctx.quadraticCurveTo(s.x*box + box, s.y*box, s.x*box + box, s.y*box + 6);
+            ctx.lineTo(s.x*box + box, s.y*box + box - 6);
+            ctx.quadraticCurveTo(s.x*box + box, s.y*box + box, s.x*box + box - 6, s.y*box + box);
+            ctx.lineTo(s.x*box + 6, s.y*box + box);
+            ctx.quadraticCurveTo(s.x*box, s.y*box + box, s.x*box, s.y*box + box - 6);
+            ctx.lineTo(s.x*box, s.y*box + 6);
+            ctx.quadraticCurveTo(s.x*box, s.y*box, s.x*box + 6, s.y*box);
+            ctx.closePath();
+            ctx.clip();
+            ctx.drawImage(headImg, s.x*box, s.y*box, box, box);
+            ctx.restore();
+          } else {
+            ctx.fillStyle = '#b30000';
+            // Rounded square head (already present)
+            ctx.beginPath();
+            ctx.moveTo(s.x*box + 6, s.y*box);
+            ctx.lineTo(s.x*box + box - 6, s.y*box);
+            ctx.quadraticCurveTo(s.x*box + box, s.y*box, s.x*box + box, s.y*box + 6);
+            ctx.lineTo(s.x*box + box, s.y*box + box - 6);
+            ctx.quadraticCurveTo(s.x*box + box, s.y*box + box, s.x*box + box - 6, s.y*box + box);
+            ctx.lineTo(s.x*box + 6, s.y*box + box);
+            ctx.quadraticCurveTo(s.x*box, s.y*box + box, s.x*box, s.y*box + box - 6);
+            ctx.lineTo(s.x*box, s.y*box + 6);
+            ctx.quadraticCurveTo(s.x*box, s.y*box, s.x*box + 6, s.y*box);
+            ctx.closePath();
+            ctx.fill();
+          }
+        }
+        // Tail
+        else if (i === snake.length - 1) {
+          ctx.fillStyle = '#e6f7d4';
+          // Rounded square tail
+          ctx.beginPath();
+          ctx.moveTo(s.x*box + 6, s.y*box);
+          ctx.lineTo(s.x*box + box - 6, s.y*box);
+          ctx.quadraticCurveTo(s.x*box + box, s.y*box, s.x*box + box, s.y*box + 6);
+          ctx.lineTo(s.x*box + box, s.y*box + box - 6);
+          ctx.quadraticCurveTo(s.x*box + box, s.y*box + box, s.x*box + box - 6, s.y*box + box);
+          ctx.lineTo(s.x*box + 6, s.y*box + box);
+          ctx.quadraticCurveTo(s.x*box, s.y*box + box, s.x*box, s.y*box + box - 6);
+          ctx.lineTo(s.x*box, s.y*box + 6);
+          ctx.quadraticCurveTo(s.x*box, s.y*box, s.x*box + 6, s.y*box);
+          ctx.closePath();
+          ctx.fill();
+        }
+        // Body
+        else {
+          // Alternate color for body segments
+          ctx.fillStyle = (i % 2 === 0) ? '#90ee90' : '#6fd16f';
+          // Draw rounded rectangle for body
+          let rx = s.x*box, ry = s.y*box;
+          ctx.beginPath();
+          ctx.moveTo(rx + 6, ry);
+          ctx.lineTo(rx + box - 6, ry);
+          ctx.quadraticCurveTo(rx + box, ry, rx + box, ry + 6);
+          ctx.lineTo(rx + box, ry + box - 6);
+          ctx.quadraticCurveTo(rx + box, ry + box, rx + box - 6, ry + box);
+          ctx.lineTo(rx + 6, ry + box);
+          ctx.quadraticCurveTo(rx, ry + box, rx, ry + box - 6);
+          ctx.lineTo(rx, ry + 6);
+          ctx.quadraticCurveTo(rx, ry, rx + 6, ry);
+          ctx.closePath();
+          ctx.fill();
+
+          // Draw black stripe to show orientation
+          const prev = snake[i-1];
+          const next = snake[i+1];
+          // Determine direction: horizontal or vertical
+          let isHorizontal = (prev.x === s.x && next.x === s.x) ? false :
+                            (prev.y === s.y && next.y === s.y) ? true :
+                            (prev.x === s.x && next.y === s.y) ? false :
+                            (prev.y === s.y && next.x === s.x) ? true :
+                            Math.abs(prev.x - s.x) === 1 || Math.abs(next.x - s.x) === 1;
+
+          ctx.save();
+          ctx.strokeStyle = '#111';
+          ctx.lineWidth = 6;
+          ctx.lineCap = 'round';
+          if (isHorizontal) {
+            // Horizontal stripe
+            ctx.beginPath();
+            ctx.moveTo(rx + 8, ry + box/2);
+            ctx.lineTo(rx + box - 8, ry + box/2);
+            ctx.stroke();
+          } else {
+            // Vertical stripe
+            ctx.beginPath();
+            ctx.moveTo(rx + box/2, ry + 8);
+            ctx.lineTo(rx + box/2, ry + box - 8);
+            ctx.stroke();
+          }
+          ctx.restore();
         }
       }
     }
