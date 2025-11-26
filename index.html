@@ -852,6 +852,7 @@ function initDrawerLogic() {
   btn.addEventListener('click', openDrawer);
   closeBtn.addEventListener('click', closeDrawer);
   //overlay.addEventListener('click', closeDrawer);
+  
   // Swipe to close (mobile)
   let startX = null;
   panel.addEventListener('touchstart', e => {
@@ -860,7 +861,14 @@ function initDrawerLogic() {
   panel.addEventListener('touchmove', e => {
     if (startX !== null && e.touches.length === 1) {
       const dx = e.touches[0].clientX - startX;
-      if (dx < -60) closeDrawer();
+      // Check if "Egyetemre" accordion is open
+      const egyetemreHeader = Array.from(document.querySelectorAll('.accordion-header'))
+        .find(h => h.textContent.includes('Egyetemre'));
+      const egyetemreOpen = egyetemreHeader && egyetemreHeader.getAttribute('aria-expanded') === 'true';
+      // Only close drawer on swipe left if Egyetemre is NOT open
+      if (dx < -60 && !egyetemreOpen) {
+        closeDrawer();
+      }
     }
   });
   panel.addEventListener('touchend', () => { startX = null; });
@@ -1239,6 +1247,16 @@ window.addEventListener('DOMContentLoaded', () => {
     });
     restart();
     setTimeout(()=>{gameDiv.focus();},200);
+
+    window.g2048Swipe = function(dx, dy) {
+      if (Math.abs(dx) > Math.abs(dy)) {
+        if (dx > 0) move('right');
+        else move('left');
+      } else {
+        if (dy > 0) move('down');
+        else move('up');
+      }
+    };
   };
   window.g2048Init = g2048Init;
 
@@ -1517,6 +1535,17 @@ window.addEventListener('DOMContentLoaded', () => {
     pauseGame();
     // Focus for keyboard
     setTimeout(()=>{snakeDiv.focus();},200);
+
+    window.snakeSwipe = function(dx, dy) {
+      if (typeof setDir !== 'function') return;
+      if (Math.abs(dx) > Math.abs(dy)) {
+        if (dx > 0) setDir('right');
+        else setDir('left');
+      } else {
+        if (dy > 0) setDir('down');
+        else setDir('up');
+      }
+    };
   };
   window.slidingInit = function() {
     const slidingDiv = document.getElementById('game-sliding');
@@ -1754,12 +1783,58 @@ window.addEventListener('DOMContentLoaded', () => {
       restart();
     }
     setTimeout(()=>{slidingDiv.focus();},200);
+    window.slidingSwipe = function(dx, dy) {
+      if (Math.abs(dx) > Math.abs(dy)) {
+        if (dx > 0) tryMove(empty.x-1, empty.y);
+        else tryMove(empty.x+1, empty.y);
+      } else {
+        if (dy > 0) tryMove(empty.x, empty.y-1);
+        else tryMove(empty.x, empty.y+1);
+      }
+    };
   };
 
   // Default: show Snake
   const defaultBtn = document.querySelector('.game-select-btn[data-game="snake"]');
   if (defaultBtn) defaultBtn.click();
 });
+
+
+let swipeStartX = 0, swipeStartY = 0, swipeActive = false;
+
+window.addEventListener('touchstart', function(e) {
+  if (e.touches.length === 1) {
+    swipeStartX = e.touches[0].clientX;
+    swipeStartY = e.touches[0].clientY;
+    swipeActive = true;
+  }
+}, { passive: true });
+
+window.addEventListener('touchend', function(e) {
+  if (!swipeActive) return;
+  swipeActive = false;
+  const touch = (e.changedTouches && e.changedTouches[0]) ? e.changedTouches[0] : null;
+  if (!touch) return;
+  const dx = touch.clientX - swipeStartX;
+  const dy = touch.clientY - swipeStartY;
+  if (Math.abs(dx) < 20 && Math.abs(dy) < 20) return; // Ignore tiny swipes
+
+  // Only handle if Egyetemre/games accordion is open
+  const egyetemreHeader = Array.from(document.querySelectorAll('.accordion-header'))
+    .find(h => h.textContent.includes('Egyetemre'));
+  const egyetemreOpen = egyetemreHeader && egyetemreHeader.getAttribute('aria-expanded') === 'true';
+
+  if (!egyetemreOpen) return;
+
+  // Which game is visible?
+  if (document.getElementById('game-snake-container').style.display !== 'none' && typeof window.snakeSwipe === 'function') {
+    window.snakeSwipe(dx, dy);
+  } else if (document.getElementById('game-sliding-container').style.display !== 'none' && typeof window.slidingSwipe === 'function') {
+    window.slidingSwipe(dx, dy);
+  } else if (document.getElementById('game-2048-container').style.display !== 'none' && typeof window.g2048Swipe === 'function') {
+    window.g2048Swipe(dx, dy);
+  }
+}, { passive: true });
 
 // Snow toggle logic
 window.addEventListener('DOMContentLoaded', () => {
