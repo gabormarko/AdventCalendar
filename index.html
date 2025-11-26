@@ -1672,28 +1672,33 @@ window.addEventListener('DOMContentLoaded', () => {
     }
     function tryMove(x, y) {
       if (gameOver) return;
-      if ((Math.abs(x - empty.x) + Math.abs(y - empty.y)) === 1) {
-        board[empty.y][empty.x] = board[y][x];
-        board[y][x] = 0;
-        empty = {x, y};
-        moves++;
-        updateScore();
-        draw();
-        if (isSolved()) {
-          gameOver = true;
-          let isBest = false;
-          if (best === 0 || moves < best) {
-            best = moves;
-            localStorage.setItem('sliding-best', best);
-            isBest = true;
-          }
-          updateScore();
-          setTimeout(()=>{
-            alert('Ügyi-bügyi!!!🥰\nLépések: ' + moves + (isBest ? '\nÚj rekord!!!' : ''));
-            // Next image for next game - not automatic to see the solved image
-            // nextImageAndRestart();
-          }, 100);
+      // Check bounds
+      if (x < 0 || x >= gridSize || y < 0 || y >= gridSize) return;
+      // Only allow moving a tile adjacent to the empty space
+      if ((Math.abs(x - empty.x) + Math.abs(y - empty.y)) !== 1) return;
+      // Only allow moving a non-empty tile
+      if (board[y][x] === 0) return;
+      // Perform the move
+      board[empty.y][empty.x] = board[y][x];
+      board[y][x] = 0;
+      empty = {x, y};
+      moves++;
+      updateScore();
+      draw();
+      if (isSolved()) {
+        gameOver = true;
+        let isBest = false;
+        if (best === 0 || moves < best) {
+          best = moves;
+          localStorage.setItem('sliding-best', best);
+          isBest = true;
         }
+        updateScore();
+        setTimeout(()=>{
+          alert('Ügyi-bügyi!!!🥰\nLépések: ' + moves + (isBest ? '\nÚj rekord!!!' : ''));
+          // Next image for next game - not automatic to see the solved image
+          // nextImageAndRestart();
+        }, 100);
       }
     }
     function nextImageAndRestart() {
@@ -1785,11 +1790,13 @@ window.addEventListener('DOMContentLoaded', () => {
     setTimeout(()=>{slidingDiv.focus();},200);
     window.slidingSwipe = function(dx, dy) {
       if (Math.abs(dx) > Math.abs(dy)) {
-        if (dx > 0) tryMove(empty.x-1, empty.y);
-        else tryMove(empty.x+1, empty.y);
+        // Horizontal swipe
+        if (dx > 0 && empty.x > 0) tryMove(empty.x - 1, empty.y); // Move left tile right
+        else if (dx < 0 && empty.x < gridSize - 1) tryMove(empty.x + 1, empty.y); // Move right tile left
       } else {
-        if (dy > 0) tryMove(empty.x, empty.y-1);
-        else tryMove(empty.x, empty.y+1);
+        // Vertical swipe
+        if (dy > 0 && empty.y > 0) tryMove(empty.x, empty.y - 1); // Move above tile down
+        else if (dy < 0 && empty.y < gridSize - 1) tryMove(empty.x, empty.y + 1); // Move below tile up
       }
     };
   };
