@@ -406,12 +406,21 @@
         <div class="accordion-section">
           <button class="accordion-header" aria-expanded="false" style="width:100%;text-align:left;padding:14px 18px;font-family:'Comic Neue',Arial,sans-serif;font-size:1.08em;color:#b30000;background:none;border:none;outline:none;cursor:pointer;border-radius:8px;margin-top:2px;transition:background 0.2s;">⚙️ Beállítások</button>
           <div class="accordion-content" style="display:none;padding:0 18px 12px 18px;font-family:'Segoe UI',Arial,sans-serif;font-size:1em;color:#222;">
-            <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
-              <label for="snow-toggle" style="font-size:1em;cursor:pointer;">❄️ Hóesés:</label>
-              <label class="switch">
-                <input type="checkbox" id="snow-toggle" />
-                <span class="slider"></span>
-              </label>
+            <div style="display:flex;flex-direction:column;align-items:flex-start;gap:10px;margin-bottom:10px;">
+              <div style="display:flex;align-items:center;gap:12px;">
+                <label for="snow-toggle" style="font-size:1em;cursor:pointer;">❄️ Hóesés:</label>
+                <label class="switch">
+                  <input type="checkbox" id="snow-toggle" />
+                  <span class="slider"></span>
+                </label>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;">
+                <label for="music-toggle" style="font-size:1em;cursor:pointer;">🎵 Muzsika:</label>
+                <label class="switch">
+                  <input type="checkbox" id="music-toggle" />
+                  <span class="slider"></span>
+                </label>
+              </div>
             </div>
               <style>
               /* Toggle switch styles */
@@ -823,6 +832,9 @@
     </nav>
 
 <script>
+// Music toggle off on load by default
+localStorage.removeItem('music-enabled');
+
 // Side drawer logic (mobile friendly)
 function initDrawerLogic() {
   const btn = document.getElementById('drawer-btn');
@@ -1869,6 +1881,79 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+// Music toggle and playback management logic
+window.addEventListener('DOMContentLoaded', () => {
+  const musicToggle = document.getElementById('music-toggle');
+  const bgMusic = document.getElementById('bg-music');
+  if (!musicToggle || !bgMusic) return;
+
+  // Restore previous state
+  const musicOn = localStorage.getItem('music-enabled');
+  if (musicOn === '1') {
+    musicToggle.checked = true;
+    bgMusic.volume = 0.7;
+    bgMusic.play().catch(()=>{});
+  } else {
+    musicToggle.checked = false;
+    bgMusic.pause();
+    // bgMusic.currentTime = 0; // Optional: reset to start
+  }
+
+  musicToggle.addEventListener('change', function() {
+    if (this.checked) {
+      localStorage.setItem('music-enabled', '1');
+      bgMusic.volume = 0.7;
+      bgMusic.play().catch(()=>{});
+    } else {
+      localStorage.setItem('music-enabled', '0');
+      bgMusic.pause();
+      // bgMusic.currentTime = 0; // Optional: reset to start
+    }
+  });
+
+  // Pause bg music if any other audio/video starts playing
+  document.body.addEventListener('play', function(e) {
+    if (e.target !== bgMusic && (e.target.tagName === 'AUDIO' || e.target.tagName === 'VIDEO')) {
+      if (!bgMusic.paused) bgMusic.pause();
+    }
+  }, true);
+
+  // Resume bg music if all other media stopped and music toggle is on
+  function resumeMusicIfAllowed() {
+    if (!musicToggle.checked) return;
+    // Check if any other audio/video is playing
+    const media = Array.from(document.querySelectorAll('audio,video')).filter(el => el !== bgMusic);
+    const anyPlaying = media.some(el => !el.paused && !el.ended && el.currentTime > 0);
+    if (!anyPlaying) {
+      bgMusic.volume = 0.7;
+      bgMusic.play().catch(()=>{});
+    }
+  }
+
+  // Listen for pause/end events on all media
+  document.body.addEventListener('pause', function(e) {
+    if (e.target !== bgMusic && (e.target.tagName === 'AUDIO' || e.target.tagName === 'VIDEO')) {
+      setTimeout(resumeMusicIfAllowed, 3500);
+    }
+  }, true);
+  document.body.addEventListener('ended', function(e) {
+    if (e.target !== bgMusic && (e.target.tagName === 'AUDIO' || e.target.tagName === 'VIDEO')) {
+      setTimeout(resumeMusicIfAllowed, 3500);
+    }
+  }, true);
+
+  // Also resume music when content overlay is closed
+  const contentOverlay = document.getElementById('content-overlay');
+  if (contentOverlay) {
+    contentOverlay.addEventListener('transitionend', resumeMusicIfAllowed);
+    // Also on close button click
+    const closeBtn = document.getElementById('close-content-btn');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', () => setTimeout(resumeMusicIfAllowed, 3500));
+    }
+  }
+});
+
 </script>
     <canvas id="snow-canvas" style="position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:10002;"></canvas>
     <div id="loading-overlay">
@@ -2465,6 +2550,8 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 })();
 </script>
+
+<audio id="bg-music" src="media/xmas-songs.mp3" loop style="display:none;"></audio>
 
 </body>
 </html>
