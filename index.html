@@ -1901,7 +1901,7 @@ window.addEventListener('DOMContentLoaded', () => {
   } else {
     musicToggle.checked = false;
     bgMusic.pause();
-    // Do not reset currentTime here!
+    // Do not reset currentTime here! let it continue from saved position
   }
 
   musicToggle.addEventListener('change', function() {
