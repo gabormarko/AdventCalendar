@@ -1887,8 +1887,12 @@ window.addEventListener('DOMContentLoaded', () => {
   const bgMusic = document.getElementById('bg-music');
   if (!musicToggle || !bgMusic) return;
 
-  // Restore previous state
+  // Restore previous state and position
   const musicOn = localStorage.getItem('music-enabled');
+  const savedPos = parseFloat(localStorage.getItem('music-pos') || '0');
+  if (savedPos && !isNaN(savedPos)) {
+    bgMusic.currentTime = savedPos;
+  }
   if (musicOn === '1') {
     musicToggle.checked = true;
     bgMusic.volume = 0.7;
@@ -1896,19 +1900,32 @@ window.addEventListener('DOMContentLoaded', () => {
   } else {
     musicToggle.checked = false;
     bgMusic.pause();
-    // bgMusic.currentTime = 0; // Optional: reset to start
+    // Do not reset currentTime here!
   }
 
   musicToggle.addEventListener('change', function() {
     if (this.checked) {
       localStorage.setItem('music-enabled', '1');
+      // Restore position if available
+      const savedPos = parseFloat(localStorage.getItem('music-pos') || '0');
+      if (savedPos && !isNaN(savedPos)) {
+        bgMusic.currentTime = savedPos;
+      }
       bgMusic.volume = 0.7;
       bgMusic.play().catch(()=>{});
     } else {
       localStorage.setItem('music-enabled', '0');
       bgMusic.pause();
-      // bgMusic.currentTime = 0; // Optional: reset to start
+      // Do not reset currentTime here!
     }
+  });
+
+  // Save position on pause and before unload
+  bgMusic.addEventListener('pause', () => {
+    localStorage.setItem('music-pos', bgMusic.currentTime);
+  });
+  window.addEventListener('beforeunload', () => {
+    localStorage.setItem('music-pos', bgMusic.currentTime);
   });
 
   // Pause bg music if any other audio/video starts playing
