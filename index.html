@@ -830,6 +830,15 @@ function initDrawerLogic() {
   const panel = document.getElementById('drawer-panel');
   const overlay = document.getElementById('drawer-overlay');
   const closeBtn = document.getElementById('drawer-close');
+  overlay.addEventListener('click', function () {
+    // Check if "Egyetemre" accordion is open
+    const egyetemreHeader = Array.from(document.querySelectorAll('.accordion-header'))
+      .find(h => h.textContent.includes('Egyetemre'));
+    const egyetemreOpen = egyetemreHeader && egyetemreHeader.getAttribute('aria-expanded') === 'true';
+    if (!egyetemreOpen) {
+      closeDrawer();
+    }
+  });  
   function openDrawer() {
     panel.style.transform = 'translateX(0)';
     overlay.style.display = 'block';
@@ -842,7 +851,7 @@ function initDrawerLogic() {
   }
   btn.addEventListener('click', openDrawer);
   closeBtn.addEventListener('click', closeDrawer);
-  overlay.addEventListener('click', closeDrawer);
+  //overlay.addEventListener('click', closeDrawer);
   // Swipe to close (mobile)
   let startX = null;
   panel.addEventListener('touchstart', e => {
@@ -1517,7 +1526,7 @@ window.addEventListener('DOMContentLoaded', () => {
     slidingDiv.setAttribute('data-initialized', '1');
     const gridSize = 3;
     const tileSize = 102;
-    const gap = 2.5;
+    const gap = 2;
     const canvasSize = gridSize * tileSize + (gridSize - 1) * gap;
     // First mode: classic numbers, then images
     const modes = [
