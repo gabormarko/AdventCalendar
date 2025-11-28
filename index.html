@@ -1078,6 +1078,8 @@ window.addEventListener('DOMContentLoaded', () => {
   // 2048 game logic (minimal, mobile-friendly)
   function g2048Init() {  
     const g2048Div = document.getElementById('game-2048');
+    let hasShown2048 = false; // Add this at the top of g2048Init
+
     if (!g2048Div) return;
     // Prevent multiple initializations
     if (g2048Div.getAttribute('data-initialized')) return;
@@ -1145,12 +1147,15 @@ window.addEventListener('DOMContentLoaded', () => {
     }
     function move(dir) {
       let moved = false;
+      let made2048 = false; // Track if 2048 tile is created this move
+
       function slide(row) {
         let arr = row.filter(x => x);
         for (let i = 0; i < arr.length - 1; i++) {
           if (arr[i] && arr[i] === arr[i + 1]) {
             arr[i] *= 2;
             score += arr[i];
+            if (arr[i] === 2048 && !hasShown2048) made2048 = true;
             arr[i + 1] = 0;
           }
         }
@@ -1190,6 +1195,12 @@ window.addEventListener('DOMContentLoaded', () => {
       if (moved) {
         addRandom();
         draw();
+        if (made2048 && !hasShown2048) {
+          hasShown2048 = true;
+          setTimeout(() => {
+            alert("Jeej, 2048 elérve! Csak így tovább!");
+          }, 100);
+        }
         if (isGameOver()) setTimeout(() => {
           if (score > highScore) {
             highScore = score;
