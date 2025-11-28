@@ -1281,11 +1281,12 @@ window.addEventListener('DOMContentLoaded', () => {
     // Prevent multiple initializations
     if (snakeDiv.getAttribute('data-initialized')) return;
     snakeDiv.setAttribute('data-initialized', '1');
-    const snakeGridSize = 9;
-    const snakeBox = 34;
+    const snakeGridSize = 10;
+    const snakeBox = 31;
     const snakeCanvasSize = snakeGridSize * snakeBox;
     // Snake modes: head and food images
     const snakeModes = [
+      { head: 'media/snake0.png', food: 'media/food0.png' },  
       { head: 'media/snake1.jpg', food: 'media/food1.png' },
       { head: 'media/snake2.jpg', food: 'media/food2.jpg' }
     ];
