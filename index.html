@@ -2792,9 +2792,12 @@ window.addEventListener('DOMContentLoaded', () => {
         tapCount = 0;
         // Gather stats for each day up to today
         const today = new Date();
+        const month = today.getMonth(); // current month (0-based)
+        const year = today.getFullYear();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
         const days = [];
-        for (let d = 1; d <= 30; d++) {
-          const date = new Date(today.getFullYear(), 10, d); // December
+        for (let d = 1; d <= daysInMonth; d++) {
+          const date = new Date(year, month, d);
           if (date > today) break;
           const dayStr = date.toISOString().slice(0, 10);
           days.push(dayStr);
