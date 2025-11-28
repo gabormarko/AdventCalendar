@@ -1287,7 +1287,7 @@ window.addEventListener('DOMContentLoaded', () => {
     // Snake modes: head and food images
     const snakeModes = [
       { head: 'media/snake0.png', food: 'media/food0.png' },  
-      { head: 'media/snake1.jpg', food: 'media/food1.png' },
+    { head: 'media/snake1.jpg', food: 'media/food1.png' },
       { head: 'media/snake2.jpg', food: 'media/food2.jpg' }
     ];
     let modeIdx = parseInt(localStorage.getItem('snake-mode-idx')||'0',10) % snakeModes.length;
@@ -2425,6 +2425,7 @@ window.addEventListener('DOMContentLoaded', () => {
       }, 200);
       return;
     }
+    
     // Special content for day 24
     if (day === 24) {
       document.getElementById('calendar').style.filter = 'blur(2px)';
