@@ -2833,9 +2833,7 @@ window.addEventListener('DOMContentLoaded', () => {
           display:flex;flex-direction:column;align-items:center;
         `;
         box.innerHTML = `<div style="font-weight:bold;font-size:1.1em;margin-bottom:12px;">dev stat</div>
-        <div style="width:100%;overflow-x:auto;">
-        ${lines.join('<br>')}
-        </div>
+        <div style="width:100%;overflow-x:auto;">${lines.join('<br>')}</div>
         <button id="dev-stats-close" style="
           margin-top:8px;
           font-family:'Comic Neue',Arial,sans-serif;
