@@ -2705,6 +2705,157 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   });
 })();
+
+(function() {
+  // --- 1. Track app opens per day ---
+  const todayStr = new Date().toISOString().slice(0, 10);
+  let appOpens = parseInt(localStorage.getItem('devstat-appopen-' + todayStr) || '0', 10) + 1;
+  localStorage.setItem('devstat-appopen-' + todayStr, appOpens);
+
+  // --- 2. Track box opens per day ---
+  window.addEventListener('DOMContentLoaded', () => {
+    const calendar = document.getElementById('calendar');
+    if (!calendar) return;
+    calendar.addEventListener('click', function(e) {
+      const door = e.target.closest('.door');
+      if (!door) return;
+      const day = parseInt(door.textContent, 10);
+      if (!day || isNaN(day)) return;
+      const key = 'devstat-boxopen-' + todayStr;
+      let boxOpens = parseInt(localStorage.getItem(key) || '0', 10) + 1;
+      localStorage.setItem(key, boxOpens);
+    });
+  });
+
+  // --- 3. Track total usage time per day ---
+  let usageStart = Date.now();
+  let usageTimer = setInterval(() => {
+    const now = Date.now();
+    const mins = Math.floor((now - usageStart) / 60000);
+    localStorage.setItem('devstat-usage-' + todayStr, mins);
+  }, 60000);
+  window.addEventListener('beforeunload', () => {
+    const now = Date.now();
+    const mins = Math.floor((now - usageStart) / 60000);
+    localStorage.setItem('devstat-usage-' + todayStr, mins);
+  });
+
+  // --- 4. Track per-game play time per day ---
+  function trackGameTime(gameKey, containerId) {
+    let start = null, timer = null;
+    function startTimer() {
+      if (start !== null) return;
+      start = Date.now();
+      timer = setInterval(() => {
+        const mins = Math.floor((Date.now() - start) / 60000);
+        localStorage.setItem(gameKey + todayStr, mins);
+      }, 60000);
+    }
+    function stopTimer() {
+      if (start === null) return;
+      const mins = Math.floor((Date.now() - start) / 60000);
+      localStorage.setItem(gameKey + todayStr, mins);
+      clearInterval(timer);
+      start = null;
+      timer = null;
+    }
+    // Show/hide logic
+    window.addEventListener('DOMContentLoaded', () => {
+      const cont = document.getElementById(containerId);
+      if (!cont) return;
+      const observer = new MutationObserver(() => {
+        if (cont.style.display !== 'none') startTimer();
+        else stopTimer();
+      });
+      observer.observe(cont, { attributes: true, attributeFilter: ['style'] });
+      // Start if visible on load
+      if (cont.style.display !== 'none') startTimer();
+    });
+    // Also stop on unload
+    window.addEventListener('beforeunload', stopTimer);
+  }
+  trackGameTime('devstat-snake-', 'game-snake-container');
+  trackGameTime('devstat-puzzle-', 'game-sliding-container');
+  trackGameTime('devstat-2048-', 'game-2048-container');
+
+  // --- 5. Hidden dev popup on copyright tap ---
+  window.addEventListener('DOMContentLoaded', () => {
+    const copyright = Array.from(document.querySelectorAll('span,div,a'))
+      .find(el => el.textContent && el.textContent.includes('Minden jog fenntartva'));
+    if (!copyright) return;
+    let tapCount = 0, tapTimer = null;
+    copyright.addEventListener('click', function() {
+      tapCount++;
+      if (tapTimer) clearTimeout(tapTimer);
+      tapTimer = setTimeout(() => { tapCount = 0; }, 2000);
+      if (tapCount === 10) {
+        tapCount = 0;
+        // Gather stats for each day up to today
+        const today = new Date();
+        const days = [];
+        for (let d = 1; d <= 30; d++) {
+          const date = new Date(today.getFullYear(), 10, d); // December
+          if (date > today) break;
+          const dayStr = date.toISOString().slice(0, 10);
+          days.push(dayStr);
+        }
+        let sum = {app:0, box:0, usage:0, snake:0, puzzle:0, g2048:0};
+        let lines = [];
+        days.forEach((ds, i) => {
+          const day = i+1;
+          const app = parseInt(localStorage.getItem('devstat-appopen-' + ds) || '0', 10);
+          const box = parseInt(localStorage.getItem('devstat-boxopen-' + ds) || '0', 10);
+          const usage = parseInt(localStorage.getItem('devstat-usage-' + ds) || '0', 10);
+          const snake = parseInt(localStorage.getItem('devstat-snake-' + ds) || '0', 10);
+          const puzzle = parseInt(localStorage.getItem('devstat-puzzle-' + ds) || '0', 10);
+          const g2048 = parseInt(localStorage.getItem('devstat-2048-' + ds) || '0', 10);
+          sum.app += app; sum.box += box; sum.usage += usage;
+          sum.snake += snake; sum.puzzle += puzzle; sum.g2048 += g2048;
+          lines.push(`${day}: a ${app}x, b ${box}x, a ${usage}m, s ${snake}m, p ${puzzle}m, g ${g2048}m`);
+        });
+        lines.push(`sum: a ${sum.app}x, b ${sum.box}x, a ${sum.usage}m, s ${sum.snake}m, p ${sum.puzzle}m, g ${sum.g2048}m`);
+        
+        let oldDev = document.getElementById('dev-stats-overlay');
+        if (oldDev) oldDev.remove();
+
+        const overlay = document.createElement('div');
+        overlay.id = 'dev-stats-overlay';
+        overlay.style.cssText = `
+          position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:10050;
+          background:rgba(0,0,0,0.72);backdrop-filter:blur(3px);
+          display:flex;align-items:center;justify-content:center;
+        `;
+        const box = document.createElement('div');
+        box.style.cssText = `
+          background:#fffbe8;color:#b30000;font-family:'Fira Mono',monospace;
+          font-size:0.8em;border-radius:18px;box-shadow:0 2px 16px #b3000033;
+          padding:12px 12px;max-width:340px;max-height:70vh;overflow-y:auto;
+          text-align:left;white-space:pre;
+          display:flex;flex-direction:column;align-items:center;
+        `;
+        box.innerHTML = `<div style="font-weight:bold;font-size:1.1em;margin-bottom:12px;">dev stat</div>
+        <div style="width:100%;overflow-x:auto;">
+        ${lines.join('<br>')}
+        </div>
+        <button id="dev-stats-close" style="
+          margin-top:8px;
+          font-family:'Comic Neue',Arial,sans-serif;
+          font-size:0.8em;
+          padding:6px 6px;
+          background:#b30000;
+          color:#fff;
+          border:none;
+          border-radius:8px;
+          box-shadow:0 2px 6px rgba(0,0,0,0.12);
+          cursor:pointer;
+        ">close</button>`;
+        overlay.appendChild(box);
+        document.body.appendChild(overlay);
+        document.getElementById('dev-stats-close').onclick = () => overlay.remove();
+      }
+    });
+  });
+})();
 </script>
 
 <audio id="bg-music" src="media/xmas-songs.mp3" loop style="display:none;"></audio>
