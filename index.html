@@ -2708,7 +2708,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 (function() {
   // --- 1. Track app opens per day ---
-  const todayStr = new Date().toISOString().slice(0, 10);
+  const todayStr = (d => d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'))(new Date());
   let appOpens = parseInt(localStorage.getItem('devstat-appopen-' + todayStr) || '0', 10) + 1;
   localStorage.setItem('devstat-appopen-' + todayStr, appOpens);
 
@@ -2792,12 +2792,12 @@ window.addEventListener('DOMContentLoaded', () => {
         tapCount = 0;
         // Gather stats for each day up to today
         const today = new Date();
-        const days = [];
-        for (let i = 29; i >= 0; i--) {
-          const date = new Date(today.getFullYear(), today.getMonth(), today.getDate() - i);
-          const dayStr = date.toISOString().slice(0, 10);
-          days.push(dayStr);
-        }
+      const days = [];
+      for (let i = 29; i >= 0; i--) {
+        const date = new Date(today.getFullYear(), today.getMonth(), today.getDate() - i);
+        const dayStr = date.getFullYear() + '-' + String(date.getMonth()+1).padStart(2,'0') + '-' + String(date.getDate()).padStart(2,'0');
+        days.push(dayStr);
+      }
         let sum = {app:0, box:0, usage:0, snake:0, puzzle:0, g2048:0};
         let lines = [];
         days.forEach((ds, i) => {
