@@ -1013,12 +1013,12 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     }
     if (puzzleBtn) {
-      if (currentDay < 8) {
+      if (currentDay < 5) {
         puzzleBtn.disabled = true;
         puzzleBtn.style.background = '#888';
         puzzleBtn.style.color = '#ccc';
-        puzzleBtn.innerHTML = '🔒 (12.08)';
-        puzzleBtn.setAttribute('title', 'Elérhető: 8. nap');
+        puzzleBtn.innerHTML = '🔒 (12.05)';
+        puzzleBtn.setAttribute('title', 'Elérhető: 5. nap');
       } else {
         puzzleBtn.disabled = false;
         puzzleBtn.innerHTML = 'Sliding Puzzle';
@@ -1026,12 +1026,12 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     }
     if (g2048Btn) {
-      if (currentDay < 15) {
+      if (currentDay < 8) {
         g2048Btn.disabled = true;
         g2048Btn.style.background = '#888';
         g2048Btn.style.color = '#ccc';
-        g2048Btn.innerHTML = '🔒 (12.15)';
-        g2048Btn.setAttribute('title', 'Elérhető: 15. nap');
+        g2048Btn.innerHTML = '🔒 (12.08)';
+        g2048Btn.setAttribute('title', 'Elérhető: 8. nap');
       } else {
         g2048Btn.disabled = false;
         g2048Btn.innerHTML = '2048';
