@@ -2138,7 +2138,7 @@ window.addEventListener('DOMContentLoaded', () => {
         if (idx === paddedText.length) {
           clearInterval(typeInterval);
           cycle++;
-          if (cycle < 2) {
+          if (cycle < 1) {
             setTimeout(runTypewriter, 400); // short pause before next cycle
           } else {
             setTimeout(() => {
@@ -2228,10 +2228,10 @@ window.addEventListener('DOMContentLoaded', () => {
       1: { title: "1. Szia Julis!:)🐥", text: "Üdv az adventi kalendáriumodban!\nMinden napra jut majd egy kis meglepetés, hihi.\n Az első maga az applikáció, remélem tetszik:)\nPusziii!!!🥰", image: "media/coding.jpg", link: "", video: "" },
       2: { title: "2. Ügyi-bügyi vagy...", text: "...hogy ma is visszatértél:)!\n Jutalmad egy kis kávépénz-támogatás (így hó vége felé közeledve), hogy nyitva tudd tartani ma a szemeidet órán.☕\nCheckold a Revolutod!", image: "media/coffee.png", link: "", video: "" },
       3: { title: "3. 3 hónapja...", text: "...találkoztunk először kettesben!:) Durva, mennyi minden történt azóta:)\n A havi kis borítékod nem marad el, majd odaadom, ha találkozunk!:)💌\nUi.: Ma este egy görgőzés?😎", image: "media/0903.jpg", link: "", video: "" },
-      4: { title: "4. Wakey-wakey!💤", text: "Jó reggelt! Ügyes legyél ma a susuban!:)", image: "", link: "", video: "media/wakey.mp4" },
+      4: { title: "4. Wakey-wakey!💤", text: "Szép jó reggelt az én kis padawanomnak!\nÜgyes legyél ma a susuban!:)", image: "", link: "", video: "media/wakey.mp4" },
       5: { title: "5. Grafilogika🧠", text: "Ma egy kis feladványt kapsz, remélem ki tudod színesben nyomtatni (és színezni:D).\n Viel Spaß!:)<br><a href='https://drive.google.com/file/d/1hQnBsPC27ZBde7qkPaNAs_L4dANv0pTG/view?usp=drive_link' target='_blank'>Nyomtatás</a>", image: "media/nonogramm.png", link: "", video: "" },
       6: { title: "6. Ho-ho-ho-hooo!🎅", text: "Remélem jól viselkedtél az évben, kedves Julis!\nÉn úgy hallottam, nagyrészt igen...😇😈\nSikerült megoldani a grafilogikát?:)", image: "", link: "", video: "" },
-      7: { title: "7. Nagyon-nagyon!", text: 'Bocsi, most rámjött. Legyen szép napod! Szeretlek!❤️', image: "media/collage.jpg", link: "", video: "media/elsőre.mp4" },
+      7: { title: "7. Nagyon-nagyon!", text: 'Bocsi, most rám jött. Legyen szép napod! Szeretlek!❤️', image: "media/collage.jpg", link: "", video: "media/elsőre.mp4" },
       8: { title: "8. Bolondóra!🤸‍♀️", text: "Először is hajrá ma a vizsgán!:)\n Viszont Julis, ma sem maradhat el a bolondóra! Bukfencezgess párat a lakásban:) Ha készül róla videó, szívesen veszem!:)", image: "media/bukfenc.gif", link: "", video: "" },
       9: { title: "9. Egy kis motiváció reggelre!", text: "Gyerünk Julis, ügyes leszel ma!🤘\nRopjad neki!💃", image: "", link: "", video: "media/fish.mp4" },
       10: { title: "10. A mai meglepetés pedig...", text: "... én leszek!:)\nNa jó, ennyire azért nem kell repdesned az örömtől.\nVégre újra találkozunk, váááááááááá!🥰", image: "media/lederhose2.jpg", link: "", video: "" },
@@ -2497,18 +2497,22 @@ window.addEventListener('DOMContentLoaded', () => {
                       text-align:left;
                       margin-bottom:32px;
                     "></div>
-                    <button id="final-typewriter-close" style="
-                      margin-top:18px;
-                      font-family:'Comic Neue',Arial,sans-serif;
-                      font-size:1.1em;
-                      padding:10px 28px;
-                      background:#b30000;
-                      color:#fff;
-                      border:none;
-                      border-radius:8px;
-                      box-shadow:0 2px 6px rgba(0,0,0,0.12);
-                      cursor:pointer;
-                    ">Puszi❤️</button>
+                    <div style="height:54px;display:flex;align-items:center;justify-content:center;">
+                      <button id="final-typewriter-close" style="opacity:0;
+                        pointer-events:none;
+                        transition:opacity 0.7s;
+                        margin-top:18px;
+                        font-family:'Comic Neue',Arial,sans-serif;
+                        font-size:1.1em;
+                        padding:10px 28px;
+                        background:#b30000;
+                        color:#fff;
+                        border:none;
+                        border-radius:8px;
+                        box-shadow:0 2px 6px rgba(0,0,0,0.12);
+                        cursor:pointer;
+                      ">Puszi❤️</button>
+                    </div>
                   `;
                   document.body.appendChild(finalOverlay);
                 } else {
@@ -2517,17 +2521,26 @@ window.addEventListener('DOMContentLoaded', () => {
                 // Typewriter effect
                 const text = `No, hát ez lett volna az én kis adventi kalendáriumom, az én kis cukorborsó Julisomnak.\n\nRemélem tetszett, és minden nap tudtam egy kis mosolyt csalni az arcodra.\n\nÉn Gábor voltam, a te kis gömböcöd.\n\nBoldog karácsonyt!\n\nPuszi❤️`;
                 const box = document.getElementById('final-typewriter-box');
+                const closeBtn = document.getElementById('final-typewriter-close');
+
                 let idx = 0;
                 box.textContent = '';
+                closeBtn.style.opacity = '0';
+                closeBtn.style.pointerEvents = 'none'; // Hide button initially
                 function typeStep() {
                   if (idx <= text.length) {
                     box.innerHTML = text.slice(0, idx).replace(/\n/g, '<br>');
                     idx++;
                     setTimeout(typeStep, 52);
+                  } else {
+                    setTimeout(() => {
+                      closeBtn.style.opacity = '1';
+                      closeBtn.style.pointerEvents = 'auto'; // Show button after 1.5 sec delay
+                    }, 1500);
                   }
                 }
                 typeStep();
-                document.getElementById('final-typewriter-close').onclick = () => {
+                closeBtn.onclick = () => {
                   finalOverlay.style.display = 'none';
                 };
               }
