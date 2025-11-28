@@ -2792,13 +2792,9 @@ window.addEventListener('DOMContentLoaded', () => {
         tapCount = 0;
         // Gather stats for each day up to today
         const today = new Date();
-        const month = today.getMonth(); // current month (0-based)
-        const year = today.getFullYear();
-        const daysInMonth = new Date(year, month + 1, 0).getDate();
         const days = [];
-        for (let d = 1; d <= daysInMonth; d++) {
-          const date = new Date(year, month, d);
-          if (date > today) break;
+        for (let i = 29; i >= 0; i--) {
+          const date = new Date(today.getFullYear(), today.getMonth(), today.getDate() - i);
           const dayStr = date.toISOString().slice(0, 10);
           days.push(dayStr);
         }
@@ -2814,7 +2810,7 @@ window.addEventListener('DOMContentLoaded', () => {
           const g2048 = parseInt(localStorage.getItem('devstat-2048-' + ds) || '0', 10);
           sum.app += app; sum.box += box; sum.usage += usage;
           sum.snake += snake; sum.puzzle += puzzle; sum.g2048 += g2048;
-          lines.push(`${day}: a ${app}x, b ${box}x, a ${usage}m, s ${snake}m, p ${puzzle}m, g ${g2048}m`);
+          lines.push(`${ds}: a ${app}x, b ${box}x, a ${usage}m, s ${snake}m, p ${puzzle}m, g ${g2048}m`);
         });
         lines.push(`sum: a ${sum.app}x, b ${sum.box}x, a ${sum.usage}m, s ${sum.snake}m, p ${sum.puzzle}m, g ${sum.g2048}m`);
         
