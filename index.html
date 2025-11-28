@@ -1707,7 +1707,8 @@ window.addEventListener('DOMContentLoaded', () => {
     let board = [];
     let empty = {x: gridSize - 1, y: gridSize - 1};
     let moves = 0;
-    let best = parseInt(localStorage.getItem('sliding-best')||'0',10);
+    let bestKey = 'sliding-best-' + modeIndex;
+    let best = parseInt(localStorage.getItem(bestKey) || '0', 10);
     let gameOver = false;
     function makeBoard() {
       board = [];
@@ -1824,7 +1825,7 @@ window.addEventListener('DOMContentLoaded', () => {
         let isBest = false;
         if (best === 0 || moves < best) {
           best = moves;
-          localStorage.setItem('sliding-best', best);
+          localStorage.setItem(bestKey, best);
           isBest = true;
         }
         updateScore();
@@ -1838,6 +1839,8 @@ window.addEventListener('DOMContentLoaded', () => {
     function nextImageAndRestart() {
       modeIndex = (modeIndex + 1) % modes.length;
       localStorage.setItem('sliding-mode-idx', modeIndex);
+      bestKey = 'sliding-best-' + modeIndex;
+      best = parseInt(localStorage.getItem(bestKey) || '0', 10);
       if (modes[modeIndex].type === 'image') {
         img = new window.Image();
         img.src = modes[modeIndex].src;
