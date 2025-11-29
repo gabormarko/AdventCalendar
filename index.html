@@ -2810,10 +2810,21 @@ window.addEventListener('DOMContentLoaded', () => {
           const g2048 = parseInt(localStorage.getItem('devstat-2048-' + ds) || '0', 10);
           sum.app += app; sum.box += box; sum.usage += usage;
           sum.snake += snake; sum.puzzle += puzzle; sum.g2048 += g2048;
-          lines.push(`${ds}: a ${app}x, b ${box}x, a ${usage}m, s ${snake}m, p ${puzzle}m, g ${g2048}m`);
+          // Extract MM.DD from YYYY-MM-DD
+          const mmdd = ds.slice(5,7) + '.' + ds.slice(8,10);
+          lines.push(`${mmdd}: (a,b) ${app}x,${box}x, (a,s,p,g) ${usage}m,${snake}m,${puzzle}m,${g2048}m`);
         });
-        lines.push(`sum: a ${sum.app}x, b ${sum.box}x, a ${sum.usage}m, s ${sum.snake}m, p ${sum.puzzle}m, g ${sum.g2048}m`);
-        
+        lines.push(' ');
+        lines.push(`SUM: (a,b) ${sum.app}x,${sum.box}x, (a,s,p,g) ${sum.usage}m,${sum.snake}m,${sum.puzzle}m,${sum.g2048}m`);
+        const nonzeroDays = days.filter(ds => parseInt(localStorage.getItem('devstat-appopen-' + ds) || '0', 10) > 0).length;
+        if (nonzeroDays > 0) {
+          lines.push(
+            `AVG: (a,b) ${Math.round(sum.app/nonzeroDays)}x,${Math.round(sum.box/nonzeroDays)}x, (a,s,p,g) ${Math.round(sum.usage/nonzeroDays)}m,${Math.round(sum.snake/nonzeroDays)}m,${Math.round(sum.puzzle/nonzeroDays)}m,${Math.round(sum.g2048/nonzeroDays)}m`
+          );
+        } else {
+          lines.push('AVG: (a,b) 0x,0x, (a,s,p,g) 0m,0m,0m,0m');
+        }
+
         let oldDev = document.getElementById('dev-stats-overlay');
         if (oldDev) oldDev.remove();
 
@@ -2827,7 +2838,7 @@ window.addEventListener('DOMContentLoaded', () => {
         const box = document.createElement('div');
         box.style.cssText = `
           background:#fffbe8;color:#b30000;font-family:'Fira Mono',monospace;
-          font-size:0.7em;border-radius:18px;box-shadow:0 2px 16px #b3000033;
+          font-size:0.6em;border-radius:18px;box-shadow:0 2px 16px #b3000033;
           padding:12px 12px;max-width:340px;max-height:70vh;overflow-y:auto;
           text-align:left;white-space:pre;
           display:flex;flex-direction:column;align-items:center;
