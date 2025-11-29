@@ -1298,7 +1298,7 @@ window.addEventListener('DOMContentLoaded', () => {
     // Snake modes: head and food images
     const snakeModes = [
       { head: 'media/snake0.png', food: 'media/food0.png' },  
-    { head: 'media/snake1.jpg', food: 'media/food1.png' },
+      { head: 'media/snake1.jpg', food: 'media/food1.png' },
       { head: 'media/snake2.jpg', food: 'media/food2.jpg' }
     ];
     let modeIdx = parseInt(localStorage.getItem('snake-mode-idx')||'0',10) % snakeModes.length;
@@ -1546,6 +1546,12 @@ window.addEventListener('DOMContentLoaded', () => {
         }
         food=spawnFood();
         updateScore();
+        // Make snake faster every 5 points (minimum 80ms)
+        if (score % 5 === 0 && snakeSpeed > 80) {
+          snakeSpeed -= 30;
+          clearInterval(interval);
+          interval = setInterval(move, snakeSpeed);
+        }
       } else {
         snake.pop();
       }
