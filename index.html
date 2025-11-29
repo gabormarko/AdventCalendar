@@ -1546,7 +1546,7 @@ window.addEventListener('DOMContentLoaded', () => {
         }
         food=spawnFood();
         updateScore();
-        // Make snake faster every 5 points (minimum 80ms)
+        // Make snake faster every 5 points (minimum 80ms, -30ms every 5 points)
         if (score % 5 === 0 && snakeSpeed > 80) {
           snakeSpeed -= 30;
           clearInterval(interval);
