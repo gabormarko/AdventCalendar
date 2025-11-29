@@ -518,7 +518,8 @@
               <span style="font-size:1em;color:#b30000;font-family:'Comic Neue',Arial,sans-serif;font-weight:bold;">Email:</span><br>
               <a href="mailto:gabor.marko@tum.de" style="color:#b30000;font-size:0.9em;word-break:break-all;">gabor.marko@tum.de</a>
               <br><br>
-              <span style="display:block;text-align:center;font-size:0.73em;color:#b30000;font-family:'Comic Neue',Arial,sans-serif;opacity:0.85;margin-top:6px;">Copyright © 2025 gabo | Minden jog fenntartva.<br>(bármit is jelentsen ez)            
+              <span id="dev-copyright" style="display:block;text-align:center;font-size:0.73em;color:#b30000;font-family:'Comic Neue',Arial,sans-serif;opacity:0.85;margin-top:6px;">
+                Copyright © 2025 gabo | Minden jog fenntartva.<br>(bármit is jelentsen ez)            
               </span>
             </p>
             <script>
@@ -2786,11 +2787,16 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // --- 5. Hidden dev popup on copyright tap ---
   window.addEventListener('DOMContentLoaded', () => {
-    const copyright = Array.from(document.querySelectorAll('span,div,a'))
-      .find(el => el.textContent && el.textContent.includes('Minden jog fenntartva'));
+    const copyright = document.getElementById('dev-copyright');
     if (!copyright) return;
     let tapCount = 0, tapTimer = null;
     copyright.addEventListener('click', function() {
+      // Only allow if "Segítsééég" accordion is open
+      const headers = document.querySelectorAll('.accordion-header');
+      const segitsegHeader = Array.from(headers).find(h => h.textContent.includes('Segítséééég'));
+      const isOpen = segitsegHeader && segitsegHeader.getAttribute('aria-expanded') === 'true';
+      if (!isOpen) return;
+      
       tapCount++;
       if (tapTimer) clearTimeout(tapTimer);
       tapTimer = setTimeout(() => { tapCount = 0; }, 2000);
