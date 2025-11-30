@@ -2775,44 +2775,61 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // --- 4. Track per-game play time per day ---
   function trackGameTime(gameKey, containerId) {
-    let start = null, timer = null;
-    function startTimer() {
-      if (start !== null) return;
-      start = Date.now();
-      timer = setInterval(() => {
+      let start = null, timer = null;
+      function startTimer() {
+        if (start !== null) return;
+        start = Date.now();
+        timer = setInterval(() => {
+          const mins = Math.floor((Date.now() - start) / 60000);
+          if (mins > 0) {
+            const prev = parseInt(localStorage.getItem(gameKey + todayStr) || '0', 10);
+            localStorage.setItem(gameKey + todayStr, prev + mins);
+            start = Date.now();
+          }
+        }, 60000);
+      }
+      function stopTimer() {
+        if (start === null) return;
         const mins = Math.floor((Date.now() - start) / 60000);
         if (mins > 0) {
           const prev = parseInt(localStorage.getItem(gameKey + todayStr) || '0', 10);
           localStorage.setItem(gameKey + todayStr, prev + mins);
-          start = Date.now();
         }
-      }, 60000);
-    }
-    function stopTimer() {
-      if (start === null) return;
-      const mins = Math.floor((Date.now() - start) / 60000);
-      if (mins > 0) {
-        const prev = parseInt(localStorage.getItem(gameKey + todayStr) || '0', 10);
-        localStorage.setItem(gameKey + todayStr, prev + mins);
+        clearInterval(timer);
+        start = null;
+        timer = null;
       }
-      clearInterval(timer);
-      start = null;
-      timer = null;
-    }
-    // Show/hide logic
-    window.addEventListener('DOMContentLoaded', () => {
-      const cont = document.getElementById(containerId);
-      if (!cont) return;
-      const observer = new MutationObserver(() => {
-        if (cont.style.display !== 'none') startTimer();
-        else stopTimer();
+      window.addEventListener('DOMContentLoaded', () => {
+        const cont = document.getElementById(containerId);
+        if (!cont) return;
+        // --- Only for snake: start timer on board click/start, not on show ---
+        if (gameKey === 'devstat-snake-') {
+          // Listen for click on canvas or start button
+          cont.addEventListener('click', function(e) {
+            // Only start if clicking on the canvas or start button
+            const canvas = cont.querySelector('canvas');
+            const startBtn = cont.querySelector('#snake-start');
+            if ((canvas && e.target === canvas) || (startBtn && e.target === startBtn)) {
+              startTimer();
+            }
+          });
+          // Stop timer when container is hidden
+          const observer = new MutationObserver(() => {
+            if (cont.style.display === 'none') stopTimer();
+          });
+          observer.observe(cont, { attributes: true, attributeFilter: ['style'] });
+          // Do NOT start timer on load/visible
+        } else {
+          // --- For other games: start/stop on show/hide as before ---
+          const observer = new MutationObserver(() => {
+            if (cont.style.display !== 'none') startTimer();
+            else stopTimer();
+          });
+          observer.observe(cont, { attributes: true, attributeFilter: ['style'] });
+          if (cont.style.display !== 'none') startTimer();
+        }
       });
-      observer.observe(cont, { attributes: true, attributeFilter: ['style'] });
-      // Start if visible on load
-      if (cont.style.display !== 'none') startTimer();
-    });
-    // Also stop on unload
-    window.addEventListener('beforeunload', stopTimer);
+      window.addEventListener('beforeunload', stopTimer);
   }
   trackGameTime('devstat-snake-', 'game-snake-container');
   trackGameTime('devstat-puzzle-', 'game-sliding-container');
