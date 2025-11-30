@@ -2588,7 +2588,8 @@ window.addEventListener('DOMContentLoaded', () => {
     <div id="loading-powered" style="position:fixed;bottom:8px;left:0;width:100vw;text-align:center;font-size:0.8em;color:#fff;opacity:0.7;letter-spacing:1px;font-family:'Fira Mono','Consolas','Menlo','Monaco',monospace;pointer-events:auto;z-index:100;">powered by gabo ©2025 | v5.07  </div>
 
 
-<script>  // Easter egg: tap the "powered by gabo" text 7 times quickly to open a hidden overlay with a big chick spitting hearts
+<script>  
+// Easter egg: tap the "powered by gabo" text 7 times quickly to open a hidden overlay with a big chick spitting hearts
 (function() {
   const powered = document.getElementById('loading-powered');
   if (!powered) return;
@@ -2713,6 +2714,7 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 })();
 
+// --- DevStat usage tracking code ---
 (function() {
   // --- 1. Track app opens per day ---
   const todayStr = (d => d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'))(new Date());
