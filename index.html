@@ -14,7 +14,24 @@
   
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>Advent Calendar</title>
+  <script>
+    // --- Reset all 'advent-opened-' keys at 2025.11.30 23:55 ---
+    (function() {
+      const now = new Date();
+      // 2025-11-30 23:55:00 local time
+      const resetDate = new Date(2025, 10, 30, 23, 55, 0, 0); // Month is 0-based
+      const alreadyReset = localStorage.getItem('advent-opened-reset-2025');
+      if (now >= resetDate && !alreadyReset) {
+        // Remove all advent-opened- keys
+        for (let i = 1; i <= 24; i++) {
+          localStorage.removeItem('advent-opened-' + i);
+        }
+        localStorage.setItem('advent-opened-reset-2025', '1');
+      }
+    })();
+  </script>
 
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#b30000">
