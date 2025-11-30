@@ -2734,17 +2734,24 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // --- 3. Track total usage time per day ---
+  // --- 3. Track total usage time per day (accumulate across sessions) ---
   let usageStart = Date.now();
   let usageTimer = setInterval(() => {
     const now = Date.now();
     const mins = Math.floor((now - usageStart) / 60000);
-    localStorage.setItem('devstat-usage-' + todayStr, mins);
+    if (mins > 0) {
+      const prev = parseInt(localStorage.getItem('devstat-usage-' + todayStr) || '0', 10);
+      localStorage.setItem('devstat-usage-' + todayStr, prev + mins);
+      usageStart = now;
+    }
   }, 60000);
   window.addEventListener('beforeunload', () => {
     const now = Date.now();
     const mins = Math.floor((now - usageStart) / 60000);
-    localStorage.setItem('devstat-usage-' + todayStr, mins);
+    if (mins > 0) {
+      const prev = parseInt(localStorage.getItem('devstat-usage-' + todayStr) || '0', 10);
+      localStorage.setItem('devstat-usage-' + todayStr, prev + mins);
+    }
   });
 
   // --- 4. Track per-game play time per day ---
@@ -2755,13 +2762,20 @@ window.addEventListener('DOMContentLoaded', () => {
       start = Date.now();
       timer = setInterval(() => {
         const mins = Math.floor((Date.now() - start) / 60000);
-        localStorage.setItem(gameKey + todayStr, mins);
+        if (mins > 0) {
+          const prev = parseInt(localStorage.getItem(gameKey + todayStr) || '0', 10);
+          localStorage.setItem(gameKey + todayStr, prev + mins);
+          start = Date.now();
+        }
       }, 60000);
     }
     function stopTimer() {
       if (start === null) return;
       const mins = Math.floor((Date.now() - start) / 60000);
-      localStorage.setItem(gameKey + todayStr, mins);
+      if (mins > 0) {
+        const prev = parseInt(localStorage.getItem(gameKey + todayStr) || '0', 10);
+        localStorage.setItem(gameKey + todayStr, prev + mins);
+      }
       clearInterval(timer);
       start = null;
       timer = null;
