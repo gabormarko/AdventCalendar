@@ -495,7 +495,7 @@
             <div style="width:100%;display:flex;flex-direction:column;align-items:center;">
               <div id="game-selector" style="margin-bottom:0px;display:flex;gap:8px;justify-content:center;">
                 <button class="game-select-btn" data-game="snake" style="padding:10px 16px;border-radius:6px;border:none;background:#b30000;color:#fff;font-family:'Comic Neue',Arial,sans-serif;cursor:pointer;font-size:1.1em;">Snake</button>
-                <button class="game-select-btn" data-game="sliding" style="padding:10px 16px;border-radius:6px;border:none;background:#222;color:#fff;font-family:'Comic Neue',Arial,sans-serif;cursor:pointer;font-size:1.1em;">Sliding Puzzle</button>
+                <button class="game-select-btn" data-game="sliding" style="padding:10px 16px;border-radius:6px;border:none;background:#222;color:#fff;font-family:'Comic Neue',Arial,sans-serif;cursor:pointer;font-size:1.1em;">Slide Puzzle</button>
                 <button class="game-select-btn" data-game="2048" style="padding:10px 16px;border-radius:6px;border:none;background:#222;color:#fff;font-family:'Comic Neue',Arial,sans-serif;cursor:pointer;font-size:1.1em;">2048</button>
               </div>
               <div id="game-snake-container" style="width:100%;display:none;justify-content:center;align-items:center;">
@@ -1039,7 +1039,7 @@ window.addEventListener('DOMContentLoaded', () => {
         puzzleBtn.setAttribute('title', 'Elérhető: 5. nap');
       } else {
         puzzleBtn.disabled = false;
-        puzzleBtn.innerHTML = 'Sliding Puzzle';
+        puzzleBtn.innerHTML = 'Puzzle';
         puzzleBtn.style.color = '#fff';
       }
     }
