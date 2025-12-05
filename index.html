@@ -2272,7 +2272,7 @@ window.addEventListener('DOMContentLoaded', () => {
       3: { title: "3. 3 hónapja...", text: "...találkoztunk először kettesben!:)\nHétfőn pont felelevenítetted, a teljes útvonalra, a beszélgetéseinkre, és az érzéseimre is tisztán emlékszem. Mondjuk úgy, hogy felejthetetlen emlék számomra, és vannak pillanatok, amik valószínűleg örökre beleégtek az emlékezetembe.\nDurva, mennyi minden történt azóta:)\nMennyi emlék... És mennyi minden vár még ránk!\n A havi kis borítékod nem marad el, majd odaadom, ha találkozunk!:)💌\nUi.: Ma este egy görgőzés?😎", image: "media/0903.jpg", link: "", video: "" },
       4: { title: "4. Wakey-wakey!💤", text: "Szép jó reggelt az én kis padawanomnak!\nÜgyes legyél ma a susuban!:)\nUi.: Van már programod 2026. május 22. estére?🐮", image: "", link: "", video: "media/wakey.mp4" },
       5: { title: "5. Grafilogika🧠", text: "Ma egy kis feladványt kapsz, remélem ki tudod színesben nyomtatni (és színezni:D).\n Viel Spaß!:)<br><a href='https://drive.google.com/file/d/1hQnBsPC27ZBde7qkPaNAs_L4dANv0pTG/view?usp=drive_link' target='_blank'>Nyomtatás</a>", image: "media/nonogramm.png", link: "", video: "" },
-      6: { title: "6. Ho-ho-ho-hooo!🎅", text: "Remélem jól viselkedtél az évben, kedves Julis!\nÉn úgy hallottam, nagyrészt igen...😇😈\nSikerült megoldani a grafilogikát?:)", image: "", link: "", video: "" },
+      6: { title: "6. Ho-ho-ho-hooo!🎅", text: "Remélem jól viselkedtél az évben, kedves Julis!\nÉn úgy hallottam, nagyrészt igen...😇😈\nSikerült megoldani a grafilogikát?:)", image: "media/julis-mikulas.jpg", link: "", video: "" },
       7: { title: "7. Nagyon-nagyon!", text: 'Bocsi, most rám jött. Legyen szép napod! Szeretlek!❤️', image: "media/collage.jpg", link: "", video: "media/elsőre.mp4" },
       8: { title: "8. Bolondóra!🤸‍♀️", text: "Először is hajrá ma a vizsgán!:)\n Viszont Julis, ma sem maradhat el a bolondóra! Bukfencezgess párat a lakásban:) Ha készül róla videó, szívesen veszem!:)", image: "media/bukfenc.gif", link: "", video: "" },
       9: { title: "9. Egy kis motiváció reggelre!", text: "Gyerünk Julis, ügyes leszel ma!🤘\nRopjad neki!💃", image: "", link: "", video: "media/fish.mp4" },
@@ -2431,7 +2431,9 @@ window.addEventListener('DOMContentLoaded', () => {
             document.getElementById('santa-overlay').style.display = 'none';
             document.getElementById('calendar').style.filter = '';
             // Show content overlay for day 6
-            let html = `<h1>${contentData[6].title || '6. nap'}</h1><p>${contentData[6].text.replace(/\n/g, '<br>')}</p>`;
+            let html = `<h1>${contentData[6].title || '6. nap'}</h1>
+            <p>${contentData[6].text.replace(/\n/g, '<br>')}</p>
+            <img src="${contentData[6].image}" alt="Day 6 Image" style="display:block;margin:10px auto;width:100%;height:auto;">`;
             contentOverlayCenter.innerHTML = html;
             contentOverlay.style.display = 'flex';
             document.getElementById('close-content-btn').onclick = () => {
